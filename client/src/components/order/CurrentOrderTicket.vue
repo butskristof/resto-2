@@ -21,21 +21,17 @@
           <td class="number">
             <TicketQuantity />
           </td>
-          <td class="number price">9,00</td>
-          <td class="number price">9,00</td>
+          <td class="number price">{{ formatNumber(9.0) }}</td>
+          <td class="number price">{{ formatNumber(9.0) }}</td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
 
-<script>
+<script setup>
 import TicketQuantity from '@/components/order/TicketQuantity.vue';
-
-export default {
-  name: 'CurrentOrderTicket',
-  components: { TicketQuantity },
-};
+import { formatNumber } from '@/utilities/formatting';
 </script>
 
 <style scoped lang="scss">

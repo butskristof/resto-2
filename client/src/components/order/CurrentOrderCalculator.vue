@@ -2,7 +2,9 @@
   <div class="calculator">
     <div class="calculator-row">
       <div>Totaal bestelling</div>
-      <div class="styled-amount order-total">{{ orderTotal }}</div>
+      <div class="styled-amount order-total">
+        {{ formatCurrency(orderTotal) }}
+      </div>
     </div>
     <div class="calculator-row">
       <div>Cash ontvangen</div>
@@ -12,31 +14,23 @@
     </div>
     <div class="calculator-row">
       <div>Terug te geven</div>
-      <div class="styled-amount cashback">{{ cashback }}</div>
+      <div class="styled-amount cashback">{{ formatCurrency(cashback) }}</div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'CurrentOrderCalculator',
-  props: {
-    orderTotal: {
-      type: Number,
-      default: 0,
-    },
+<script setup>
+import { computed, ref } from 'vue';
+import { formatCurrency } from '@/utilities/formatting';
+
+const props = defineProps({
+  orderTotal: {
+    type: Number,
+    default: 0,
   },
-  data() {
-    return {
-      cashReceived: 0,
-    };
-  },
-  computed: {
-    cashback() {
-      return this.cashReceived - this.orderTotal;
-    },
-  },
-};
+});
+const cashReceived = ref(0);
+const cashback = computed(() => cashReceived.value - props.orderTotal);
 </script>
 
 <style scoped lang="scss">
@@ -68,9 +62,6 @@ input {
 .styled-amount {
   color: $white;
   @include styled-button-base;
-  //padding: 0.75rem;
-  //border-radius: $button-border-radius;
-  //font-weight: bold;
 }
 
 .order-total {

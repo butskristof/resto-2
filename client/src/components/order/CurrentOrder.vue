@@ -3,7 +3,7 @@
     <h2>Order</h2>
     <CurrentOrderTicket />
     <div class="discounts">
-      Bestelling voor
+      <div>Bestelling voor</div>
       <div class="radio-group">
         <div class="radio-item">
           <input
@@ -42,25 +42,14 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import RestoButton from '@/components/common/RestoButton.vue';
 import CurrentOrderCalculator from '@/components/order/CurrentOrderCalculator.vue';
 import CurrentOrderTicket from '@/components/order/CurrentOrderTicket.vue';
+import { ref } from 'vue';
 
 const ORDER_FOR = ['CUSTOMER', 'HELPER', 'MEMBER'];
-
-export default {
-  name: 'CurrentOrder',
-  components: { CurrentOrderTicket, CurrentOrderCalculator, RestoButton },
-  data() {
-    return {
-      orderFor: ORDER_FOR[0],
-    };
-  },
-  computed: {
-    ORDER_FOR: () => ORDER_FOR,
-  },
-};
+const orderFor = ref(ORDER_FOR[0]);
 </script>
 
 <style scoped lang="scss">
@@ -75,12 +64,22 @@ h2 {
   @include styled-h2;
 }
 
-.radio-group {
-  display: inline-flex;
+.discounts {
+  display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 
-  .radio-item {
-    margin-left: 1rem;
+  line-height: 1.5rem;
+  padding: 0.5rem 0;
+
+  .radio-group {
+    display: inline-flex;
+    flex-direction: row;
+
+    .radio-item {
+      margin-left: 1rem;
+    }
   }
 }
 
