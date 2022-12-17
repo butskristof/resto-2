@@ -1,11 +1,15 @@
 @import "./_variables.scss";
 
-@mixin klj-font {
+@mixin transition {
+  transition: all 150ms;
+}
+
+@mixin brand-font {
   font-family: VAG, sans-serif;
 }
 
 @mixin styled-h2 {
-  @include klj-font;
+  @include brand-font;
 
   color: $primary-green;
   text-align: center;

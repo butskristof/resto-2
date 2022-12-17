@@ -33,7 +33,7 @@ header {
 
   h1 {
     color: $meta-text-color;
-    @include klj-font;
+    @include brand-font;
 
     margin: 0;
   }

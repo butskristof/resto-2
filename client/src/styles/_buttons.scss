@@ -1,0 +1,28 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+@mixin reset-button {
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+@mixin styled-button-base {
+  @include transition;
+
+  padding: 0.75rem;
+  border-radius: $button-border-radius;
+  font-weight: bold;
+
+  text-decoration: inherit;
+  display: inline-block;
+
+  &:disabled {
+    cursor: initial;
+  }
+}
