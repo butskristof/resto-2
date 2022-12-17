@@ -4,23 +4,25 @@
       <thead>
         <tr>
           <th class="product">Product</th>
-          <th class="number">
+          <th class="number quantity">
             <tippy content="Aantal"> # </tippy>
           </th>
-          <th class="number">
+          <th class="number price">
             <tippy content="Eenheidsprijs"> EHP </tippy>
           </th>
-          <th class="number">
+          <th class="number price">
             <tippy content="Subtotaal"> TOT </tippy>
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="i in [...Array(100).keys()]" :key="i">
           <td class="product">item</td>
-          <td class="number">1</td>
-          <td class="number">9,00</td>
-          <td class="number">9,00</td>
+          <td class="number">
+            <TicketQuantity />
+          </td>
+          <td class="number price">9,00</td>
+          <td class="number price">9,00</td>
         </tr>
       </tbody>
     </table>
@@ -28,8 +30,11 @@
 </template>
 
 <script>
+import TicketQuantity from '@/components/order/TicketQuantity.vue';
+
 export default {
   name: 'CurrentOrderTicket',
+  components: { TicketQuantity },
 };
 </script>
 
@@ -40,25 +45,40 @@ export default {
   flex-grow: 1;
   margin-bottom: 1rem;
 
-  border: 1px solid $secondary-grey;
-
-  //border-radius: $border-radius;
+  border: 2px solid black;
+  overflow: auto;
 }
 
 .ticket {
   width: 100%;
   font-family: monospace;
+  border-collapse: collapse;
 
   td,
   th {
-    padding-right: 1rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  tbody {
+    tr {
+      line-height: 1.75rem;
+
+      &:nth-child(even) {
+        background-color: #eee;
+      }
+    }
   }
 
   thead {
     font-weight: bold;
     font-size: 120%;
     text-align: left;
-    //border: 1rem solid $text-color; // TODO
+    border-bottom: 2px dashed black;
+
+    tr {
+      line-height: 1.5rem;
+    }
   }
 
   .product {
@@ -67,6 +87,14 @@ export default {
 
   .number {
     text-align: right;
+  }
+
+  .quantity {
+    min-width: 4rem;
+  }
+
+  .price {
+    min-width: 5rem;
   }
 }
 </style>

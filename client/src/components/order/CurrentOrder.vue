@@ -3,8 +3,36 @@
     <h2>Order</h2>
     <CurrentOrderTicket />
     <div class="discounts">
-      <div>Bestelling voor</div>
-      <div>Klant / Helper / Leiding</div>
+      Bestelling voor
+      <div class="radio-group">
+        <div class="radio-item">
+          <input
+            type="radio"
+            id="order-for-item-customer"
+            :value="ORDER_FOR[0]"
+            v-model="orderFor"
+          />
+          <label for="order-for-item-customer">Klant</label>
+        </div>
+        <div class="radio-item">
+          <input
+            type="radio"
+            id="order-for-item-helper"
+            :value="ORDER_FOR[1]"
+            v-model="orderFor"
+          />
+          <label for="order-for-item-helper">Helper</label>
+        </div>
+        <div class="radio-item">
+          <input
+            type="radio"
+            id="order-for-item-member"
+            :value="ORDER_FOR[2]"
+            v-model="orderFor"
+          />
+          <label for="order-for-item-member">Leiding</label>
+        </div>
+      </div>
     </div>
     <CurrentOrderCalculator />
     <div class="actions">
@@ -19,9 +47,19 @@ import RestoButton from '@/components/common/RestoButton.vue';
 import CurrentOrderCalculator from '@/components/order/CurrentOrderCalculator.vue';
 import CurrentOrderTicket from '@/components/order/CurrentOrderTicket.vue';
 
+const ORDER_FOR = ['CUSTOMER', 'HELPER', 'MEMBER'];
+
 export default {
   name: 'CurrentOrder',
   components: { CurrentOrderTicket, CurrentOrderCalculator, RestoButton },
+  data() {
+    return {
+      orderFor: ORDER_FOR[0],
+    };
+  },
+  computed: {
+    ORDER_FOR: () => ORDER_FOR,
+  },
 };
 </script>
 
@@ -37,8 +75,13 @@ h2 {
   @include styled-h2;
 }
 
-.spacer {
-  flex-grow: 1;
+.radio-group {
+  display: inline-flex;
+  flex-direction: row;
+
+  .radio-item {
+    margin-left: 1rem;
+  }
 }
 
 .actions {
