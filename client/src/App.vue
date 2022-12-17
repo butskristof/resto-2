@@ -40,7 +40,7 @@ header {
 }
 
 main {
-  flex-grow: 1;
+  height: 88vh;
 
   padding: 1rem;
   width: 100%;

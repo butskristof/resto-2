@@ -1,3 +1,16 @@
+@import "./_variables.scss";
+
 @mixin klj-font {
   font-family: VAG, sans-serif;
+}
+
+@mixin styled-h2 {
+  @include klj-font;
+
+  color: $primary-green;
+  text-align: center;
+  font-size: 175%;
+
+  margin-top: 0.5rem;
+  //margin-bottom: 0.5rem;
 }
