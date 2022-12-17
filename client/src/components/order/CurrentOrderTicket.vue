@@ -4,9 +4,15 @@
       <thead>
         <tr>
           <th class="product">Product</th>
-          <th class="number">#</th>
-          <th class="number">EHP</th>
-          <th class="number">TOT</th>
+          <th class="number">
+            <tippy content="Aantal"> # </tippy>
+          </th>
+          <th class="number">
+            <tippy content="Eenheidsprijs"> EHP </tippy>
+          </th>
+          <th class="number">
+            <tippy content="Subtotaal"> TOT </tippy>
+          </th>
         </tr>
       </thead>
       <tbody>
