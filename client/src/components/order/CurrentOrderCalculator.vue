@@ -66,11 +66,11 @@ input {
 }
 
 .order-total {
-  background-color: $secondary-green;
+  background-color: $primary-green;
 }
 
 .cashback {
   //color: $text-color;
-  background-color: $secondary-green;
+  background-color: $secondary-orange;
 }
 </style>

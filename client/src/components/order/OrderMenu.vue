@@ -7,6 +7,7 @@
         <Search class="search-icon" />
         <input type="text" placeholder="Zoek gerechten" v-model.trim="search" />
       </div>
+
       <MenuItem
         v-for="product in filteredProducts"
         :key="product.id"
@@ -27,8 +28,10 @@ const products = getProducts();
 const search = ref('');
 const filteredProducts = computed(() => {
   if (stringIsNullOrWhitespace(search.value)) return products;
-  const lcSearch = search.value.toLocaleLowerCase();
-  return products.filter((p) => p.name.toLocaleLowerCase().includes(lcSearch));
+  const lcSearch = search.value.toLowerCase();
+  return products.filter((product) =>
+    product.name.toLowerCase().includes(lcSearch),
+  );
 });
 </script>
 

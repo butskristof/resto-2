@@ -18,3 +18,36 @@
   margin-top: 0.5rem;
   //margin-bottom: 0.5rem;
 }
+
+@mixin category-styling {
+  &[data-category='CAT1'] {
+    background-color: $cat1;
+    color: $white;
+  }
+
+  &[data-category='CAT2'] {
+    background-color: $cat2;
+    color: $white;
+  }
+
+  &[data-category='CAT3'] {
+    background-color: $cat3;
+    color: $white;
+  }
+
+  &[data-category='CAT4'] {
+    background-color: $cat4;
+    color: $text-color;
+  }
+
+  &[data-category='CAT5'] {
+    background-color: $cat5;
+    color: $text-color;
+    border: 0.125rem solid $text-color;
+  }
+
+  &[data-category='CAT6'] {
+    background-color: $cat6;
+    color: $white;
+  }
+}

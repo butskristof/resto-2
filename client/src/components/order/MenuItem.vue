@@ -1,7 +1,11 @@
 <template>
   <div class="menu-item" v-if="product">
     <div class="product">
-      <button type="button" class="btn-product">
+      <button
+        type="button"
+        class="btn-product"
+        :data-category="product.category.name"
+      >
         {{ product.name }} - {{ formatCurrency(product.price) }}
       </button>
     </div>
@@ -84,8 +88,7 @@ const selectedToppings = ref([]);
   width: 100%;
   padding: 1.5rem;
 
-  background-color: $secondary-brown;
-  color: $white;
+  @include category-styling;
 }
 
 .toppings {
