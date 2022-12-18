@@ -1,0 +1,16 @@
+@import "_variables.scss";
+@import "_mixins.scss";
+
+@mixin styled-input-base {
+  border: 0.125rem solid $primary-blue;
+  border-radius: $button-border-radius;
+  line-height: 2rem;
+  font-size: 100%;
+
+  -moz-appearance: textfield;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
