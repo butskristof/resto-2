@@ -1,0 +1,50 @@
+{
+  "products": [
+    {
+      "id": 0,
+      "name": "Drankbon",
+      "price": 1.9,
+      "multipleToppings": false,
+      "toppings": []
+    },
+    {
+      "id": 1,
+      "name": "Videe",
+      "price": 7,
+      "multipleToppings": false,
+      "toppings": [
+        {
+          "name": "Frietjes",
+          "price": 2
+        },
+        {
+          "name": "Brood",
+          "price": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Stoofvlees",
+      "price": 7,
+      "multipleToppings": true,
+      "toppings": [
+        {
+          "name": "Frietjes",
+          "price": 2
+        },
+        {
+          "name": "Brood",
+          "price": 2
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Curryworst met frietjes",
+      "price": 5,
+      "multipleToppings": false,
+      "toppings": []
+    }
+  ]
+}

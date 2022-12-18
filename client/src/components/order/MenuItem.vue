@@ -1,29 +1,30 @@
 <template>
-  <div class="menu-item">
+  <div class="menu-item" v-if="product">
     <div class="product">
       <button type="button" class="btn-product">
-        Product - {{ formatCurrency(1.9) }}
+        {{ product.name }} - {{ formatCurrency(product.price) }}
       </button>
     </div>
     <div class="toppings" v-if="hasToppings">
-      <div class="topping">
-        <template v-if="singleTopping">
-          <div class="radio-group" v-for="i in [...Array(2).keys()]" :key="i">
-            <div class="radio-item">
-              <input type="radio" :id="'topping' + i" :value="'topping' + i" />
-              <label :for="'topping' + i">Topping {{ i }}</label>
-            </div>
+      <div
+        class="topping"
+        v-for="topping in product.toppings"
+        :key="topping.name"
+      >
+        <template v-if="multipleToppings">
+          <div class="checkbox">
+            <input type="checkbox" />
+            <label
+              >{{ topping.name }} - {{ formatCurrency(topping.price) }}</label
+            >
           </div>
         </template>
         <template v-else>
-          <div class="checkbox" v-for="i in [...Array(2).keys()]" :key="i">
-            <input
-              type="checkbox"
-              :id="'topping' + i"
-              :name="'topping' + i"
-              :value="'Topping ' + i"
-            />
-            <label :for="'topping' + i">Topping {{ i }}</label>
+          <div class="radio-group">
+            <input type="radio" />
+            <label
+              >{{ topping.name }} - {{ formatCurrency(topping.price) }}</label
+            >
           </div>
         </template>
       </div>
@@ -36,8 +37,19 @@
 
 <script setup>
 import { formatCurrency } from '@/utilities/formatting';
-const hasToppings = Math.random() > 0.5;
-const singleTopping = Math.random() > 0.5;
+import { computed } from 'vue';
+
+const props = defineProps({
+  product: {
+    type: Object,
+    required: true,
+  },
+});
+
+const hasToppings = computed(() => props.product?.toppings.length ?? false);
+const multipleToppings = computed(
+  () => props.product?.multipleToppings ?? false,
+);
 </script>
 
 <style scoped lang="scss">

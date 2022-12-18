@@ -7,19 +7,21 @@
         <Search class="search-icon" />
         <input type="text" placeholder="Zoek producten" />
       </div>
-      <MenuItem v-for="i in [...Array(100).keys()]" :key="i" />
+      <MenuItem
+        v-for="product in products"
+        :key="product.id"
+        :product="product"
+      />
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import MenuItem from '@/components/order/MenuItem.vue';
 import { Search } from 'lucide-vue-next';
+import { getProducts } from '@/services/products.service';
 
-export default {
-  name: 'OrderMenu',
-  components: { MenuItem, Search },
-};
+const products = getProducts();
 </script>
 
 <style scoped lang="scss">
