@@ -91,6 +91,7 @@ h2 {
   justify-content: space-between;
 
   button {
+    font-weight: initial;
     font-size: 125%;
   }
 }

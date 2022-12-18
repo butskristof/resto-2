@@ -51,11 +51,11 @@ export default {
   }
 
   .btn-add {
-    background-color: $primary-green;
+    @include button-green;
   }
 
   .btn-subtract {
-    background-color: $primary-red;
+    @include button-red;
   }
 }
 </style>

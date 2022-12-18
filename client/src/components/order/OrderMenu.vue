@@ -5,10 +5,10 @@
     <div class="menu-items">
       <div class="menu-search">
         <Search class="search-icon" />
-        <input type="text" placeholder="Zoek producten" />
+        <input type="text" placeholder="Zoek gerechten" v-model.trim="search" />
       </div>
       <MenuItem
-        v-for="product in products"
+        v-for="product in filteredProducts"
         :key="product.id"
         :product="product"
       />
@@ -20,8 +20,16 @@
 import MenuItem from '@/components/order/MenuItem.vue';
 import { Search } from 'lucide-vue-next';
 import { getProducts } from '@/services/products.service';
+import { computed, ref } from 'vue';
+import { stringIsNullOrWhitespace } from '@/utilities/strings';
 
 const products = getProducts();
+const search = ref('');
+const filteredProducts = computed(() => {
+  if (stringIsNullOrWhitespace(search.value)) return products;
+  const lcSearch = search.value.toLocaleLowerCase();
+  return products.filter((p) => p.name.toLocaleLowerCase().includes(lcSearch));
+});
 </script>
 
 <style scoped lang="scss">

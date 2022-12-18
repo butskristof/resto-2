@@ -30,30 +30,10 @@ button {
 }
 
 .green {
-  color: $white;
-  background-color: $primary-green;
-
-  &:hover:enabled {
-    background-color: darken($primary-green, 8%);
-  }
-
-  &:disabled {
-    background-color: lighten($primary-green, 20%);
-    color: darken($white, 2%);
-  }
+  @include button-green;
 }
 
 .red {
-  color: $white;
-  background-color: $primary-red;
-
-  &:hover:enabled {
-    background-color: darken($primary-red, 8%);
-  }
-
-  &:disabled {
-    background-color: lighten($primary-red, 20%);
-    color: darken($white, 15%);
-  }
+  @include button-red;
 }
 </style>
