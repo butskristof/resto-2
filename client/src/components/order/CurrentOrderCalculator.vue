@@ -53,10 +53,19 @@ const cashback = computed(() => cashReceived.value - props.orderTotal);
 
 input {
   width: 10rem;
-  border: 0.2rem solid $primary-blue;
-  //border-color: $primary-blue;
+  border: 0.125rem solid $primary-blue;
   border-radius: $button-border-radius;
   line-height: 2rem;
+  font-size: 100%;
+
+  text-align: right;
+  -moz-appearance: textfield;
+  padding-right: 0.6rem;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 .styled-amount {
