@@ -6,28 +6,44 @@
       </button>
     </div>
     <div class="toppings" v-if="hasToppings">
-      <div
-        class="topping"
-        v-for="topping in product.toppings"
-        :key="topping.name"
-      >
-        <template v-if="multipleToppings">
-          <div class="checkbox">
-            <input type="checkbox" />
-            <label
+      <template v-if="multipleToppings">
+        <div class="checkbox-group">
+          <div
+            class="checkbox topping"
+            v-for="topping in product.toppings"
+            :key="topping.name"
+          >
+            <input
+              type="checkbox"
+              :value="topping"
+              :id="'menu-item-' + product.id + '-topping-' + topping.name"
+              v-model="selectedToppings"
+            />
+            <label :for="'menu-item-' + product.id + '-topping-' + topping.name"
               >{{ topping.name }} - {{ formatCurrency(topping.price) }}</label
             >
           </div>
-        </template>
-        <template v-else>
-          <div class="radio-group">
-            <input type="radio" />
-            <label
+        </div>
+      </template>
+      <template v-else>
+        <div class="radio-group">
+          <div
+            class="radio-item topping"
+            v-for="topping in product.toppings"
+            :key="topping.name"
+          >
+            <input
+              type="radio"
+              :value="topping"
+              :id="'menu-item-' + product.id + '-topping-' + topping.name"
+              v-model="selectedToppings"
+            />
+            <label :for="'menu-item-' + product.id + '-topping-' + topping.name"
               >{{ topping.name }} - {{ formatCurrency(topping.price) }}</label
             >
           </div>
-        </template>
-      </div>
+        </div>
+      </template>
       <div class="actions">
         <button type="button" class="btn-add">Toevoegen</button>
       </div>
@@ -37,7 +53,7 @@
 
 <script setup>
 import { formatCurrency } from '@/utilities/formatting';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
   product: {
@@ -50,11 +66,13 @@ const hasToppings = computed(() => props.product?.toppings.length ?? false);
 const multipleToppings = computed(
   () => props.product?.multipleToppings ?? false,
 );
+const selectedToppings = ref([]);
 </script>
 
 <style scoped lang="scss">
 @import '@/styles/_variables.scss';
 @import '@/styles/_buttons.scss';
+@import '@/styles/_forms.scss';
 
 .menu-item {
   margin: auto 1rem 1rem 1rem;
@@ -97,5 +115,25 @@ const multipleToppings = computed(
       }
     }
   }
+}
+
+.radio-item {
+  @include styled-radio;
+
+  label {
+    vertical-align: bottom;
+  }
+
+  margin-bottom: 0.5rem;
+}
+
+.checkbox {
+  @include styled-checkbox;
+
+  label {
+    vertical-align: bottom;
+  }
+
+  margin-bottom: 0.5rem;
 }
 </style>

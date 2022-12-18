@@ -30,6 +30,7 @@ import { Github, Settings } from 'lucide-vue-next';
   height: 100%;
   max-width: 1280px;
   margin: auto;
+  padding: 0 1rem;
 
   > * {
     margin: auto;
