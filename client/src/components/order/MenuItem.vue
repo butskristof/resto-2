@@ -6,7 +6,8 @@
         class="btn-product"
         :data-category="product.category.name"
       >
-        {{ product.name }} - {{ formatCurrency(product.price) }}
+        <span class="name">{{ product.name }}</span>
+        <span class="price">{{ formatCurrency(product.price) }}</span>
       </button>
     </div>
     <div class="toppings" v-if="hasToppings">
@@ -23,9 +24,12 @@
               :id="'menu-item-' + product.id + '-topping-' + topping.name"
               v-model="selectedToppings"
             />
-            <label :for="'menu-item-' + product.id + '-topping-' + topping.name"
-              >{{ topping.name }} - {{ formatCurrency(topping.price) }}</label
+            <label
+              :for="'menu-item-' + product.id + '-topping-' + topping.name"
             >
+              <span class="name">{{ topping.name }}</span>
+              <span class="price">{{ formatCurrency(topping.price) }}</span>
+            </label>
           </div>
         </div>
       </template>
@@ -86,17 +90,29 @@ const selectedToppings = ref([]);
   @include reset-button;
   @include styled-button-base;
   width: 100%;
-  padding: 1.5rem;
+  padding: 1.25rem 1rem;
 
   @include category-styling;
+
+  display: flex;
+  justify-content: space-between;
 }
 
 .toppings {
   background-color: #eee;
-  margin: auto 2rem 1rem 2rem;
   padding: 1rem;
   border-bottom-left-radius: $button-border-radius;
   border-bottom-right-radius: $button-border-radius;
+
+  label {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    .price {
+      margin-left: auto;
+    }
+  }
 
   .actions {
     display: flex;
