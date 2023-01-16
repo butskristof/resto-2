@@ -1,0 +1,13 @@
+@import "_variables.scss";
+
+@mixin brand-font {
+  font-family: VAG, sans-serif;
+}
+
+@mixin styled-h2 {
+  text-align: center;
+  margin: 0.5rem auto;
+
+  @include brand-font;
+  color: $styled-h2-color;
+}
