@@ -11,7 +11,16 @@
     <div class="extras">
       <div class="toppings">
         <div class="topping" v-for="topping in toppings" :key="topping.id">
-          <div class="name">{{ topping.name }}</div>
+          <div class="left">
+            <label>
+              <input
+                :type="inputType"
+                v-model="selectedToppingIds"
+                :value="topping.id"
+              />
+              {{ topping.name }}
+            </label>
+          </div>
           <div class="price">+ {{ topping.price }}</div>
         </div>
       </div>
@@ -24,6 +33,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import { useCurrentOrderStore } from '@/stores/current-order';
 
 const props = defineProps({
   product: {
@@ -31,13 +41,39 @@ const props = defineProps({
     required: true,
   },
 });
-const toppings = computed(() => props.product?.toppings);
+
+const inputType = computed(() =>
+  props.product.multipleToppings ? 'checkbox' : 'radio',
+);
+
+const toppings = computed(() => props.product.toppings);
 const selectedToppingIds = ref([]);
 
-function add() {}
+const { addToOrder } = useCurrentOrderStore();
+
+function add() {
+  // when using radio buttons (so only a single topping is allowed), the v-model
+  // will be set to a string with the topping ID instead of an array
+  // when using checkboxes, it'll update the existing array in the ref,
+  // but we should spread it again to copy the values in the array, not the reference to the array
+  // otherwise, modifying the selection will also update the value in the store
+  const toppingIds = Array.isArray(selectedToppingIds.value)
+    ? [...selectedToppingIds.value]
+    : [selectedToppingIds.value];
+  addToOrder({
+    productId: props.product.id,
+    toppingIds: toppingIds,
+  });
+}
 </script>
 
 <style scoped lang="scss">
+.menu-item {
+  border-bottom: 1px solid black;
+  padding-bottom: 1rem;
+  margin: 1rem auto;
+}
+
 .header,
 .topping {
   display: flex;
@@ -52,6 +88,7 @@ function add() {}
 }
 
 .actions {
+  margin-top: 1rem;
   text-align: right;
 }
 </style>

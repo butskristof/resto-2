@@ -3,16 +3,19 @@
     <div class="menu">
       <OrderMenu />
     </div>
-    <div class="current-order">ticket</div>
+    <div class="current-order">
+      <CurrentOrder />
+    </div>
   </div>
 </template>
 
 <script>
 import OrderMenu from '@/components/order/menu/OrderMenu.vue';
+import CurrentOrder from '@/components/order/current/CurrentOrder.vue';
 
 export default {
   name: 'OrderView',
-  components: { OrderMenu },
+  components: { CurrentOrder, OrderMenu },
 };
 </script>
 
