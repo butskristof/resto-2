@@ -14,6 +14,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'CurrentOrderTicket',
+};
+</script>
+
 <script setup>
 import { useCurrentOrderStore } from '@/stores/current-order';
 import { storeToRefs } from 'pinia';

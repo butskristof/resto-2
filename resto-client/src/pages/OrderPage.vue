@@ -14,7 +14,7 @@ import OrderMenu from '@/components/order/menu/OrderMenu.vue';
 import CurrentOrder from '@/components/order/current/CurrentOrder.vue';
 
 export default {
-  name: 'OrderView',
+  name: 'OrderPage',
   components: { CurrentOrder, OrderMenu },
 };
 </script>

@@ -31,6 +31,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'MenuItem',
+};
+</script>
+
 <script setup>
 import { computed, ref } from 'vue';
 import { useCurrentOrderStore } from '@/stores/current-order';

@@ -17,6 +17,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'OrderMenu',
+};
+</script>
+
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useProductsStore } from '@/stores/products';

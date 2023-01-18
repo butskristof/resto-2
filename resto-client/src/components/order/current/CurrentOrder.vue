@@ -9,6 +9,12 @@
   <div><button type="button">order</button></div>
 </template>
 
+<script>
+export default {
+  name: 'CurrentOrder',
+};
+</script>
+
 <script setup>
 import CurrentOrderTicket from '@/components/order/current/CurrentOrderTicket.vue';
 import { storeToRefs } from 'pinia';

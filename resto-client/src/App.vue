@@ -8,6 +8,12 @@
   <AppFooter />
 </template>
 
+<script>
+export default {
+  name: 'App',
+};
+</script>
+
 <script setup>
 import { RouterView } from 'vue-router';
 import AppHeader from '@/components/ui/AppHeader.vue';

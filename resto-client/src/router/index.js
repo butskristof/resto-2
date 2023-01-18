@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import OrderView from '@/views/OrderView.vue';
+import OrderPage from '@/pages/OrderPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,7 +11,25 @@ const router = createRouter({
     {
       path: '/order',
       name: 'Order',
-      component: OrderView,
+      component: OrderPage,
+    },
+    {
+      path: '/manage',
+      name: 'Manage',
+      redirect: { name: 'ManageProducts' },
+      component: () => import('@/pages/manage/ManagePage.vue'),
+      children: [
+        {
+          path: 'products',
+          name: 'ManageProducts',
+          component: () => import('@/pages/manage/ManageProductsPage.vue'),
+        },
+        {
+          path: 'toppings',
+          name: 'ManageToppings',
+          component: () => import('@/pages/manage/ManageToppingsPage.vue'),
+        },
+      ],
     },
   ],
 });
