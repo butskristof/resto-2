@@ -8,4 +8,8 @@
         <RootNamespace>Resto.Infrastructure</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\2-application\Application\Application.csproj" />
+    </ItemGroup>
+
 </Project>

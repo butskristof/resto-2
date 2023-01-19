@@ -16,14 +16,14 @@ public abstract class BaseEntity : IAuditableEntity
 
 	#region created
 
-	public string CreatedBy { get; set; }
+	// public string CreatedBy { get; set; }
 	public DateTime CreatedOn { get; set; }
 
 	#endregion
 
 	#region modified
 
-	public string LastModifiedBy { get; set; }
+	// public string LastModifiedBy { get; set; }
 	public DateTime? LastModifiedOn
 	{
 		get => _modifiedOn;

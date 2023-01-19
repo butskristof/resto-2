@@ -15,4 +15,13 @@
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\1-core\Common\Common.csproj" />
+      <ProjectReference Include="..\..\1-core\Domain\Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Common\Contracts\Requests" />
+    </ItemGroup>
+
 </Project>
