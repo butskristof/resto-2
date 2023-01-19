@@ -1,5 +1,3 @@
-using Resto.Domain.Common;
-
 namespace Resto.Domain.Entities.Products;
 
 // public class ProductTopping : BaseEntity

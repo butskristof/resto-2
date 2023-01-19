@@ -10,19 +10,19 @@ public static class DependencyInjectionExtensions
 {
 	public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
 	{
-		var connectionString =
-			configuration.GetConnectionString(ConfigurationConstants.AppDbContextConnectionStringKey);
+		var connectionString = configuration.GetConnectionString(ConfigurationConstants.ConnectionStringKey);
 
 		services
-			.AddDbContext<AppDbContext>(options => options
-				.UseSqlServer(connectionString, builder =>
-				{
-					builder.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
-					builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
-				}));
-		
-		services.AddScoped<IAppDbContext, AppDbContext>();
-		
+			.AddDbContext<AppDbContext>(builder => builder
+				.UseSqlServer(connectionString,
+					b =>
+					{
+						b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+						b.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
+					}));
+
+		services.AddDbContext<IAppDbContext, AppDbContext>();
+
 		return services;
 	}
 }

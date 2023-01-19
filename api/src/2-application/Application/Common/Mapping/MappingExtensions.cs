@@ -17,13 +17,20 @@ internal static class MappingExtensions
 	}
 
 	internal static IMappingExpression<TSource, TDestination> IgnoreAuditableEntityProperties<TSource, TDestination>(
-		this IMappingExpression<TSource, TDestination> expression)
+		this IMappingExpression<TSource, TDestination> expression, bool ignoreLastModifiedOn = true)
 		where TDestination : IAuditableEntity
 	{
-		return expression
+		expression
 			// .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
-			.ForMember(dest => dest.CreatedOn, opt => opt.Ignore())
+			.ForMember(dest => dest.CreatedOn, opt => opt.Ignore());
 			// .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
-			.ForMember(dest => dest.LastModifiedOn, opt => opt.Ignore());
+		
+		if (ignoreLastModifiedOn)
+		{
+			expression
+				.ForMember(e => e.LastModifiedOn, opt => opt.Ignore());
+		}
+
+		return expression;
 	}
 }

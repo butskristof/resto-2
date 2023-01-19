@@ -11,7 +11,7 @@ public static class DependencyInjectionExtensions
 	public static IServiceCollection AddApplication(this IServiceCollection services)
 	{
 		services.AddAutoMapper(Assembly.GetExecutingAssembly());
-		services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+		services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
 		
 		services.AddMediatR(Assembly.GetExecutingAssembly());
 		services.AddMediatrPipelineBehaviors();

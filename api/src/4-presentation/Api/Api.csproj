@@ -7,6 +7,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <AssemblyName>Resto.Api</AssemblyName>
         <RootNamespace>Resto.Api</RootNamespace>
+        <UserSecretsId>e11d7df0-6438-4615-b3d2-02ee4c3a8d67</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>

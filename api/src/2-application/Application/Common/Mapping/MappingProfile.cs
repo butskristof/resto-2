@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using Resto.Application.Modules.Categories;
+using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Common.Mapping;
 
@@ -32,6 +34,9 @@ internal class MappingProfile : Profile
 
 	private void CreateRequestMaps()
 	{
+		CreateMap<CreateCategory.Request, Category>()
+			.IgnoreBaseEntityProperties<CreateCategory.Request, Category, Guid>()
+			.IgnoreAuditableEntityProperties();
 	}
 
 	private void CreateEnumMaps()
