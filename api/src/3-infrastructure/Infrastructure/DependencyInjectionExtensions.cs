@@ -9,6 +9,7 @@ public static class DependencyInjectionExtensions
 	public static IServiceCollection AddInfrastructure(this IServiceCollection services)
 	{
 		services.AddTransient<IDateTime, DateTimeService>();
+		services.AddTransient<IGuid, GuidService>();
 
 		return services;
 	}

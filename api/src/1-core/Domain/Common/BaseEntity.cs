@@ -2,10 +2,13 @@ using Resto.Common.Exceptions;
 
 namespace Resto.Domain.Common;
 
-public abstract class BaseEntity : IAuditableEntity
+public abstract class BaseEntity<TId>
 {
-	public Guid Id { get; set; }
+	public TId Id { get; set; }
+}
 
+public abstract class AuditableBaseEntity<TId> : BaseEntity<TId>, IAuditableEntity
+{
 	#region auditing
 
 	#region private members

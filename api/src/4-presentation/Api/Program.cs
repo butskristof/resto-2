@@ -15,33 +15,31 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((ctx, config) =>
 {
 	config
+		.Enrich.FromLogContext()
 		.Enrich.WithExceptionDetails()
 		.ReadFrom.Configuration(ctx.Configuration);
 });
 
 builder.Services
+	.AddConfiguration(builder.Configuration)
 	.AddApplication()
 	.AddInfrastructure()
 	.AddPersistence(builder.Configuration)
-	.AddWebApi(builder.Configuration);
+	.AddWebApi();
 
 try
 {
 	var app = builder.Build();
 
-	app.UseCors(PolicyConstants.CorsClients);
+	app.UseCors(ApplicationConstants.CorsPolicy);
 
-	app.UseHealthChecks("/health");
 	app.UseRouting();
 
 	app.UseMiddleware<ExceptionHandlingMiddleware>();
-	app.UseSwagger();
-
-	app.UseEndpoints(endpoints =>
-	{
-		endpoints.MapControllers();
-		endpoints.MapHealthChecks("/health");
-	});
+	
+	app.MapHealthChecks("/health");
+	app.MapSwagger();
+	app.MapControllers();
 
 	using (var scope = app.Services.CreateScope())
 	{

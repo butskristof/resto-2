@@ -50,7 +50,6 @@ internal class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequ
 			logger.LogDebug("No validators have been found for request type {RequestName}", requestName);
 		}
 
-
 		return await next();
 	}
 }

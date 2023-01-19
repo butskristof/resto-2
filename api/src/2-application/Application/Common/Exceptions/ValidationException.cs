@@ -5,27 +5,28 @@ namespace Resto.Application.Common.Exceptions;
 
 public class ValidationException : Exception
 {
-    public ValidationException()
-        : base("One or more validation failures have occurred.")
-    {
-        Errors = new Dictionary<string, string[]>();
-    }
+	private const string DefaultMessage = "One or more validation failures have occurred.";
 
-    public ValidationException(IEnumerable<ValidationFailure> failures)
-        : this()
-    {
-        Errors = failures
-            .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
-            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
-    }
+	public ValidationException() : base(DefaultMessage)
+	{
+		Errors = new Dictionary<string, string[]>();
+	}
 
-    public ValidationException(string key, ErrorCode errorCode) : base()
-    {
-        Errors = new Dictionary<string, string[]>
-        {
-            {key, new[] {errorCode.ToString()}}
-        };
-    }
+	public ValidationException(IEnumerable<ValidationFailure> failures)
+		: this()
+	{
+		Errors = failures
+			.GroupBy(e => e.PropertyName, e => e.ErrorMessage)
+			.ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
+	}
 
-    public IDictionary<string, string[]> Errors { get; }
+	public ValidationException(string key, ErrorCode errorCode) : base(DefaultMessage)
+	{
+		Errors = new Dictionary<string, string[]>
+		{
+			{key, new[] {errorCode.ToString()}}
+		};
+	}
+
+	public IDictionary<string, string[]> Errors { get; }
 }

@@ -55,20 +55,20 @@ public class AppDbContext : DbContext, IAppDbContext
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 	{
+		base.ConfigureConventions(configurationBuilder);
+		
 		configurationBuilder
 			.Properties<string>()
-			.HaveMaxLength(DomainConstants.DefaultMaxStringLength);
+			.HaveMaxLength(ApplicationConstants.DefaultMaxStringLength);
 
 		configurationBuilder
 			.Properties<decimal>()
 			.HavePrecision(18, 6);
-
-		base.ConfigureConventions(configurationBuilder);
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		base.OnModelCreating(modelBuilder);
+		modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 	}
 }

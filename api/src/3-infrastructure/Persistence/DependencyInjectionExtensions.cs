@@ -20,6 +20,7 @@ public static class DependencyInjectionExtensions
 					builder.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
 					builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
 				}));
+		
 		services.AddScoped<IAppDbContext, AppDbContext>();
 		
 		return services;

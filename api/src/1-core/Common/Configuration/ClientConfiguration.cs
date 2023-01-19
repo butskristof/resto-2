@@ -3,12 +3,12 @@ namespace Resto.Common.Configuration;
 /// <summary>
 /// Client information to use in e.g. CORS policies
 /// </summary>
-public interface IClientOptions
+public interface IClientConfiguration
 {
 	string[] ClientUrls { get; }
 }
 
-public class ClientOptions : IClientOptions
+public class ClientConfiguration : IClientConfiguration
 {
 	public string[] ClientUrls { get; init; } = Array.Empty<string>();
 }
