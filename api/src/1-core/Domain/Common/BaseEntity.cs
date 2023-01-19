@@ -29,7 +29,8 @@ public abstract class BaseEntity : IAuditableEntity
 		get => _modifiedOn;
 		set
 		{
-			if (_modifiedOn.HasValue && value != _modifiedOn)
+			// if (_modifiedOn.HasValue && value != _modifiedOn)
+			if (value != _modifiedOn)
 				throw new DataChangedException();
 
 			_modifiedOn = value;
