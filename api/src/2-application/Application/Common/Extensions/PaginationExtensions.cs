@@ -8,12 +8,13 @@ namespace Resto.Application.Common.Extensions;
 internal static class PaginationExtensions
 {
 	public static async Task<PagedResponse<T>> GetPagedAsync<T>(this IQueryable<T> query,
-		int page, int pageSize) where T : class
+		int page, int pageSize, CancellationToken cancellationToken = default) 
+		where T : class
 	{
 		PagedResponse<T> result;
-		(result, query) = await GetPagedBaseAsync<T, T>(query, page, pageSize);
+		(result, query) = await GetPagedBaseAsync<T, T>(query, page, pageSize, cancellationToken);
 		result.Results = await query
-			.ToListAsync();
+			.ToListAsync(cancellationToken);
 
 		return result;
 	}
@@ -23,14 +24,15 @@ internal static class PaginationExtensions
 		IMapper mapper,
 		int page,
 		int pageSize,
-		object parameters = null) // for parameterization in projections (https://docs.automapper.org/en/latest/Queryable-Extensions.html#parameterization)
+		object parameters = null, // for parameterization in projections (https://docs.automapper.org/en/latest/Queryable-Extensions.html#parameterization)
+		CancellationToken cancellationToken = default)
 		where TDestination : class
 	{
 		PagedResponse<TDestination> result;
-		(result, query) = await GetPagedBaseAsync<TSource, TDestination>(query, page, pageSize);
+		(result, query) = await GetPagedBaseAsync<TSource, TDestination>(query, page, pageSize, cancellationToken);
 		result.Results = await query
 			.ProjectTo<TDestination>(mapper.ConfigurationProvider, parameters)
-			.ToListAsync();
+			.ToListAsync(cancellationToken);
 
 		return result;
 	}
@@ -39,7 +41,8 @@ internal static class PaginationExtensions
 		GetPagedBaseAsync<TSource, TDestination>(
 			this IQueryable<TSource> query,
 			int page,
-			int pageSize)
+			int pageSize,
+			CancellationToken cancellationToken = default)
 		where TDestination : class
 	{
 		if (page < 1) throw new ArgumentException("Page must be at least 1.");
@@ -49,7 +52,7 @@ internal static class PaginationExtensions
 		{
 			CurrentPage = page,
 			PageSize = pageSize,
-			RowCount = await query.CountAsync()
+			RowCount = await query.CountAsync(cancellationToken)
 		};
 
 		var pageCount = (double) result.RowCount / pageSize;

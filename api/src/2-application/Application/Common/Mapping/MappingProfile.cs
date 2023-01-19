@@ -37,6 +37,9 @@ internal class MappingProfile : Profile
 		CreateMap<CreateCategory.Request, Category>()
 			.IgnoreBaseEntityProperties<CreateCategory.Request, Category, Guid>()
 			.IgnoreAuditableEntityProperties();
+		CreateMap<UpdateCategory.Request, Category>()
+			.IgnoreBaseEntityProperties<UpdateCategory.Request, Category, Guid>()
+			.IgnoreAuditableEntityProperties(false);
 	}
 
 	private void CreateEnumMaps()
