@@ -68,6 +68,10 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
     if (item.count === 0) currentOrder.value.splice(index, 1);
   }
 
+  function reset() {
+    currentOrder.value = [];
+  }
+
   return {
     currentOrder,
     extendedCurrentOrder,
@@ -76,5 +80,6 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
     addToOrder,
     increment,
     decrement,
+    reset,
   };
 });

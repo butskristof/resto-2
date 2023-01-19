@@ -6,7 +6,10 @@
     <input type="number" v-model.number="cashReceived" />
   </label>
   <div>To return: {{ cashToReturn }}</div>
-  <div><button type="button">order</button></div>
+  <div>
+    <button type="button">order</button>
+    <button type="button" @click="reset">reset</button>
+  </div>
 </template>
 
 <script>
@@ -26,6 +29,13 @@ const cashReceived = ref(0);
 const cashToReturn = computed(
   () => cashReceived.value - currentOrderTotal.value,
 );
+
+function reset() {
+  resetOrder();
+  cashReceived.value = 0;
+}
+
+const { reset: resetOrder } = useCurrentOrderStore();
 </script>
 
 <style scoped></style>
