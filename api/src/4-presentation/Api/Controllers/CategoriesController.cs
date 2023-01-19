@@ -11,4 +11,11 @@ public class CategoriesController : ApiControllerBase
 	[HttpPost]
 	public async Task<ActionResult<CreateCategory.Response>> CreateCategory([FromBody] CreateCategory.Request request)
 		=> await Mediator.Send(request);
+
+	[HttpDelete("{CategoryId:guid}")]
+	public async Task<IActionResult> DeleteCategory([FromRoute] DeleteCategory.Request request)
+	{
+		await Mediator.Send(request);
+		return NoContent();
+	}
 }
