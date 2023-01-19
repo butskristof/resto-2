@@ -29,6 +29,11 @@ const router = createRouter({
           name: 'ManageToppings',
           component: () => import('@/pages/manage/ManageToppingsPage.vue'),
         },
+        {
+          path: 'categories',
+          name: 'ManageCategories',
+          component: () => import('@/pages/manage/ManageCategoriesPage.vue'),
+        },
       ],
     },
   ],
