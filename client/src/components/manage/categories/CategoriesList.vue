@@ -21,7 +21,8 @@ import CategoriesService from '@/services/resto-api/categories.service';
 
 const { isLoading, isError, data, error } = useQuery({
   queryKey: QUERY_KEYS.CATEGORIES,
-  queryFn: CategoriesService.get,
+  queryFn: () => CategoriesService.get(),
+  select: (r) => r.data,
 });
 </script>
 
