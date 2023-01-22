@@ -9,9 +9,12 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@tanstack/vue-query": "^4.22.0",
+    "axios": "^1.2.3",
     "pinia": "^2.0.28",
     "sass": "^1.57.1",
     "vue": "^3.2.45",
+    "vue-final-modal": "^3.4.11",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
