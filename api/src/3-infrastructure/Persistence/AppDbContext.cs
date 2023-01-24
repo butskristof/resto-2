@@ -24,6 +24,7 @@ public class AppDbContext : DbContext, IAppDbContext
 	#region entities
 
 	public DbSet<Category> Categories => Set<Category>();
+	public DbSet<Topping> Toppings => Set<Topping>();
 
 	#endregion
 
