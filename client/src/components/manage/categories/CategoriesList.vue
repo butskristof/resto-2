@@ -4,6 +4,7 @@
   <ul v-else>
     <li v-for="category in data.results" :key="category.id">
       {{ category.name }}
+      <button type="button" @click="$emit('edit', category)">edit</button>
     </li>
   </ul>
 </template>
@@ -11,6 +12,7 @@
 <script>
 export default {
   name: 'CategoriesList',
+  emits: ['edit'],
 };
 </script>
 

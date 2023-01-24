@@ -5,11 +5,11 @@
         <h3>Manage categories</h3>
       </div>
       <div class="right">
-        <button type="button" @click="show = true">Add</button>
+        <button type="button" @click="open(null)">Add</button>
       </div>
     </div>
-    <EditCategory :show="show" />
-    <CategoriesList />
+    <EditCategory v-if="show" :category="toEdit" @close="close" />
+    <CategoriesList @edit="open" />
   </div>
 </template>
 
@@ -22,8 +22,19 @@ export default {
   components: { EditCategory, CategoriesList },
   data() {
     return {
-      show: true,
+      show: false,
+      toEdit: null,
     };
+  },
+  methods: {
+    open(item) {
+      this.toEdit = item;
+      this.show = true;
+    },
+    close() {
+      this.toEdit = null;
+      this.show = false;
+    },
   },
 };
 </script>

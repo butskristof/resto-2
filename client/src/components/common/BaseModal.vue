@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <div class="modal-mask" v-if="show">
+    <div class="modal-mask">
       <div class="modal-container">
         <div class="modal-header">
           <slot name="header"></slot>
