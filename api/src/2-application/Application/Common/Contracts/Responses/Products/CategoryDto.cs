@@ -6,6 +6,7 @@ namespace Resto.Application.Common.Contracts.Responses.Products;
 public abstract class CategoryDtoBase
 {
 	public string Name { get; set; }
+	public string Color { get; set; }
 }
 
 public class MinimalCategoryDto : CategoryDtoBase, IMapFrom<Category>

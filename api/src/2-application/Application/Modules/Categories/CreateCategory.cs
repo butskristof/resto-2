@@ -1,13 +1,12 @@
 using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
+using Resto.Common.Extensions;
 using Resto.Domain.Entities.Products;
-using ValidationException = Resto.Application.Common.Exceptions.ValidationException;
 
 namespace Resto.Application.Modules.Categories;
 
@@ -16,6 +15,7 @@ public static class CreateCategory
 	public class Request : IRequest<Response>
 	{
 		public string Name { get; set; }
+		public string Color { get; set; }
 	}
 
 	public record Response(Guid Id);
@@ -26,9 +26,19 @@ public static class CreateCategory
 		public Validator(IAppDbContext context)
 		{
 			RuleFor(e => e.Name)
+				.Cascade(CascadeMode.Stop)
 				.NotEmpty()
 				.WithErrorCode(ErrorCode.Required)
 				.MustAsync((name, ct) => context.CategoryNameIsUniqueAsync(name, null, ct))
+				.WithErrorCode(ErrorCode.NotUnique);
+			
+			RuleFor(e => e.Color)
+				.Cascade(CascadeMode.Stop)
+				.NotEmpty()
+				.WithErrorCode(ErrorCode.Required)
+				.HexColor()
+				.WithErrorCode(ErrorCode.Invalid)
+				.MustAsync((name, ct) => context.CategoryColorIsUniqueAsync(name, null, ct))
 				.WithErrorCode(ErrorCode.NotUnique);
 		}
 	}

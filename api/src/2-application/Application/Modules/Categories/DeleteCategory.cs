@@ -1,6 +1,5 @@
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Persistence;
@@ -21,6 +20,7 @@ public static class DeleteCategory
 		public Validator(IAppDbContext context)
 		{
 			RuleFor(r => r.CategoryId)
+				.Cascade(CascadeMode.Stop)
 				.NotEmpty().WithErrorCode(ErrorCode.Required)
 				.MustAsync(context.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 		}

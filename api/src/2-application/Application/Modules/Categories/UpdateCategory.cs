@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
+using Resto.Common.Extensions;
 
 namespace Resto.Application.Modules.Categories;
 
@@ -23,11 +24,24 @@ public static class UpdateCategory
 		public Validator(IAppDbContext context)
 		{
 			RuleFor(r => r.Id)
+				.Cascade(CascadeMode.Stop)
 				.NotEmpty().WithErrorCode(ErrorCode.Required)
 				.MustAsync(context.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
+			
 			RuleFor(e => e.Name)
-				.NotEmpty().WithErrorCode(ErrorCode.Required)
-				.MustAsync((request, name, ct) => context.CategoryNameIsUniqueAsync(name, request.Id, ct))
+				.Cascade(CascadeMode.Stop)
+				.NotEmpty()
+				.WithErrorCode(ErrorCode.Required)
+				.MustAsync((name, ct) => context.CategoryNameIsUniqueAsync(name, null, ct))
+				.WithErrorCode(ErrorCode.NotUnique);
+			
+			RuleFor(e => e.Name)
+				.Cascade(CascadeMode.Stop)
+				.NotEmpty()
+				.WithErrorCode(ErrorCode.Required)
+				.HexColor()
+				.WithErrorCode(ErrorCode.Invalid)
+				.MustAsync((request, name, ct) => context.CategoryColorIsUniqueAsync(name, request.Id, ct))
 				.WithErrorCode(ErrorCode.NotUnique);
 		}
 	}

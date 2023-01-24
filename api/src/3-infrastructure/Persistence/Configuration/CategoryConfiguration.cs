@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Resto.Common.Constants;
 using Resto.Domain.Entities.Products;
 
 namespace Resto.Persistence.Configuration;
@@ -17,6 +18,14 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
 			.IsRequired();
 		builder
 			.HasIndex(c => c.Name)
+			.IsUnique();
+
+		builder
+			.Property(c => c.Color)
+			.IsRequired()
+			.HasMaxLength(DomainConstants.HexColorStringLength);
+		builder
+			.HasIndex(c => c.Color)
 			.IsUnique();
 	}
 }

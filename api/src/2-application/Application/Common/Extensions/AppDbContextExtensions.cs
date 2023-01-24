@@ -26,6 +26,13 @@ internal static class AppDbContextExtensions
 				.Categories
 				.AsNoTracking()
 				.AnyAsync(c => c.Id == id, cancellationToken);
+	
+	internal static Task<bool> CategoryColorIsUniqueAsync(this IAppDbContext context, string color,
+		Guid? categoryId = null, CancellationToken cancellationToken = default)
+			=> context
+				.Categories
+				.AsNoTracking()
+				.AllAsync(c => c.Id == categoryId || c.Color != color, cancellationToken);
 
 	#endregion
 }
