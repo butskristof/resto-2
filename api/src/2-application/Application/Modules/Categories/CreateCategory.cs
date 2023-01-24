@@ -23,12 +23,13 @@ public static class CreateCategory
 	// validator
 	internal class Validator : AbstractValidator<Request>
 	{
-		// name: required & unique (w/ lowercase)
-		public Validator()
+		public Validator(IAppDbContext context)
 		{
 			RuleFor(e => e.Name)
-				.NotEmpty().WithErrorCode(ErrorCode.Required);
-			// TODO unique
+				.NotEmpty()
+				.WithErrorCode(ErrorCode.Required)
+				.MustAsync((name, ct) => context.CategoryNameIsUniqueAsync(name, null, ct))
+				.WithErrorCode(ErrorCode.NotUnique);
 		}
 	}
 
@@ -52,23 +53,13 @@ public static class CreateCategory
 		public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Adding new category");
-			
-			var categoryExists = await _dbContext
-				.Categories
-				.AsNoTracking()
-				.AnyAsync(c => c.Name == request.Name, cancellationToken);
-			// TODO compare case insensitive
-			
-			if (categoryExists)
-			{
-				_logger.LogDebug("Brand {Name} already exists in database", request.Name);
-				throw new ValidationException(nameof(Category.Name), ErrorCode.NotUnique);
-			}
 
 			var category = _mapper.Map<Category>(request);
+			_logger.LogDebug("Mapped request to entity type");
 			
 			_dbContext.Categories.Add(category);
 			await _dbContext.SaveChangesAsync();
+			_logger.LogDebug("Persisted new category to database");
 
 			return new Response(category.Id);
 		}

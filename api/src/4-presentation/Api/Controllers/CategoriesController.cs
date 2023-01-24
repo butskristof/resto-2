@@ -19,7 +19,7 @@ public class CategoriesController : ApiControllerBase
 		=> await Mediator.Send(request);
 
 	[HttpGet("{CategoryId:guid}")]
-	public async Task<ActionResult<FullCategoryDto>> GetCategory([FromRoute] GetCategory.Request request)
+	public async Task<ActionResult<CategoryDto>> GetCategory([FromRoute] GetCategory.Request request)
 		=> await Mediator.Send(request);
 
 	[HttpPut("{CategoryId:guid}")]

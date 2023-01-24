@@ -8,11 +8,11 @@ public abstract class CategoryDtoBase
 	public string Name { get; set; }
 }
 
-public class CategoryDto : CategoryDtoBase, IMapFrom<Category>
+public class MinimalCategoryDto : CategoryDtoBase, IMapFrom<Category>
 {
 }
 
-public class FullCategoryDto : CategoryDtoBase, IMapFrom<Category>
+public class CategoryDto : CategoryDtoBase, IMapFrom<Category>
 {
 	public Guid Id { get; set; }
 	public DateTime? LastModifiedOn { get; set; }

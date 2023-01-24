@@ -20,15 +20,15 @@ public static class UpdateCategory
 
 	internal class Validator : AbstractValidator<Request>
 	{
-		// name: required & unique (w/ lowercase)
-		public Validator()
+		public Validator(IAppDbContext context)
 		{
 			RuleFor(r => r.Id)
-				.NotEmpty().WithErrorCode(ErrorCode.Required);
-			// TODO exists
+				.NotEmpty().WithErrorCode(ErrorCode.Required)
+				.MustAsync(context.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 			RuleFor(e => e.Name)
-				.NotEmpty().WithErrorCode(ErrorCode.Required);
-			// TODO unique
+				.NotEmpty().WithErrorCode(ErrorCode.Required)
+				.MustAsync((request, name, ct) => context.CategoryNameIsUniqueAsync(name, request.Id, ct))
+				.WithErrorCode(ErrorCode.NotUnique);
 		}
 	}
 
@@ -53,15 +53,15 @@ public static class UpdateCategory
 		{
 			_logger.LogDebug("Updating category with id {CategoryId}", request.Id);
 			
-			_logger.LogDebug("Fetching category to update");
 			var category = await _dbContext
 				.Categories
 				.SingleAsync(c => c.Id == request.Id, cancellationToken);
+			_logger.LogDebug("Fetched category to update from database");
 
-			_logger.LogDebug("Mapping request to entity and saving changes to database");
 			_mapper.Map(request, category);
+			_logger.LogDebug("Mapped update request to entity");
 			await _dbContext.SaveChangesAsync();
-			_logger.LogDebug("Saved changes to database");
+			_logger.LogDebug("Persisted changes to database");
 
 			return Unit.Value;
 		}

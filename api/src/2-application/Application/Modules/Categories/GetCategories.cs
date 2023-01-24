@@ -19,15 +19,13 @@ public static class GetCategories
 	{
 	}
 
-	public class Response : PagedResponse<FullCategoryDto>, IMapFrom<PagedResponse<FullCategoryDto>>
+	public class Response : PagedResponse<CategoryDto>, IMapFrom<PagedResponse<CategoryDto>>
 	{
 	}
 
-	internal class Validator : AbstractValidator<Request>
+	internal class Validator : PagedRequestValidator<Request>
 	{
-		public Validator()
-		{
-		}
+		public Validator() {}
 	}
 
 	internal class Handler : IRequestHandler<Request, Response>
@@ -49,19 +47,21 @@ public static class GetCategories
 
 		public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
 		{
-			_logger.LogDebug("Getting categories");
-
+			_logger.LogDebug("Get categories: page {Page} w/ page size {PageSize}", 
+				request.Page, request.PageSize);
+			
 			var categoriesQuery = _dbContext
 				.Categories
 				.AsNoTracking()
 				.OrderBy(c => c.Name)
 				.AsQueryable();
 
-			var categories = await categoriesQuery
-				.GetPagedAsync<Category, FullCategoryDto>(_mapper, request.Page, request.PageSize,
+			var result = await categoriesQuery
+				.GetPagedAsync<Category, CategoryDto>(_mapper, request.Page, request.PageSize,
 					cancellationToken: cancellationToken);
+			_logger.LogDebug("Fetched mapped categories from database");
 
-			return _mapper.Map<Response>(categories);
+			return _mapper.Map<Response>(result);
 		}
 	}
 }

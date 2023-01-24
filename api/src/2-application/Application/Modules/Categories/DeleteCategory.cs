@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
+using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Categories;
 
@@ -17,11 +18,11 @@ public static class DeleteCategory
 
 	internal class Validator : AbstractValidator<Request>
 	{
-		public Validator()
+		public Validator(IAppDbContext context)
 		{
 			RuleFor(r => r.CategoryId)
-				.NotEmpty().WithErrorCode(ErrorCode.Required);
-			// TODO existing category id
+				.NotEmpty().WithErrorCode(ErrorCode.Required)
+				.MustAsync(context.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 		}
 	}
 
@@ -43,17 +44,14 @@ public static class DeleteCategory
 		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Deleting category with id {CategoryId}", request.CategoryId);
-			
-			_logger.LogDebug("Fetching category to delete");
-			var category = await _dbContext
-				.Categories
-				.SingleAsync(c => c.Id == request.CategoryId, cancellationToken);
-			// TODO cascade/restrict?
-			
-			_logger.LogDebug("Deleting category from database and saving changes");
+
+			// eliminate fetching the entity to delete from the database first by creating a POCO with just the id
+			var category = new Category {Id = request.CategoryId};
+			// and instruct the db context to remove that entity
 			_dbContext.Categories.Remove(category);
+			// the resulting query will remove the row by id
 			await _dbContext.SaveChangesAsync();
-			_logger.LogDebug("Saved changes to database");
+			_logger.LogDebug("Removed category from database");
 
 			return Unit.Value;
 		}

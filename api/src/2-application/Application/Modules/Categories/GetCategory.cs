@@ -14,7 +14,7 @@ namespace Resto.Application.Modules.Categories;
 
 public static class GetCategory
 {
-	public class Request : IRequest<FullCategoryDto>
+	public class Request : IRequest<CategoryDto>
 	{
 		public Guid CategoryId { get; set; }
 	}
@@ -25,11 +25,10 @@ public static class GetCategory
 		{
 			RuleFor(r => r.CategoryId)
 				.NotEmpty().WithErrorCode(ErrorCode.Required);
-			// TODO exists
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request, FullCategoryDto>
+	internal class Handler : IRequestHandler<Request, CategoryDto>
 	{
 		#region construction
 
@@ -46,16 +45,19 @@ public static class GetCategory
 
 		#endregion
 
-		public async Task<FullCategoryDto> Handle(Request request, CancellationToken cancellationToken)
+		public async Task<CategoryDto> Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Getting category with ID {CategoryId}", request.CategoryId);
 
-			return await _dbContext
+			var category = await _dbContext
 				.Categories
 				.AsNoTracking()
-				.ProjectTo<FullCategoryDto>(_mapper.ConfigurationProvider)
+				.ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
 				.SingleOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken)
 				?? throw new NotFoundException($"Could not find category with id {request.CategoryId}");
+			_logger.LogDebug("Fetched mapped category from database");
+			
+			return category;
 		}
 	}
 }
