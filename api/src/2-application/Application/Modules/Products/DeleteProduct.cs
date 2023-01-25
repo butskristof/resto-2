@@ -6,24 +6,23 @@ using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Domain.Entities.Products;
 
-namespace Resto.Application.Modules.Categories;
+namespace Resto.Application.Modules.Products;
 
-public static class DeleteCategory
+public static class DeleteProduct
 {
 	public class Request : IRequest
 	{
-		public Guid CategoryId { get; set; }
+		public Guid ProductId { get; set; }
 	}
 
 	internal class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext dbContext)
 		{
-			RuleFor(r => r.CategoryId)
+			RuleFor(r => r.ProductId)
 				.Cascade(CascadeMode.Stop)
 				.NotEmpty().WithErrorCode(ErrorCode.Required)
-				.MustAsync(dbContext.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
-			// TODO prevent if still assigned to product
+				.MustAsync(dbContext.ProductExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 		}
 	}
 
@@ -44,16 +43,13 @@ public static class DeleteCategory
 
 		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
 		{
-			_logger.LogDebug("Deleting category with id {CategoryId}", request.CategoryId);
+			_logger.LogDebug("Deleting product with id {ProductId}", request.ProductId);
 
-			// eliminate fetching the entity to delete from the database first by creating a POCO with just the id
-			var category = new Category {Id = request.CategoryId};
-			// and instruct the db context to remove that entity
-			_dbContext.Categories.Remove(category);
-			// the resulting query will remove the row by id
+			var product = new Product {Id = request.ProductId};
+			_dbContext.Products.Remove(product);
 			await _dbContext.SaveChangesAsync();
-			_logger.LogDebug("Removed category from database");
-
+			_logger.LogDebug("Removed product from database");
+			
 			return Unit.Value;
 		}
 	}

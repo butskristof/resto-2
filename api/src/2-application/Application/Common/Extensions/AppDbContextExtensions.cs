@@ -57,4 +57,22 @@ internal static class AppDbContextExtensions
 			.AllAsync(t => t.Id == toppingId || t.Name != name, cancellationToken);
 
 	#endregion
+
+	#region Products
+
+	internal static Task<bool> ProductExistsByIdAsync(this IAppDbContext context, Guid id,
+		CancellationToken cancellationToken = default)
+		=> context
+			.Products
+			.AsNoTracking()
+			.AnyAsync(p => p.Id == id, cancellationToken);
+
+	internal static Task<bool> ProductNameIsUniqueAsync(this IAppDbContext context, string name,
+		Guid? productId = null, CancellationToken cancellationToken = default)
+		=> context
+			.Products
+			.AsNoTracking()
+			.AllAsync(p => p.Id == productId || p.Name != name, cancellationToken);
+
+	#endregion
 }

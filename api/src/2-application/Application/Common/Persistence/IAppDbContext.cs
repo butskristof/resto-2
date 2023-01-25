@@ -5,9 +5,9 @@ namespace Resto.Application.Common.Persistence;
 
 public interface IAppDbContext
 {
-	// DbSet<Product> Products { get; }
 	DbSet<Category> Categories { get; }
 	DbSet<Topping> Toppings { get; }
+	DbSet<Product> Products { get; }
 
 	Task<int> SaveChangesAsync();
 }
