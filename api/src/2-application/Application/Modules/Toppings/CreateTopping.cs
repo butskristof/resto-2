@@ -5,22 +5,20 @@ using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
-using Resto.Common.Extensions;
 using Resto.Domain.Entities.Products;
 
-namespace Resto.Application.Modules.Categories;
+namespace Resto.Application.Modules.Toppings;
 
-public static class CreateCategory
+public static class CreateTopping
 {
 	public class Request : IRequest<Response>
 	{
 		public string Name { get; set; }
-		public string Color { get; set; }
+		public decimal Price { get; set; }
 	}
 
 	public record Response(Guid Id);
-	
-	// validator
+
 	internal class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext dbContext)
@@ -29,17 +27,13 @@ public static class CreateCategory
 				.Cascade(CascadeMode.Stop)
 				.NotEmpty()
 				.WithErrorCode(ErrorCode.Required)
-				.MustAsync((name, ct) => dbContext.CategoryNameIsUniqueAsync(name, null, ct))
+				.MustAsync((name, ct) => dbContext.ToppingNameIsUniqueAsync(name, null, ct))
 				.WithErrorCode(ErrorCode.NotUnique);
-			
-			RuleFor(r => r.Color)
+
+			RuleFor(r => r.Price)
 				.Cascade(CascadeMode.Stop)
-				.NotEmpty()
-				.WithErrorCode(ErrorCode.Required)
-				.HexColor()
-				.WithErrorCode(ErrorCode.Invalid)
-				.MustAsync((name, ct) => dbContext.CategoryColorIsUniqueAsync(name, null, ct))
-				.WithErrorCode(ErrorCode.NotUnique);
+				.GreaterThanOrEqualTo(0)
+				.WithErrorCode(ErrorCode.Invalid);
 		}
 	}
 
@@ -62,16 +56,16 @@ public static class CreateCategory
 
 		public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
 		{
-			_logger.LogDebug("Adding new category");
+			_logger.LogDebug("Adding new topping");
 
-			var category = _mapper.Map<Category>(request);
+			var topping = _mapper.Map<Topping>(request);
 			_logger.LogDebug("Mapped request to entity type");
-			
-			_dbContext.Categories.Add(category);
-			await _dbContext.SaveChangesAsync();
-			_logger.LogDebug("Persisted new category to database");
 
-			return new Response(category.Id);
+			_dbContext.Toppings.Add(topping);
+			await _dbContext.SaveChangesAsync();
+			_logger.LogDebug("Persisted new topping to database");
+
+			return new Response(topping.Id);
 		}
 	}
 }

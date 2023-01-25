@@ -6,23 +6,23 @@ using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Domain.Entities.Products;
 
-namespace Resto.Application.Modules.Categories;
+namespace Resto.Application.Modules.Toppings;
 
-public static class DeleteCategory
+public static class DeleteTopping
 {
 	public class Request : IRequest
 	{
-		public Guid CategoryId { get; set; }
+		public Guid ToppingId { get; set; }
 	}
 
 	internal class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext dbContext)
 		{
-			RuleFor(r => r.CategoryId)
+			RuleFor(r => r.ToppingId)
 				.Cascade(CascadeMode.Stop)
 				.NotEmpty().WithErrorCode(ErrorCode.Required)
-				.MustAsync(dbContext.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
+				.MustAsync(dbContext.ToppingExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 		}
 	}
 
@@ -43,15 +43,12 @@ public static class DeleteCategory
 
 		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
 		{
-			_logger.LogDebug("Deleting category with id {CategoryId}", request.CategoryId);
+			_logger.LogDebug("Deleting topping with id {ToppingId}", request.ToppingId);
 
-			// eliminate fetching the entity to delete from the database first by creating a POCO with just the id
-			var category = new Category {Id = request.CategoryId};
-			// and instruct the db context to remove that entity
-			_dbContext.Categories.Remove(category);
-			// the resulting query will remove the row by id
+			var topping = new Topping {Id = request.ToppingId};
+			_dbContext.Toppings.Remove(topping);
 			await _dbContext.SaveChangesAsync();
-			_logger.LogDebug("Removed category from database");
+			_logger.LogDebug("Removed topping from database");
 
 			return Unit.Value;
 		}

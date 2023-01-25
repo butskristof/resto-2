@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using Resto.Application.Modules.Categories;
+using Resto.Application.Modules.Toppings;
 using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Common.Mapping;
@@ -40,6 +41,10 @@ internal class MappingProfile : Profile
 		CreateMap<UpdateCategory.Request, Category>()
 			.IgnoreBaseEntityProperties<UpdateCategory.Request, Category, Guid>()
 			.IgnoreAuditableEntityProperties(false);
+		
+		CreateMap<CreateTopping.Request, Topping>()
+			.IgnoreBaseEntityProperties<CreateTopping.Request, Topping, Guid>()
+			.IgnoreAuditableEntityProperties();
 	}
 
 	private void CreateEnumMaps()

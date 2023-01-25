@@ -22,7 +22,6 @@
 
     <ItemGroup>
       <Folder Include="Common\Contracts\Requests" />
-      <Folder Include="Modules\Toppings" />
     </ItemGroup>
 
 </Project>

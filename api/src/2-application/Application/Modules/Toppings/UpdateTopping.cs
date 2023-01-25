@@ -7,42 +7,37 @@ using Resto.Application.Common.Contracts.Requests.Common;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
-using Resto.Common.Extensions;
 
-namespace Resto.Application.Modules.Categories;
+namespace Resto.Application.Modules.Toppings;
 
-public static class UpdateCategory
+public static class UpdateTopping
 {
 	public class Request : UpdateRequest<Guid>, IRequest
 	{
 		public string Name { get; set; }
-		public string Color { get; set; }
+		public decimal Price { get; set; }
 	}
 
 	internal class Validator : AbstractValidator<Request>
 	{
-		public Validator(IAppDbContext context)
+		public Validator(IAppDbContext dbContext)
 		{
 			RuleFor(r => r.Id)
 				.Cascade(CascadeMode.Stop)
 				.NotEmpty().WithErrorCode(ErrorCode.Required)
-				.MustAsync(context.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
+				.MustAsync(dbContext.ToppingExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 			
 			RuleFor(r => r.Name)
 				.Cascade(CascadeMode.Stop)
 				.NotEmpty()
 				.WithErrorCode(ErrorCode.Required)
-				.MustAsync((request, name, ct) => context.CategoryNameIsUniqueAsync(name, request.Id, ct))
+				.MustAsync((request, name, ct) => dbContext.ToppingNameIsUniqueAsync(name, request.Id, ct))
 				.WithErrorCode(ErrorCode.NotUnique);
-			
-			RuleFor(r => r.Color)
+
+			RuleFor(r => r.Price)
 				.Cascade(CascadeMode.Stop)
-				.NotEmpty()
-				.WithErrorCode(ErrorCode.Required)
-				.HexColor()
-				.WithErrorCode(ErrorCode.Invalid)
-				.MustAsync((request, color, ct) => context.CategoryColorIsUniqueAsync(color, request.Id, ct))
-				.WithErrorCode(ErrorCode.NotUnique);
+				.GreaterThanOrEqualTo(0)
+				.WithErrorCode(ErrorCode.Invalid);
 		}
 	}
 
@@ -65,14 +60,14 @@ public static class UpdateCategory
 
 		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
 		{
-			_logger.LogDebug("Updating category with id {CategoryId}", request.Id);
-			
-			var category = await _dbContext
-				.Categories
-				.SingleAsync(c => c.Id == request.Id, cancellationToken);
-			_logger.LogDebug("Fetched category to update from database");
+			_logger.LogDebug("Updating topping with id {ToppingId}", request.Id);
 
-			_mapper.Map(request, category);
+			var topping = await _dbContext
+				.Toppings
+				.SingleAsync(t => t.Id == request.Id, cancellationToken);
+			_logger.LogDebug("Fetched topping to update from database");
+
+			_mapper.Map(request, topping);
 			_logger.LogDebug("Mapped update request to entity");
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted changes to database");
