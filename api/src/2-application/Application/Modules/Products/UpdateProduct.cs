@@ -7,6 +7,8 @@ using Resto.Application.Common.Contracts.Requests.Common;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
+using Resto.Common.Extensions;
+using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Products;
 
@@ -19,6 +21,7 @@ public static class UpdateProduct
 		public bool MultipleToppingsAllowed { get; set; }
 
 		public Guid CategoryId { get; set; }
+		public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
 	}
 
 	internal class Validator : AbstractValidator<Request>
@@ -45,6 +48,10 @@ public static class UpdateProduct
 				.NotEmpty()
 				.WithErrorCode(ErrorCode.Required)
 				.MustAsync(dbContext.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
+
+			RuleForEach(r => r.ToppingIds)
+				.NotEmpty().WithErrorCode(ErrorCode.Invalid)
+				.MustAsync(dbContext.ToppingExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 		}
 	}
 
@@ -71,11 +78,28 @@ public static class UpdateProduct
 
 			var product = await _dbContext
 				.Products
+				// include many-to-many table, otherwise updates to existing relations will be duplicated
+				.Include(p => p.Toppings)
 				.SingleAsync(p => p.Id == request.Id, cancellationToken);
 			_logger.LogDebug("Fetched product to update from database");
 
 			_mapper.Map(request, product);
 			_logger.LogDebug("Mapped update request to entity");
+
+			// filter ProductTopping objects that are not present in the request
+			var toppingsToDelete = product.Toppings
+				.Where(pt => request.ToppingIds.All(tid => pt.ToppingId != tid))
+				.ToList();
+			toppingsToDelete.ForEach(pt => product.Toppings.Remove(pt));
+			// map ID's in request that don't exist as ProductTopping to new relations 
+			// and add to list
+			var newToppings = request.ToppingIds
+				.Where(tid => product.Toppings.All(pt => pt.ToppingId != tid))
+				.Select(tid => new ProductTopping {ToppingId = tid})
+				.ToList();
+			newToppings.ForEach(pt => product.Toppings.Add(pt));
+			_logger.LogDebug("Updated related toppings");
+			
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted changes to database");
 

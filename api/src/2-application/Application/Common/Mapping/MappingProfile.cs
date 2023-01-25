@@ -52,7 +52,9 @@ internal class MappingProfile : Profile
 		
 		CreateMap<CreateProduct.Request, Product>()
 			.IgnoreBaseEntityProperties<CreateProduct.Request, Product, Guid>()
-			.IgnoreAuditableEntityProperties();
+			.IgnoreAuditableEntityProperties()
+			.ForMember(p => p.Toppings, opt => opt
+				.MapFrom(r => r.ToppingIds.Select(tid => new ProductTopping { ToppingId = tid })));
 		CreateMap<UpdateProduct.Request, Product>()
 			.IgnoreBaseEntityProperties<UpdateProduct.Request, Product, Guid>()
 			.IgnoreAuditableEntityProperties(false);

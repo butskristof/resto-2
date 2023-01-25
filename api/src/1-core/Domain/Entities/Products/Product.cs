@@ -11,5 +11,5 @@ public class Product : AuditableBaseEntity<Guid>
 	public Guid CategoryId { get; set; }
 	public Category Category { get; set; }
 	
-	// public ICollection<ProductTopping> Toppings { get; set; }
+	public ICollection<ProductTopping> Toppings { get; set; }
 }

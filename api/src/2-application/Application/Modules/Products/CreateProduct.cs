@@ -18,6 +18,7 @@ public static class CreateProduct
 		public bool MultipleToppingsAllowed { get; set; }
 
 		public Guid CategoryId { get; set; }
+		public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
 	}
 
 	public record Response(Guid id);
@@ -42,6 +43,9 @@ public static class CreateProduct
 				.NotEmpty()
 				.WithErrorCode(ErrorCode.Required)
 				.MustAsync(dbContext.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
+			RuleForEach(r => r.ToppingIds)
+				.NotEmpty().WithErrorCode(ErrorCode.Invalid)
+				.MustAsync(dbContext.ToppingExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 		}
 	}
 
