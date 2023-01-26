@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\2-application\Application\Application.csproj" />
+      <ProjectReference Include="..\Integrations\TicketPrinting\TicketPrinting.csproj" />
     </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Services;
 using Resto.Domain.Entities.Orders;
+using Resto.Domain.Events;
 
 namespace Resto.Application.Modules.Orders;
 
@@ -82,6 +83,7 @@ public static class CreateOrder
 
 			var order = _mapper.Map<Order>(request);
 			order.Timestamp = _dateTime.Now;
+			order.AddDomainEvent(new OrderCreatedEvent(order));
 			_logger.LogDebug("Mapped request to entity type");
 
 			_dbContext.Orders.Add(order);

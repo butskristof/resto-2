@@ -1,4 +1,5 @@
 using System.Reflection;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Constants;
@@ -6,6 +7,7 @@ using Resto.Common.Services;
 using Resto.Domain.Common;
 using Resto.Domain.Entities.Orders;
 using Resto.Domain.Entities.Products;
+using Resto.Persistence.Common;
 
 namespace Resto.Persistence;
 
@@ -14,10 +16,12 @@ public class AppDbContext : DbContext, IAppDbContext
 	#region construction
 
 	private readonly IDateTime _dateTime;
+	private readonly IMediator _mediator;
 
-	public AppDbContext(DbContextOptions options, IDateTime dateTime) : base(options)
+	public AppDbContext(DbContextOptions options, IDateTime dateTime, IMediator mediator) : base(options)
 	{
 		_dateTime = dateTime;
+		_mediator = mediator;
 	}
 
 	#endregion
@@ -31,7 +35,7 @@ public class AppDbContext : DbContext, IAppDbContext
 
 	#endregion
 
-	public Task<int> SaveChangesAsync()
+	public async Task<int> SaveChangesAsync()
 	{
 		// change tracker
 		foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
@@ -54,7 +58,8 @@ public class AppDbContext : DbContext, IAppDbContext
 			}
 		}
 
-		return base.SaveChangesAsync();
+		await _mediator.DispatchDomainEvents(this);
+		return await base.SaveChangesAsync();
 	}
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
