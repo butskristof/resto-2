@@ -4,6 +4,7 @@ using Resto.Application.Common.Persistence;
 using Resto.Common.Constants;
 using Resto.Common.Services;
 using Resto.Domain.Common;
+using Resto.Domain.Entities.Orders;
 using Resto.Domain.Entities.Products;
 
 namespace Resto.Persistence;
@@ -26,6 +27,7 @@ public class AppDbContext : DbContext, IAppDbContext
 	public DbSet<Category> Categories => Set<Category>();
 	public DbSet<Topping> Toppings => Set<Topping>();
 	public DbSet<Product> Products => Set<Product>();
+	public DbSet<Order> Orders => Set<Order>();
 
 	#endregion
 

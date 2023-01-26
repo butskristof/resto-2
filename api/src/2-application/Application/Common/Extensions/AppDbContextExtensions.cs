@@ -74,5 +74,12 @@ internal static class AppDbContextExtensions
 			.AsNoTracking()
 			.AllAsync(p => p.Id == productId || p.Name != name, cancellationToken);
 
+	internal static Task<bool> ProductDoesNotAllowMultipleToppingsAsync(this IAppDbContext dbContext, Guid productId,
+		CancellationToken cancellationToken = default)
+		=> dbContext
+			.Products
+			.AsNoTracking()
+			.AnyAsync(p => p.Id == productId && p.MultipleToppingsAllowed == false, cancellationToken);
+
 	#endregion
 }
