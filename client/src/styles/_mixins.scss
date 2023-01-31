@@ -11,3 +11,39 @@
   @include brand-font;
   color: $styled-h2-color;
 }
+
+@mixin form-input {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid black;
+
+  label {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .label {
+      margin-top: 0.25rem;
+    }
+
+    .input-errors {
+      flex-basis: 60%;
+      align-self: flex-start;
+
+      input {
+        width: 100%;
+
+        &.invalid {
+          border-color: red;
+        }
+      }
+
+      .errors {
+        color: red;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}
