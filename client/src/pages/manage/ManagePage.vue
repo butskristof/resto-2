@@ -1,13 +1,8 @@
 <template>
-  <div class="header">
-    <div class="left">
-      <h2>Manage</h2>
-    </div>
-    <div class="right">
-      <router-link :to="{ name: 'ManageProducts' }">Products</router-link>
-      <router-link :to="{ name: 'ManageToppings' }">Toppings</router-link>
-      <router-link :to="{ name: 'ManageCategories' }">Categories</router-link>
-    </div>
+  <div class="tabs">
+    <router-link :to="{ name: 'ManageProducts' }">Products</router-link>
+    <router-link :to="{ name: 'ManageToppings' }">Toppings</router-link>
+    <router-link :to="{ name: 'ManageCategories' }">Categories</router-link>
   </div>
   <RouterView />
 </template>
@@ -22,15 +17,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
+@import '@/styles/_variables.scss';
+@import '@/styles/_mixins.scss';
 
-.right * {
-  &:not(:last-of-type) {
-    margin-right: 1rem;
+.tabs {
+  a {
+    padding: $button-padding;
+
+    &.router-link-active {
+      font-weight: bold;
+    }
   }
 }
 </style>

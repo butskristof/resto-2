@@ -7,11 +7,15 @@ $form-outline-color: $klj-blue;
 $white: #fff;
 $black: #000;
 
-$body-text-color: $black;
+$body-text-color: #373D3F;
 $meta-text-color: $white;
 
 $min-body-width: 680px;
 $max-body-width: 960px;
 
 $box-border-radius: 0.5rem;
+$box-border-width: 1px;
+$box-border: $box-border-width solid $body-text-color;
+
 $button-border-radius: 0.25rem;
+$button-padding: 0.25rem;

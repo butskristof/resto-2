@@ -5,21 +5,21 @@
         <h3>Manage categories</h3>
       </div>
       <div class="right">
-        <button type="button" @click="open(null)">Add</button>
+        <button type="button" @click="open(null)">Categorie toevoegen</button>
       </div>
     </div>
-    <EditCategory v-if="show" :category="toEdit" @close="close" />
+    <EditCategoryModal v-if="show" @close="close" />
     <CategoriesList @edit="open" />
   </div>
 </template>
 
 <script>
 import CategoriesList from '@/components/manage/categories/CategoriesList.vue';
-import EditCategory from '@/components/manage/categories/EditCategory.vue';
+import EditCategoryModal from '@/components/manage/categories/EditCategoryModal.vue';
 
 export default {
   name: 'ManageCategoriesPage',
-  components: { EditCategory, CategoriesList },
+  components: { EditCategoryModal, CategoriesList },
   data() {
     return {
       show: false,
