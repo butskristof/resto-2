@@ -1,5 +1,9 @@
 @import "_variables.scss";
 
+@mixin transition {
+  transition: all 300ms;
+}
+
 @mixin brand-font {
   font-family: VAG, sans-serif;
 }
@@ -13,10 +17,10 @@
 }
 
 @mixin form-input {
+  @include transition;
   width: 100%;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid black;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid $gray;
 
   label {
     display: flex;
@@ -34,16 +38,31 @@
 
       input {
         width: 100%;
+        padding: $button-padding;
+        border-radius: $button-border-radius;
+        border: 1px solid $gray-dark;
 
         &.invalid {
-          border-color: red;
+          border: 2px solid $red;
         }
       }
 
       .errors {
-        color: red;
+        color: $red;
         margin-top: 0.5rem;
       }
     }
+  }
+
+  &:nth-child(even) {
+    background-color: $gray-light;
+  }
+
+  &:nth-child(odd) {
+    background-color: $white;
+  }
+
+  &:hover {
+    background-color: $gray;
   }
 }
