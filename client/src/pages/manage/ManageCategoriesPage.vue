@@ -2,11 +2,6 @@
   <ManageCategories />
 </template>
 
-<script>
+<script setup>
 import ManageCategories from '@/components/manage/categories/ManageCategories.vue';
-
-export default {
-  name: 'ManageCategoriesPage',
-  components: { ManageCategories },
-};
 </script>

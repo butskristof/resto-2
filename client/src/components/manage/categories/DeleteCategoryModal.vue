@@ -23,7 +23,7 @@
         </div>
         <div class="right">
           <button type="button" @click="emit('close')">annuleren</button>
-          <button type="button" @click="mutate">verwijderen</button>
+          <button type="button" @click="triggerMutation">verwijderen</button>
         </div>
       </div>
     </template>
@@ -52,7 +52,7 @@ const {
   isError,
   // error,
   // isSuccess,
-  mutate,
+  mutate: triggerMutation,
 } = useMutation({
   mutationFn: () => CategoriesService.delete(props.category.id),
   onSuccess: () => {

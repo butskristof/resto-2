@@ -3,15 +3,18 @@
     <div class="name">{{ category.name }}</div>
     <div class="color" :style="colorBlockStyle"></div>
     <div class="actions">
-      <button type="button" @click="$emit('edit', category)">edit</button>
-      <button type="button" @click="$emit('delete', category)">delete</button>
+      <IconButton @click="$emit('edit', category)">bewerken</IconButton>
+      <IconButton @click="$emit('delete', category)">verwijderen</IconButton>
     </div>
   </div>
 </template>
 
 <script>
+import IconButton from '@/components/common/IconButton.vue';
+
 export default {
   name: 'CategoryListItem',
+  components: { IconButton },
   emits: ['edit', 'delete'],
   props: {
     category: {
@@ -53,6 +56,10 @@ export default {
 
   .actions {
     margin-left: 1rem;
+
+    :not(:last-child) {
+      margin-right: 0.5rem;
+    }
   }
 }
 </style>

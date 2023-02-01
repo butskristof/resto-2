@@ -6,9 +6,12 @@
         <div v-else-if="listFetching">Refreshing...</div>
       </div>
       <div class="right">
-        <button type="button" @click="openEditModal(null)">
+        <IconButton @click="openEditModal(null)">
+          <template #icon>
+            <Plus />
+          </template>
           Categorie toevoegen
-        </button>
+        </IconButton>
       </div>
     </div>
 
@@ -39,13 +42,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import EditCategoryModal from '@/components/manage/categories/EditCategoryModal.vue';
 import { useQuery } from '@tanstack/vue-query';
 import { QUERY_KEYS } from '@/utilities/constants';
 import CategoriesService from '@/services/resto-api/categories.service';
 import CategoryListItem from '@/components/manage/categories/CategoryListItem.vue';
 import DeleteCategoryModal from '@/components/manage/categories/DeleteCategoryModal.vue';
+import IconButton from '@/components/common/IconButton.vue';
+import { Plus } from 'lucide-vue-next';
 
 //#region list
 const {
@@ -75,15 +80,13 @@ const closeEditModal = () => {
 //#endregion
 
 //#region delete
-const showDeleteModal = ref(false);
-let categoryToDelete = ref(null);
+const categoryToDelete = ref(null);
+const showDeleteModal = computed(() => categoryToDelete.value != null);
 const openDeleteModal = (category) => {
   categoryToDelete.value = category;
-  showDeleteModal.value = true;
 };
 const closeDeleteModal = () => {
   categoryToDelete.value = null;
-  showDeleteModal.value = false;
 };
 //#endregion
 </script>

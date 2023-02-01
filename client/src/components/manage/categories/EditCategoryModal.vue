@@ -89,7 +89,7 @@ const {
   isError: mutationHasError,
   error: mutationError,
   // isSuccess: mutationSuccess,
-  mutate,
+  mutate: triggerMutation,
 } = useMutation({
   mutationFn: createOrUpdateCategory,
   onSuccess: () => {
@@ -108,13 +108,16 @@ const validationSchema = yup.object({
     .matches(HEX_COLOR_REGEX, 'Ongeldige kleurcode'),
 });
 const { handleSubmit, meta: formMeta } = useForm({ validationSchema });
+
 const { value: name, errors: nameErrors } = useField('name', undefined, {
   initialValue: props.category?.name,
 });
 const { value: color, errors: colorErrors } = useField('color', undefined, {
   initialValue: props.category?.color,
 });
-const onSubmit = handleSubmit(mutate);
+const onSubmit = handleSubmit((values) => {
+  triggerMutation(values);
+});
 //#endregion
 
 const tryClose = (force = false) => {
