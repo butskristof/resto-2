@@ -20,7 +20,7 @@
   @include transition;
   width: 100%;
   padding: 0.5rem 1rem;
-  border-bottom: 1px solid $gray;
+  @include striped-rows;
 
   label {
     display: flex;
@@ -53,6 +53,10 @@
       }
     }
   }
+}
+
+@mixin striped-rows {
+  border-bottom: 1px solid $gray;
 
   &:nth-child(even) {
     background-color: $gray-light;

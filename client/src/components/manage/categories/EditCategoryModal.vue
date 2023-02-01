@@ -6,7 +6,7 @@
           <h3>{{ actionLabel }}</h3>
         </div>
         <div class="right">
-          <button type="button" @click="tryClose">x</button>
+          <button type="button" @click="tryClose(false)">x</button>
         </div>
       </div>
     </template>
@@ -30,6 +30,7 @@
               />
             </div>
           </div>
+
           <div class="right">
             <button type="submit">{{ actionLabel }}</button>
           </div>
@@ -59,9 +60,15 @@ const props = defineProps({
     default: null,
   },
 });
-const isEdit = computed(() => props.category != null);
 
-const queryClient = useQueryClient();
+//#region UI
+const isEdit = computed(() => props.category != null);
+const actionLabel = computed(
+  () => 'Categorie ' + (isEdit.value ? 'bewerken' : 'aanmaken'),
+);
+//#endregion
+
+//#region query
 
 const createOrUpdateCategory = (formValues) => {
   if (isEdit.value) {
@@ -76,11 +83,12 @@ const createOrUpdateCategory = (formValues) => {
   }
 };
 
+const queryClient = useQueryClient();
 const {
   isLoading: mutationLoading,
   isError: mutationHasError,
   error: mutationError,
-  isSuccess: mutationSuccess,
+  // isSuccess: mutationSuccess,
   mutate,
 } = useMutation({
   mutationFn: createOrUpdateCategory,
@@ -89,8 +97,9 @@ const {
     tryClose(true);
   },
 });
+//#endregion
 
-//#region form validation
+//#region form
 const validationSchema = yup.object({
   name: yup.string().required('Naam is verplicht'),
   color: yup
@@ -105,7 +114,6 @@ const { value: name, errors: nameErrors } = useField('name', undefined, {
 const { value: color, errors: colorErrors } = useField('color', undefined, {
   initialValue: props.category?.color,
 });
-
 const onSubmit = handleSubmit(mutate);
 //#endregion
 
@@ -117,10 +125,6 @@ const tryClose = (force = false) => {
     );
   if (close) emit('close');
 };
-
-const actionLabel = computed(
-  () => 'Categorie ' + (isEdit.value ? 'bewerken' : 'aanmaken'),
-);
 </script>
 
 <style scoped lang="scss">
