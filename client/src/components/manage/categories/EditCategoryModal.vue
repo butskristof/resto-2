@@ -3,10 +3,10 @@
     <template #header>
       <div class="header">
         <div class="left">
-          <h3>Categorie bewerken</h3>
+          <h3>{{ actionLabel }}</h3>
         </div>
         <div class="right">
-          <button type="button" @click="close">x</button>
+          <button type="button" @click="tryClose">x</button>
         </div>
       </div>
     </template>
@@ -22,9 +22,16 @@
         </ColorInput>
 
         <div class="form-actions">
-          <div class="left"></div>
+          <div class="left">
+            <div v-if="mutationLoading === true">Submitting...</div>
+            <div v-if="mutationHasError === true">
+              <ApiValidationErrors
+                :api-response="mutationError.response.data"
+              />
+            </div>
+          </div>
           <div class="right">
-            <button type="submit">Categorie aanmaken</button>
+            <button type="submit">{{ actionLabel }}</button>
           </div>
         </div>
       </form>
@@ -39,9 +46,51 @@ import ColorInput from '@/components/common/form/ColorInput.vue';
 import { useField, useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { HEX_COLOR_REGEX } from '@/utilities/validation';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { QUERY_KEYS } from '@/utilities/constants';
+import CategoriesService from '@/services/resto-api/categories.service';
+import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
+import { computed } from 'vue';
 
 const emit = defineEmits(['close']);
+const props = defineProps({
+  category: {
+    type: Object,
+    default: null,
+  },
+});
+const isEdit = computed(() => props.category != null);
 
+const queryClient = useQueryClient();
+
+const createOrUpdateCategory = (formValues) => {
+  if (isEdit.value) {
+    const request = {
+      ...formValues,
+      id: props.category.id,
+      lastModifiedOn: props.category.lastModifiedOn,
+    };
+    return CategoriesService.update(request.id, request);
+  } else {
+    return CategoriesService.create(formValues);
+  }
+};
+
+const {
+  isLoading: mutationLoading,
+  isError: mutationHasError,
+  error: mutationError,
+  isSuccess: mutationSuccess,
+  mutate,
+} = useMutation({
+  mutationFn: createOrUpdateCategory,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CATEGORIES });
+    tryClose(true);
+  },
+});
+
+//#region form validation
 const validationSchema = yup.object({
   name: yup.string().required('Naam is verplicht'),
   color: yup
@@ -49,19 +98,29 @@ const validationSchema = yup.object({
     .required('Kleur is verplicht')
     .matches(HEX_COLOR_REGEX, 'Ongeldige kleurcode'),
 });
-const { handleSubmit } = useForm({ validationSchema });
-const { value: name, errors: nameErrors } = useField('name');
-const { value: color, errors: colorErrors } = useField('color');
-
-const onSubmit = handleSubmit((values) => {
-  console.log(values);
-  close();
+const { handleSubmit, meta: formMeta } = useForm({ validationSchema });
+const { value: name, errors: nameErrors } = useField('name', undefined, {
+  initialValue: props.category?.name,
+});
+const { value: color, errors: colorErrors } = useField('color', undefined, {
+  initialValue: props.category?.color,
 });
 
-const close = () => {
-  // TODO check unsaved changed
-  emit('close');
+const onSubmit = handleSubmit(mutate);
+//#endregion
+
+const tryClose = (force = false) => {
+  let close = true;
+  if (!force && formMeta.value.dirty)
+    close = confirm(
+      'There may be unsaved changes, are you sure you want to stop editing?',
+    );
+  if (close) emit('close');
 };
+
+const actionLabel = computed(
+  () => 'Categorie ' + (isEdit.value ? 'bewerken' : 'aanmaken'),
+);
 </script>
 
 <style scoped lang="scss">

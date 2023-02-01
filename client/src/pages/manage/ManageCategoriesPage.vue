@@ -8,7 +8,7 @@
         <button type="button" @click="open(null)">Categorie toevoegen</button>
       </div>
     </div>
-    <EditCategoryModal v-if="show" @close="close" />
+    <EditCategoryModal v-if="show" @close="close" :category="toEdit" />
     <CategoriesList @edit="open" />
   </div>
 </template>
