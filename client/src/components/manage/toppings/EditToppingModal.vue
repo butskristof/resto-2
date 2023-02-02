@@ -6,9 +6,9 @@
           <template #label>Naam</template>
         </TextInput>
 
-        <NumberInput v-model="price" :errors="priceErrors">
+        <CurrencyInput v-model="price" :errors="priceErrors">
           <template #label>Prijs</template>
-        </NumberInput>
+        </CurrencyInput>
 
         <div class="form-actions">
           <div class="left">
@@ -46,6 +46,8 @@ import { QUERY_KEYS } from '@/utilities/constants';
 import ToppingsService from '@/services/resto-api/toppings.service';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import { capitalize } from '@/utilities/filters';
+import CurrencyInput from '@/components/common/form/CurrencyInput.vue';
+import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -64,7 +66,10 @@ const actionIcon = computed(() => 'icon-' + (isEdit.value ? 'save' : 'plus'));
 //#region form
 const validationSchema = yup.object({
   name: yup.string().required('Naam is verplicht'),
-  price: yup.number().required('Prijs is verplicht'),
+  price: yup
+    .number()
+    .required('Prijs is verplicht')
+    .min(0, 'Prijs kan niet negatief zijn'),
 });
 const { handleSubmit, meta: formMeta } = useForm({ validationSchema });
 const { value: name, errors: nameErrors } = useField('name', undefined, {
