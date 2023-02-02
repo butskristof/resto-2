@@ -1,50 +1,24 @@
 <template>
-  <BaseModal>
-    <template #body>
-      <div class="body">
-        <div>
-          Categorie <strong>{{ category.name }}</strong> verwijderen?
-        </div>
-        <div class="extra-info">
-          De categorie zal enkel verwijderd kunnen worden als er geen producten
-          meer aan gekoppeld zijn.
-        </div>
-      </div>
+  <DeleteModal
+    @close="emit('close')"
+    @delete="triggerMutation"
+    entity="categorie"
+    :name="category.name"
+    :is-loading="isLoading"
+    :is-error="isError"
+  >
+    <template #extra-info>
+      De categorie zal enkel verwijderd kunnen worden als er geen producten meer
+      aan gekoppeld zijn.
     </template>
-
-    <template #footer>
-      <div class="footer">
-        <div class="left">
-          <LoadingIndicator v-if="isLoading"
-            >Categorie verwijderen</LoadingIndicator
-          >
-          <div v-if="isError">
-            Er ging iets mis tijdens het verwijderen, probeer later opnieuw.
-          </div>
-        </div>
-        <div class="right">
-          <button type="button" class="btn-icon" @click="emit('close')">
-            <i class="icon-x"></i> Annuleren
-          </button>
-          <button
-            type="button"
-            class="btn-danger btn-icon"
-            @click="triggerMutation"
-          >
-            <i class="icon-trash"></i> Verwijderen
-          </button>
-        </div>
-      </div>
-    </template>
-  </BaseModal>
+  </DeleteModal>
 </template>
 
 <script setup>
-import BaseModal from '@/components/common/BaseModal.vue';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import CategoriesService from '@/services/resto-api/categories.service';
 import { QUERY_KEYS } from '@/utilities/constants';
-import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
+import DeleteModal from '@/components/manage/common/DeleteModal.vue';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
