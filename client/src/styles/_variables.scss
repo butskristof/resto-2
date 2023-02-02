@@ -4,24 +4,24 @@ $background-color: $klj-blue;
 $styled-h2-color: $klj-green;
 $form-outline-color: $klj-blue;
 
-$white: #fff;
-$black: #000;
+$primary: $klj-blue;
 
-$body-text-color: #373D3F;
+//$white: #fff;
+//$black: #000;
+
+//$body-text-color: #373D3F;
+$body-text-color: $black;
 $meta-text-color: $white;
 
 $min-body-width: 680px;
 $max-body-width: 960px;
 
+//$box-padding: 0.75rem;
+$box-padding: 1rem;
 $box-border-radius: 0.5rem;
 $box-border-width: 1px;
 $box-border: $box-border-width solid $body-text-color;
 
 $button-border-radius: 0.25rem;
-$button-padding: 0.5rem;
-
-$gray-light: #fafafa;
-$gray: darken($gray-light, 5%);
-$gray-dark: darken($gray, 10%);
-
-$red: darken(red, 5%);
+$button-padding: 0.5rem 1rem;
+//$button-padding-small: 0.5rem;

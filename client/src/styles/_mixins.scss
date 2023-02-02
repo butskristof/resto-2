@@ -56,10 +56,11 @@
 }
 
 @mixin striped-rows {
-  border-bottom: 1px solid $gray;
+  @include transition;
+  border-bottom: $box-border-width solid $gray-light;
 
   &:nth-child(even) {
-    background-color: $gray-light;
+    background-color: $gray-lighter;
   }
 
   &:nth-child(odd) {
@@ -67,7 +68,7 @@
   }
 
   &:hover {
-    background-color: $gray;
+    background-color: darken($gray-lighter, 5%);
   }
 }
 
@@ -82,3 +83,22 @@
   outline: inherit;
 }
 
+@mixin reset-link {
+  text-decoration: none;
+}
+
+@mixin meta-link {
+  a {
+    color: $meta-text-color;
+
+    &:hover {
+      color: $gray-lighter;
+    }
+  }
+}
+
+@mixin box-shadow {
+  //box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+  //box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}

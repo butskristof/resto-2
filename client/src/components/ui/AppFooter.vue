@@ -1,30 +1,35 @@
 <template>
   <footer>
-    <div class="left">&copy;</div>
+    <div class="left"></div>
     <div class="right">
-      <div>github</div>
-      <div>settings</div>
+      <div>
+        <a href="https://github.com/butskristof/resto-2" target="_blank"
+          ><i class="icon-github"></i
+        ></a>
+      </div>
+      <div>
+        <router-link to="/manage">
+          <i class="icon-settings"></i>
+        </router-link>
+      </div>
     </div>
   </footer>
 </template>
 
-<script>
-export default {
-  name: 'AppFooter',
-};
-</script>
-
 <style scoped lang="scss">
 @import '@/styles/_variables.scss';
+@import '@/styles/_mixins.scss';
 
 footer {
-  color: $meta-text-color;
-  font-size: 80%;
-  padding: 0.5rem 1rem;
+  padding: calc($box-padding / 2) $box-padding;
 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  color: $meta-text-color;
+  font-size: 80%;
+  @include meta-link;
 }
 
 .right {

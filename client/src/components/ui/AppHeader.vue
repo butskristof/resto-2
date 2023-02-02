@@ -4,25 +4,19 @@
   </header>
 </template>
 
-<script>
-export default {
-  name: 'AppHeader',
-};
-</script>
-
 <style scoped lang="scss">
 @import '@/styles/_variables.scss';
 @import '@/styles/_mixins.scss';
 
 header {
-  margin: 0.75rem auto;
+  margin: $box-padding auto;
 
   @include brand-font;
   color: $meta-text-color;
-  text-align: center;
 }
 
 h1 {
-  margin: auto;
+  font-size: 2.1rem;
+  margin: auto; // also resets top & bottom margin of h1
 }
 </style>

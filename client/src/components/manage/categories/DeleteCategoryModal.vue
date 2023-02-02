@@ -1,16 +1,6 @@
 <template>
   <BaseModal>
-    <template #header>
-      <div class="header">
-        <div class="left">
-          <h3>Categorie verwijderen</h3>
-        </div>
-        <div class="right">
-          <button type="button" @click="emit('close')">x</button>
-        </div>
-      </div>
-    </template>
-
+    <template #header>&nbsp;</template>
     <template #body> {{ category.name }} verwijderen? </template>
 
     <template #footer>
@@ -22,8 +12,17 @@
           </div>
         </div>
         <div class="right">
-          <button type="button" @click="emit('close')">annuleren</button>
-          <button type="button" @click="triggerMutation">verwijderen</button>
+          <button type="button" class="btn-icon" @click="emit('close')">
+            <i class="icon-x"></i> Annuleren
+          </button>
+          <button
+            type="button"
+            class="btn-danger btn-icon"
+            @click="triggerMutation"
+          >
+            <i class="icon-trash"></i>
+            verwijderen
+          </button>
         </div>
       </div>
     </template>

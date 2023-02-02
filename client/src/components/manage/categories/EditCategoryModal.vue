@@ -3,10 +3,12 @@
     <template #header>
       <div class="header">
         <div class="left">
-          <h3>{{ actionLabel }}</h3>
+          <h3>{{ headerText }}</h3>
         </div>
         <div class="right">
-          <button type="button" @click="tryClose(false)">x</button>
+          <button type="button" @click="tryClose(false)">
+            <i class="icon-x"></i>
+          </button>
         </div>
       </div>
     </template>
@@ -32,7 +34,10 @@
           </div>
 
           <div class="right">
-            <button type="submit">{{ actionLabel }}</button>
+            <button type="submit" class="btn-blue btn-icon">
+              <i :class="actionIcon"></i>
+              {{ actionLabel }}
+            </button>
           </div>
         </div>
       </form>
@@ -63,9 +68,11 @@ const props = defineProps({
 
 //#region UI
 const isEdit = computed(() => props.category != null);
-const actionLabel = computed(
+const headerText = computed(
   () => 'Categorie ' + (isEdit.value ? 'bewerken' : 'aanmaken'),
 );
+const actionLabel = computed(() => (isEdit.value ? 'Opslaan' : 'Aanmaken'));
+const actionIcon = computed(() => 'icon-' + (isEdit.value ? 'save' : 'plus'));
 //#endregion
 
 //#region query
@@ -131,6 +138,17 @@ const tryClose = (force = false) => {
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/_variables.scss';
+
+.header {
+  margin-bottom: $box-padding;
+  align-items: center;
+
+  h3 {
+    margin: auto;
+  }
+}
+
 .header,
 .form-actions {
   display: flex;

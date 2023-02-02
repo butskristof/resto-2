@@ -2,21 +2,32 @@
   <div class="manage">
     <div class="header">
       <div class="left">
-        <div v-if="listLoading">Loading...</div>
-        <div v-else-if="listFetching">Refreshing...</div>
+        <LoadingIndicator v-if="listLoading"
+          >Categorieën laden</LoadingIndicator
+        >
+        <LoadingIndicator v-else-if="listFetching"
+          >Categorieën bijwerken</LoadingIndicator
+        >
       </div>
       <div class="right">
-        <IconButton @click="openEditModal(null)">
-          <template #icon>
-            <Plus />
-          </template>
-          Categorie toevoegen
-        </IconButton>
+        <button
+          type="button"
+          class="btn-blue btn-icon"
+          @click="openEditModal(null)"
+        >
+          <i class="icon-plus"></i> Categorie toevoegen
+        </button>
       </div>
     </div>
 
     <div class="list">
-      <div v-if="listFailed">Error: {{ listError.message }}</div>
+      <div v-if="listFailed">
+        <div>
+          Er liep iets mis bij het ophalen van de categorieën, probeer het later
+          opnieuw.
+        </div>
+        <div>{{ listError.message }}</div>
+      </div>
       <div v-if="listSuccess">
         <CategoryListItem
           v-for="category in categories.results"
@@ -50,7 +61,7 @@ import CategoriesService from '@/services/resto-api/categories.service';
 import CategoryListItem from '@/components/manage/categories/CategoryListItem.vue';
 import DeleteCategoryModal from '@/components/manage/categories/DeleteCategoryModal.vue';
 import IconButton from '@/components/common/IconButton.vue';
-import { Plus } from 'lucide-vue-next';
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 
 //#region list
 const {
@@ -97,7 +108,6 @@ const closeDeleteModal = () => {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 </style>

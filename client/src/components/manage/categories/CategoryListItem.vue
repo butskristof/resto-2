@@ -1,20 +1,29 @@
 <template>
   <div class="category">
-    <div class="name">{{ category.name }}</div>
     <div class="color" :style="colorBlockStyle"></div>
+    <div class="name">{{ category.name }}</div>
     <div class="actions">
-      <IconButton @click="$emit('edit', category)">bewerken</IconButton>
-      <IconButton @click="$emit('delete', category)">verwijderen</IconButton>
+      <button
+        type="button"
+        class="btn-blue btn-icon"
+        @click="$emit('edit', category)"
+      >
+        <i class="icon-edit"></i> Bewerken
+      </button>
+      <button
+        type="button"
+        class="btn-danger btn-icon"
+        @click="$emit('delete', category)"
+      >
+        <i class="icon-trash"></i> Verwijderen
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import IconButton from '@/components/common/IconButton.vue';
-
 export default {
   name: 'CategoryListItem',
-  components: { IconButton },
   emits: ['edit', 'delete'],
   props: {
     category: {
@@ -41,22 +50,22 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 2rem;
-  padding: 0rem 1rem;
+  height: 2.5rem;
   @include striped-rows;
+
+  .color {
+    flex-basis: 100px;
+    margin-right: $box-padding;
+    height: 100%;
+  }
 
   .name {
     flex-grow: 1;
   }
 
-  .color {
-    flex-basis: 100px;
-    height: 100%;
-  }
-
   .actions {
-    margin-left: 1rem;
-
+    button {
+    }
     :not(:last-child) {
       margin-right: 0.5rem;
     }
