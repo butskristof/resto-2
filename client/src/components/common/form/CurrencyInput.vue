@@ -1,5 +1,5 @@
 <template>
-  <div class="number-input">
+  <div class="currency-input">
     <label>
       <span class="label">
         <slot name="label"></slot>
@@ -8,6 +8,7 @@
       <span class="input-errors">
         <input
           type="number"
+          min="0"
           v-model.number="model"
           :class="{ invalid: hasErrors }"
         />
@@ -30,7 +31,7 @@ const props = defineProps({
     default: () => [],
   },
   modelValue: {
-    type: [Number],
+    type: [String, Number], // TODO
   },
 });
 const model = computed({
@@ -41,10 +42,9 @@ const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
 @import '@/styles/_mixins.scss';
 
-.number-input {
+.currency-input {
   @include form-input;
 }
 </style>
