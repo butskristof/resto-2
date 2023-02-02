@@ -20,12 +20,10 @@
         <GenericInput :errors="categoryErrors">
           <template #label>Categorie</template>
           <template #input>
-            <CategoryPicker
-              v-model="category"
-              :initial-value="product?.category.id"
-            />
+            <CategoryPicker v-model="category" />
           </template>
         </GenericInput>
+        <div>{{ categoryId }}</div>
 
         <GenericInput :errors="toppingErrors">
           <template #label>Toppings</template>
@@ -33,6 +31,7 @@
             <ToppingPicker v-model="toppings" />
           </template>
         </GenericInput>
+        <div>{{ toppingIds }}</div>
 
         <div class="form-actions">
           <div class="left"></div>
@@ -104,7 +103,7 @@ const {
   initialValue: props.product?.multipleToppingsAllowed ?? false,
 });
 
-const category = ref(null);
+const category = ref(props.product?.category ?? null);
 const { value: categoryId, errors: categoryErrors } = useField(
   'categoryId',
   undefined,
@@ -112,9 +111,11 @@ const { value: categoryId, errors: categoryErrors } = useField(
     initialValue: null,
   },
 );
-watch(category, () => (categoryId.value = category.value?.id));
+watch(category, () => (categoryId.value = category.value?.id), {
+  immediate: true,
+});
 
-const toppings = ref([]);
+const toppings = ref(props.product?.toppings ?? []);
 const { value: toppingIds, errors: toppingErrors } = useField(
   'toppingIds',
   undefined,
@@ -122,7 +123,9 @@ const { value: toppingIds, errors: toppingErrors } = useField(
     initialValue: [],
   },
 );
-watch(toppings, () => (toppingIds.value = toppings.value.map((t) => t.id)));
+watch(toppings, () => (toppingIds.value = toppings.value.map((t) => t.id)), {
+  immediate: true,
+});
 
 const onSubmit = handleSubmit((values) => {
   triggerMutation(values);

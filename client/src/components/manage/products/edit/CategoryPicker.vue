@@ -30,11 +30,6 @@ const props = defineProps({
     type: Object,
     default: null,
   },
-  initialValue: {
-    type: String,
-    required: false,
-    default: null,
-  },
 });
 const model = computed({
   get: () => props.modelValue,
