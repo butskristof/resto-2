@@ -1,14 +1,15 @@
 <template>
-  <div class="category-picker">
+  <div class="topping-picker">
     <VueMultiselect
       v-model="model"
-      :options="categories?.results ?? []"
+      :options="toppings?.results ?? []"
       track-by="id"
       label="name"
+      :multiple="multiple"
       :searchable="true"
-      :close-on-select="true"
+      :close-on-select="false"
       :show-labels="false"
-      placeholder="Kies categorie"
+      :placeholder="placeholder"
     />
   </div>
 </template>
@@ -16,13 +17,17 @@
 <script setup>
 import VueMultiselect from 'vue-multiselect';
 import { computed } from 'vue';
-import { useCategoriesQuery } from '@/composables/queries';
+import { useToppingsQuery } from '@/composables/queries';
 
-const {
-  data: categories,
-  isLoading: categoriesLoading,
-  isSuccess: categoriesLoaded,
-} = useCategoriesQuery();
+const multiple = true;
+
+const placeholder = computed(() => {
+  let placeholder = 'Kies topping';
+  if (multiple) placeholder += 's';
+  return placeholder;
+});
+
+const { data: toppings } = useToppingsQuery();
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
@@ -37,4 +42,4 @@ const model = computed({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped></style>
