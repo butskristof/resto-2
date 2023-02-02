@@ -1,7 +1,9 @@
 <template>
   <EditModal entity="gerecht" @close="tryClose" :is-edit="isEdit">
     <template #body>
-      <div>hey</div>
+      <div>
+        <CategoryPicker />
+      </div>
     </template>
   </EditModal>
 </template>
@@ -9,6 +11,7 @@
 <script setup>
 import EditModal from '@/components/manage/common/EditModal.vue';
 import { computed } from 'vue';
+import CategoryPicker from '@/components/manage/products/edit/CategoryPicker.vue';
 
 const emit = defineEmits(['close']);
 const props = defineProps({

@@ -53,12 +53,10 @@
 <script setup>
 import { computed, ref } from 'vue';
 import EditCategoryModal from '@/components/manage/categories/EditCategoryModal.vue';
-import { useQuery } from '@tanstack/vue-query';
-import { QUERY_KEYS } from '@/utilities/constants';
-import CategoriesService from '@/services/resto-api/categories.service';
 import CategoryListItem from '@/components/manage/categories/CategoryListItem.vue';
 import DeleteCategoryModal from '@/components/manage/categories/DeleteCategoryModal.vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
+import { useCategoriesQuery } from '@/composables/queries';
 
 //#region list
 const {
@@ -68,10 +66,7 @@ const {
   isError: listFailed,
   isSuccess: listSuccess,
   error: listError,
-} = useQuery({
-  queryKey: QUERY_KEYS.CATEGORIES,
-  queryFn: async () => (await CategoriesService.get()).data,
-});
+} = useCategoriesQuery();
 const loading = computed(() => listLoading.value || listFetching.value);
 const loadingLabel = computed(() => {
   if (listLoading.value) return 'Categorieën laden';

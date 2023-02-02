@@ -51,14 +51,12 @@
 </template>
 
 <script setup>
-import { useQuery } from '@tanstack/vue-query';
-import { QUERY_KEYS } from '@/utilities/constants';
-import ToppingsService from '@/services/resto-api/toppings.service';
 import { computed, ref } from 'vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import ToppingListItem from '@/components/manage/toppings/ToppingListItem.vue';
 import DeleteToppingModal from '@/components/manage/toppings/DeleteToppingModal.vue';
 import EditToppingModal from '@/components/manage/toppings/EditToppingModal.vue';
+import { useToppingsQuery } from '@/composables/queries';
 
 //#region list
 const {
@@ -68,10 +66,7 @@ const {
   isError: listFailed,
   isSuccess: listSuccess,
   error: listError,
-} = useQuery({
-  queryKey: QUERY_KEYS.TOPPINGS,
-  queryFn: async () => (await ToppingsService.get()).data,
-});
+} = useToppingsQuery();
 const loading = computed(() => listLoading.value || listFetching.value);
 const loadingLabel = computed(() => {
   if (listLoading.value) return 'Toppings laden';

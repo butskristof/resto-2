@@ -44,13 +44,11 @@
 </template>
 
 <script setup>
-import { useQuery } from '@tanstack/vue-query';
-import { QUERY_KEYS } from '@/utilities/constants';
-import ProductsService from '@/services/resto-api/products.service';
 import { computed, ref } from 'vue';
 import ProductListItem from '@/components/manage/products/ProductListItem.vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import EditProductModal from '@/components/manage/products/EditProductModal.vue';
+import { useProductsQuery } from '@/composables/queries';
 
 //#region list
 const {
@@ -60,10 +58,7 @@ const {
   isError: listFailed,
   isSuccess: listSuccess,
   error: listError,
-} = useQuery({
-  queryKey: QUERY_KEYS.PRODUCTS,
-  queryFn: async () => (await ProductsService.get()).data,
-});
+} = useProductsQuery();
 const loading = computed(() => listLoading.value || listFetching.value);
 const loadingLabel = computed(() => {
   if (listLoading.value) return 'Gerechten laden';
