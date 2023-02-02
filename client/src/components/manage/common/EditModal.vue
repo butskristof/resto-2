@@ -1,9 +1,64 @@
-<template></template>
+<template>
+  <BaseModal>
+    <template #header>
+      <div class="header">
+        <div class="left">
+          <h3>{{ headerText }}</h3>
+        </div>
 
-<script>
-export default {
-  name: 'EditModal',
-};
+        <div class="right">
+          <button type="button" @click="emit('close')">
+            <i class="icon-x"></i>
+          </button>
+        </div>
+      </div>
+    </template>
+
+    <template #body>
+      <slot name="body"></slot>
+    </template>
+  </BaseModal>
+</template>
+
+<script setup>
+import BaseModal from '@/components/common/BaseModal.vue';
+import { computed } from 'vue';
+import { capitalize } from '@/utilities/filters';
+
+const emit = defineEmits(['close']);
+const props = defineProps({
+  entity: {
+    type: String,
+    required: true,
+  },
+  isEdit: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+//#region UI
+const headerText = computed(() => {
+  return `${capitalize(props.entity)} ${
+    props.isEdit ? 'bewerken' : 'aanmaken'
+  }`;
+});
+//#endregion
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+@import '@/styles/_variables.scss';
+
+.header {
+  margin-bottom: $box-padding;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: auto;
+  }
+}
+</style>

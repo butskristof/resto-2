@@ -1,18 +1,5 @@
 <template>
-  <BaseModal>
-    <template #header>
-      <div class="header">
-        <div class="left">
-          <h3>{{ headerText }}</h3>
-        </div>
-        <div class="right">
-          <button type="button" @click="tryClose(false)">
-            <i class="icon-x"></i>
-          </button>
-        </div>
-      </div>
-    </template>
-
+  <EditModal entity="categorie" @close="tryClose" :is-edit="isEdit">
     <template #body>
       <form @submit="onSubmit">
         <TextInput v-model="name" :errors="nameErrors">
@@ -42,21 +29,21 @@
         </div>
       </form>
     </template>
-  </BaseModal>
+  </EditModal>
 </template>
 
 <script setup>
-import BaseModal from '@/components/common/BaseModal.vue';
+import { computed } from 'vue';
+import CategoriesService from '@/services/resto-api/categories.service';
+import { QUERY_KEYS } from '@/utilities/constants';
+import { useField, useForm } from 'vee-validate';
+import { HEX_COLOR_REGEX } from '@/utilities/validation';
+import * as yup from 'yup';
+import EditModal from '@/components/manage/common/EditModal.vue';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import TextInput from '@/components/common/form/TextInput.vue';
 import ColorInput from '@/components/common/form/ColorInput.vue';
-import { useField, useForm } from 'vee-validate';
-import * as yup from 'yup';
-import { HEX_COLOR_REGEX } from '@/utilities/validation';
-import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { QUERY_KEYS } from '@/utilities/constants';
-import CategoriesService from '@/services/resto-api/categories.service';
 import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
-import { computed } from 'vue';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -65,13 +52,10 @@ const props = defineProps({
     default: null,
   },
 });
+const isEdit = computed(() => props.category != null);
 
 //#region UI
-const isEdit = computed(() => props.category != null);
-const headerText = computed(
-  () => 'Categorie ' + (isEdit.value ? 'bewerken' : 'aanmaken'),
-);
-const actionLabel = computed(() => (isEdit.value ? 'Opslaan' : 'Aanmaken'));
+const actionLabel = computed(() => (isEdit.value ? 'opslaan' : 'aanmaken'));
 const actionIcon = computed(() => 'icon-' + (isEdit.value ? 'save' : 'plus'));
 //#endregion
 
@@ -140,23 +124,11 @@ const tryClose = (force = false) => {
 <style scoped lang="scss">
 @import '@/styles/_variables.scss';
 
-.header {
-  margin-bottom: $box-padding;
-  align-items: center;
-
-  h3 {
-    margin: auto;
-  }
-}
-
-.header,
 .form-actions {
+  margin-top: $box-padding;
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-
-.form-actions {
-  margin-top: 1rem;
 }
 </style>

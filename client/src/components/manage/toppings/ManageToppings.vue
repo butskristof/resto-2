@@ -37,10 +37,15 @@
       </div>
     </div>
 
+    <EditToppingModal
+      v-if="showEditModal"
+      :topping="toppingToEdit"
+      @close="closeEditModal"
+    />
     <DeleteToppingModal
       v-if="showDeleteModal"
-      @close="closeDeleteModal"
       :topping="toppingToDelete"
+      @close="closeDeleteModal"
     />
   </div>
 </template>
@@ -53,6 +58,7 @@ import { computed, ref } from 'vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import ToppingListItem from '@/components/manage/toppings/ToppingListItem.vue';
 import DeleteToppingModal from '@/components/manage/toppings/DeleteToppingModal.vue';
+import EditToppingModal from '@/components/manage/toppings/EditToppingModal.vue';
 
 //#region list
 const {

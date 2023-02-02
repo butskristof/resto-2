@@ -39,13 +39,13 @@
 
     <EditCategoryModal
       v-if="showEditModal"
-      @close="closeEditModal"
       :category="categoryToEdit"
+      @close="closeEditModal"
     />
     <DeleteCategoryModal
       v-if="showDeleteModal"
-      @close="closeDeleteModal"
       :category="categoryToDelete"
+      @close="closeDeleteModal"
     />
   </div>
 </template>

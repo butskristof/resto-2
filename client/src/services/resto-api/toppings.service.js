@@ -6,6 +6,14 @@ class ToppingsService {
     return await restoApi.get(`/toppings?page=${page}&pageSize=${pageSize}`);
   }
 
+  create(data) {
+    return restoApi.post('/toppings', data);
+  }
+
+  update(id, data) {
+    return restoApi.put(`/toppings/${id}`, data);
+  }
+
   delete(id) {
     return restoApi.delete(`/toppings/${id}`);
   }
