@@ -31,6 +31,8 @@
           v-for="product in products.results"
           :key="product.id"
           :product="product"
+          @edit="openEditModal"
+          @close="closeEditModal"
         />
       </div>
     </div>
@@ -68,7 +70,7 @@ const loadingLabel = computed(() => {
 //#endregion
 
 //#region create & update modal
-const showEditModal = ref(true);
+const showEditModal = ref(false);
 const productToEdit = ref(null);
 const openEditModal = (product) => {
   productToEdit.value = product;

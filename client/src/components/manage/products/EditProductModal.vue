@@ -20,7 +20,10 @@
         <GenericInput :errors="categoryErrors">
           <template #label>Categorie</template>
           <template #input>
-            <CategoryPicker v-model="category" />
+            <CategoryPicker
+              v-model="category"
+              :initial-value="product?.category.id"
+            />
           </template>
         </GenericInput>
 
@@ -88,13 +91,17 @@ const validationSchema = yup.object({
   toppingIds: yup.array().of(yup.string()),
 });
 const { handleSubmit, meta: formMeta } = useForm({ validationSchema });
-const { value: name, errors: nameErrors } = useField('name');
-const { value: price, errors: priceErrors } = useField('price');
+const { value: name, errors: nameErrors } = useField('name', undefined, {
+  initialValue: props.product?.name,
+});
+const { value: price, errors: priceErrors } = useField('price', undefined, {
+  initialValue: props.product?.price,
+});
 const {
   value: multipleToppingsAllowed,
   errors: multipleToppingsAllowedErrors,
 } = useField('multipleToppingsAllowed', undefined, {
-  initialValue: false,
+  initialValue: props.product?.multipleToppingsAllowed ?? false,
 });
 
 const category = ref(null);

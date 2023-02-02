@@ -50,14 +50,13 @@ const {
 
 <style scoped lang="scss">
 @import '@/styles/_variables.scss';
+@import '@/styles/_mixins.scss';
 
 .body {
   margin-top: $box-padding;
 
   .extra-info {
-    font-style: italic;
-    font-size: 80%;
-    color: lighten($body-text-color, 30%);
+    @include extra-info-text;
   }
 }
 

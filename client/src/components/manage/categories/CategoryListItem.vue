@@ -47,12 +47,11 @@ const colorBlockStyle = computed(() => ({
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: $box-padding;
   @include striped-rows;
 
   .color {
-    flex-basis: 100px;
-    margin-right: $box-padding;
-    height: 100%;
+    @include category-color-block;
   }
 
   .name {
