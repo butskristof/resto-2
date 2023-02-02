@@ -131,6 +131,7 @@
 }
 
 @mixin category-color-block {
-  height: 2.5rem;
+  align-self: stretch;
+  min-height: 2.5rem;
   width: 100px;
 }

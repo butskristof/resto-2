@@ -61,13 +61,16 @@ const colorBlockStyle = computed(() => ({
 @import '@/styles/_mixins.scss';
 
 .product {
+  $row-padding: 0.5rem;
+
   width: 100%;
 
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   gap: $box-padding;
   @include striped-rows;
+  padding: $row-padding 0;
 
   .name-toppings {
     flex-grow: 1;
@@ -82,6 +85,14 @@ const colorBlockStyle = computed(() => ({
 
   .color {
     @include category-color-block;
+    width: 2rem;
+    align-self: stretch;
+    margin-top: calc(-1 * $row-padding);
+    margin-bottom: calc(-1 * $row-padding);
+  }
+
+  .price {
+    padding-top: 0.4rem;
   }
 
   .actions {
