@@ -40,7 +40,6 @@ import { computed } from 'vue';
 import * as yup from 'yup';
 import { useField, useForm } from 'vee-validate';
 import TextInput from '@/components/common/form/TextInput.vue';
-import NumberInput from '@/components/common/form/NumberInput.vue';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { QUERY_KEYS } from '@/utilities/constants';
 import ToppingsService from '@/services/resto-api/toppings.service';

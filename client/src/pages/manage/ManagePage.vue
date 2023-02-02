@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <router-link :to="{ name: 'ManageProducts' }">Maaltijden</router-link>
+    <router-link :to="{ name: 'ManageProducts' }">Gerechten</router-link>
     <router-link :to="{ name: 'ManageToppings' }">Toppings</router-link>
     <router-link :to="{ name: 'ManageCategories' }">Categorieën</router-link>
   </nav>
