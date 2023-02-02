@@ -2,13 +2,9 @@
   <div class="manage">
     <div class="header">
       <div class="left">
-        <LoadingIndicator v-if="listLoading"
-          >Categorieën laden</LoadingIndicator
-        >
-        <LoadingIndicator v-else-if="listFetching"
-          >Categorieën bijwerken</LoadingIndicator
-        >
+        <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
       </div>
+
       <div class="right">
         <button
           type="button"
@@ -60,7 +56,6 @@ import { QUERY_KEYS } from '@/utilities/constants';
 import CategoriesService from '@/services/resto-api/categories.service';
 import CategoryListItem from '@/components/manage/categories/CategoryListItem.vue';
 import DeleteCategoryModal from '@/components/manage/categories/DeleteCategoryModal.vue';
-import IconButton from '@/components/common/IconButton.vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 
 //#region list
@@ -74,6 +69,12 @@ const {
 } = useQuery({
   queryKey: QUERY_KEYS.CATEGORIES,
   queryFn: async () => (await CategoriesService.get()).data,
+});
+const loading = computed(() => listLoading.value || listFetching.value);
+const loadingLabel = computed(() => {
+  if (listLoading.value) return 'Categorieën laden';
+  else if (listFetching.value) return 'Categorieën bijwerken';
+  return '';
 });
 //#endregion
 

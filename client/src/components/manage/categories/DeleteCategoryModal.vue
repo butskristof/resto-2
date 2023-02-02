@@ -1,7 +1,16 @@
 <template>
   <BaseModal>
-    <template #header>&nbsp;</template>
-    <template #body> {{ category.name }} verwijderen? </template>
+    <template #body>
+      <div class="body">
+        <div>
+          Categorie <strong>{{ category.name }}</strong> verwijderen?
+        </div>
+        <div class="extra-info">
+          De categorie zal enkel verwijderd kunnen worden als er geen producten
+          meer aan gekoppeld zijn.
+        </div>
+      </div>
+    </template>
 
     <template #footer>
       <div class="footer">
@@ -20,8 +29,7 @@
             class="btn-danger btn-icon"
             @click="triggerMutation"
           >
-            <i class="icon-trash"></i>
-            verwijderen
+            <i class="icon-trash"></i> Verwijderen
           </button>
         </div>
       </div>
@@ -64,15 +72,25 @@ const {
 </script>
 
 <style scoped lang="scss">
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+@import '@/styles/_variables.scss';
+
+::v-deep(.modal-container) {
+  max-width: 60%;
+  min-width: 400px;
+}
+
+.body {
+  margin-top: $box-padding;
+
+  .extra-info {
+    font-style: italic;
+    font-size: 80%;
+    color: lighten($body-text-color, 30%);
+  }
 }
 
 .footer {
-  margin-top: 1rem;
+  margin-top: calc($box-padding * 2);
 
   display: flex;
   flex-direction: row;
