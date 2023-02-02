@@ -7,6 +7,8 @@
       label="name"
       :searchable="true"
       :close-on-select="true"
+      :show-labels="false"
+      placeholder="Kies categorie"
     />
   </div>
 </template>
