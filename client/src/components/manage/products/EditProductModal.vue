@@ -23,7 +23,6 @@
             <CategoryPicker v-model="category" />
           </template>
         </GenericInput>
-        <div>{{ categoryId }}</div>
 
         <GenericInput :errors="toppingErrors">
           <template #label>Toppings</template>
@@ -31,7 +30,6 @@
             <ToppingPicker v-model="toppings" />
           </template>
         </GenericInput>
-        <div>{{ toppingIds }}</div>
 
         <div class="form-actions">
           <div class="left"></div>
@@ -108,11 +106,11 @@ const { value: categoryId, errors: categoryErrors } = useField(
   'categoryId',
   undefined,
   {
-    initialValue: null,
+    initialValue: props.product?.category.id ?? null,
   },
 );
 watch(category, () => (categoryId.value = category.value?.id), {
-  immediate: true,
+  immediate: props.product != null,
 });
 
 const toppings = ref(props.product?.toppings ?? []);
@@ -120,11 +118,11 @@ const { value: toppingIds, errors: toppingErrors } = useField(
   'toppingIds',
   undefined,
   {
-    initialValue: [],
+    initialValue: props.product?.toppings.map((t) => t.id) ?? [],
   },
 );
 watch(toppings, () => (toppingIds.value = toppings.value.map((t) => t.id)), {
-  immediate: true,
+  immediate: props.product != null,
 });
 
 const onSubmit = handleSubmit((values) => {
