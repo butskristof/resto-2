@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <AssemblyName>Resto.Infrastructure</AssemblyName>
+        <RootNamespace>Resto.Infrastructure</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\2-application\Application\Application.csproj" />
+      <ProjectReference Include="..\Integrations\TicketPrinting\TicketPrinting.csproj" />
+    </ItemGroup>
+
+</Project>

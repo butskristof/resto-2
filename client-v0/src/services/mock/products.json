@@ -1,0 +1,96 @@
+{
+  "products": [
+    {
+      "id": "5F4BC2B4-38F3-4FCC-B58E-896817F2E4CB",
+      "name": "Drankbon",
+      "price": 1.9,
+      "category": {
+        "name": "CAT1"
+      },
+      "multipleToppings": false,
+      "toppings": []
+    },
+    {
+      "id": "ABDFD671-068D-4D8C-BEFD-D8E34BD5AD46",
+      "name": "Videe",
+      "price": 7,
+      "category": {
+        "name": "CAT2"
+      },
+      "multipleToppings": false,
+      "toppings": [
+        {
+          "id": "69965FFB-098F-408D-8691-BBB5DD45C30F",
+          "name": "Frietjes",
+          "price": 2
+        },
+        {
+          "id": "C4BDCA1D-AB40-4FE0-982D-6F4454D2E632",
+          "name": "Brood",
+          "price": 2
+        }
+      ]
+    },
+    {
+      "id": "AB86508C-3998-40FE-A32E-FC693D4DE35F",
+      "name": "Stoofvlees",
+      "price": 7,
+      "category": {
+        "name": "CAT2"
+      },
+      "multipleToppings": true,
+      "toppings": [
+        {
+          "id": "69965FFB-098F-408D-8691-BBB5DD45C30F",
+          "name": "Frietjes",
+          "price": 2
+        },
+        {
+          "id": "C4BDCA1D-AB40-4FE0-982D-6F4454D2E632",
+          "name": "Brood",
+          "price": 2
+        }
+      ]
+    },
+    {
+      "id": "4CD0C076-27F2-44DE-A76C-AFEF6A8C238F",
+      "name": "Curryworst met frietjes",
+      "price": 5,
+      "category": {
+        "name": "CAT3"
+      },
+      "multipleToppings": false,
+      "toppings": []
+    },
+    {
+      "id": "E1339072-D072-4879-AD42-5D82E51AAEB9",
+      "name": "Pannenkoeken",
+      "price": 3,
+      "category": {
+        "name": "CAT4"
+      },
+      "multipleToppings": false,
+      "toppings": []
+    },
+    {
+      "id": "E1339072-D072-4879-AD42-5D82E51AAEB9",
+      "name": "IJs",
+      "price": 3,
+      "category": {
+        "name": "CAT5"
+      },
+      "multipleToppings": false,
+      "toppings": []
+    },
+    {
+      "id": "E1339072-D072-4879-AD42-5D82E51AAEB9",
+      "name": "Soep",
+      "price": 3,
+      "category": {
+        "name": "CAT6"
+      },
+      "multipleToppings": false,
+      "toppings": []
+    }
+  ]
+}
