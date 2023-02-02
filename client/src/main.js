@@ -5,6 +5,7 @@ import { VueQueryPlugin } from '@tanstack/vue-query';
 import App from './App.vue';
 import router from './router';
 
+import 'vue-multiselect/dist/vue-multiselect.css';
 import './styles/global.scss';
 
 const app = createApp(App);

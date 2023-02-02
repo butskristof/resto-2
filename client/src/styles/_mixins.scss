@@ -53,6 +53,27 @@
       }
     }
   }
+
+  .input-errors {
+    flex-basis: 60%;
+    align-self: flex-start;
+
+    input {
+      width: 100%;
+      padding: 0.25rem;
+      border-radius: $button-border-radius;
+      border: 1px solid $gray-dark;
+
+      &.invalid {
+        border: 2px solid $red;
+      }
+    }
+
+    .errors {
+      color: $red;
+      margin-top: 0.5rem;
+    }
+  }
 }
 
 @mixin striped-rows {

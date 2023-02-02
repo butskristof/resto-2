@@ -1,17 +1,23 @@
 <template>
   <EditModal entity="gerecht" @close="tryClose" :is-edit="isEdit">
     <template #body>
-      <div>
-        <CategoryPicker />
-      </div>
+      <GenericInput>
+        <template #label>Categorie</template>
+        <template #input>
+          <CategoryPicker v-model="category" />
+        </template>
+      </GenericInput>
+
+      <div>gekozen categorie: {{ category?.name ?? 'N/A' }}</div>
     </template>
   </EditModal>
 </template>
 
 <script setup>
 import EditModal from '@/components/manage/common/EditModal.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import CategoryPicker from '@/components/manage/products/edit/CategoryPicker.vue';
+import GenericInput from '@/components/common/form/GenericInput.vue';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -28,6 +34,7 @@ const actionIcon = computed(() => 'icon-' + (isEdit.value ? 'save' : 'plus'));
 //#endregion
 
 //#region form
+const category = ref(null);
 //#endregion
 
 //#region query

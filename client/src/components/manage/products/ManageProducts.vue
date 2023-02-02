@@ -68,7 +68,7 @@ const loadingLabel = computed(() => {
 //#endregion
 
 //#region create & update modal
-const showEditModal = ref(false);
+const showEditModal = ref(true);
 const productToEdit = ref(null);
 const openEditModal = (product) => {
   productToEdit.value = product;
