@@ -1,11 +1,7 @@
 <template>
-  <h3>manage toppings</h3>
+  <ManageToppings />
 </template>
 
-<script>
-export default {
-  name: 'ManageToppingsPage',
-};
+<script setup>
+import ManageToppings from '@/components/manage/toppings/ManageToppings.vue';
 </script>
-
-<style scoped></style>

@@ -3,10 +3,10 @@
     <template #body>
       <div class="body">
         <div>
-          Categorie <strong>{{ category.name }}</strong> verwijderen?
+          Topping <strong>{{ topping.name }}</strong> verwijderen?
         </div>
         <div class="extra-info">
-          De categorie zal enkel verwijderd kunnen worden als er geen producten
+          De topping zal enkel verwijderd kunnen worden als er geen producten
           meer aan gekoppeld zijn.
         </div>
       </div>
@@ -16,7 +16,7 @@
       <div class="footer">
         <div class="left">
           <LoadingIndicator v-if="isLoading"
-            >Categorie verwijderen</LoadingIndicator
+            >Topping verwijderen</LoadingIndicator
           >
           <div v-if="isError">
             Er ging iets mis tijdens het verwijderen, probeer later opnieuw.
@@ -41,36 +41,34 @@
 
 <script setup>
 import BaseModal from '@/components/common/BaseModal.vue';
+import { computed } from 'vue';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import CategoriesService from '@/services/resto-api/categories.service';
+import ToppingsService from '@/services/resto-api/toppings.service';
 import { QUERY_KEYS } from '@/utilities/constants';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
-  category: {
+  topping: {
     type: Object,
-    default: null,
+    required: true,
   },
 });
+const topping = computed(() => props.topping);
 
 //#region query
-
 const queryClient = useQueryClient();
 const {
   isLoading,
   isError,
-  // error,
-  // isSuccess,
   mutate: triggerMutation,
 } = useMutation({
-  mutationFn: () => CategoriesService.delete(props.category.id),
+  mutationFn: () => ToppingsService.delete(topping.value.id),
   onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CATEGORIES });
+    queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TOPPINGS });
     emit('close');
   },
 });
-
 //#endregion
 </script>
 

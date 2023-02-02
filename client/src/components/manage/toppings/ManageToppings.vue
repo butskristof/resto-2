@@ -5,8 +5,8 @@
         <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
         <div v-if="listFailed">
           <div>
-            Er liep iets mis bij het ophalen van de categorieën, probeer het
-            later opnieuw.
+            Er liep iets mis bij het ophalen van de toppings, probeer het later
+            opnieuw.
           </div>
           <div>
             <pre>{{ listError }}</pre>
@@ -20,87 +20,81 @@
           class="btn-blue btn-icon"
           @click="openEditModal(null)"
         >
-          <i class="icon-plus"></i> Categorie toevoegen
+          <i class="icon-plus"></i> Topping toevoegen
         </button>
       </div>
     </div>
 
     <div class="list">
       <div v-if="listSuccess">
-        <CategoryListItem
-          v-for="category in categories.results"
-          :key="category.id"
-          :category="category"
+        <ToppingListItem
+          v-for="topping in toppings.results"
+          :key="topping.id"
+          :topping="topping"
           @edit="openEditModal"
           @delete="openDeleteModal"
         />
       </div>
     </div>
 
-    <EditCategoryModal
-      v-if="showEditModal"
-      @close="closeEditModal"
-      :category="categoryToEdit"
-    />
-    <DeleteCategoryModal
+    <DeleteToppingModal
       v-if="showDeleteModal"
       @close="closeDeleteModal"
-      :category="categoryToDelete"
+      :topping="toppingToDelete"
     />
   </div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import EditCategoryModal from '@/components/manage/categories/EditCategoryModal.vue';
 import { useQuery } from '@tanstack/vue-query';
 import { QUERY_KEYS } from '@/utilities/constants';
-import CategoriesService from '@/services/resto-api/categories.service';
-import CategoryListItem from '@/components/manage/categories/CategoryListItem.vue';
-import DeleteCategoryModal from '@/components/manage/categories/DeleteCategoryModal.vue';
+import ToppingsService from '@/services/resto-api/toppings.service';
+import { computed, ref } from 'vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
+import ToppingListItem from '@/components/manage/toppings/ToppingListItem.vue';
+import DeleteToppingModal from '@/components/manage/toppings/DeleteToppingModal.vue';
 
 //#region list
 const {
-  data: categories,
+  data: toppings,
   isFetching: listFetching,
   isLoading: listLoading,
   isError: listFailed,
   isSuccess: listSuccess,
   error: listError,
 } = useQuery({
-  queryKey: QUERY_KEYS.CATEGORIES,
-  queryFn: async () => (await CategoriesService.get()).data,
+  queryKey: QUERY_KEYS.TOPPINGS,
+  queryFn: async () => (await ToppingsService.get()).data,
 });
 const loading = computed(() => listLoading.value || listFetching.value);
 const loadingLabel = computed(() => {
-  if (listLoading.value) return 'Categorieën laden';
-  else if (listFetching.value) return 'Categorieën bijwerken';
+  if (listLoading.value) return 'Toppings laden';
+  else if (listFetching.value) return 'Toppings bijwerken';
   return '';
 });
 //#endregion
 
-//#region create & update modal
+//#region create & update model
 const showEditModal = ref(false);
-let categoryToEdit = ref(null);
-const openEditModal = (category) => {
-  categoryToEdit.value = category;
+const toppingToEdit = ref(null);
+const openEditModal = (topping) => {
+  toppingToEdit.value = topping;
   showEditModal.value = true;
 };
 const closeEditModal = () => {
-  categoryToEdit.value = null;
+  toppingToEdit.value = null;
   showEditModal.value = false;
 };
 //#endregion
 
 //#region delete
-const categoryToDelete = ref(null);
-const showDeleteModal = computed(() => categoryToDelete.value != null);
-const openDeleteModal = (category) => {
-  categoryToDelete.value = category;
+const toppingToDelete = ref(null);
+const showDeleteModal = computed(() => toppingToDelete.value != null);
+const openDeleteModal = (topping) => {
+  toppingToDelete.value = topping;
 };
 const closeDeleteModal = () => {
-  categoryToDelete.value = null;
+  toppingToDelete.value = null;
 };
 //#endregion
 </script>
