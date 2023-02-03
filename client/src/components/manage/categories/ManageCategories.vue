@@ -36,6 +36,7 @@
         />
         <LoadNextPage
           v-if="listHasNextPage"
+          entity="categorieën"
           @load-next-page="listFetchNextPage"
         />
       </div>
