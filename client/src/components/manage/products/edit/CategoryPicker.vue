@@ -2,14 +2,20 @@
   <div class="category-picker">
     <VueMultiselect
       v-model="model"
+      :loading="categoriesLoading"
       :options="categories?.results ?? []"
+      :disabled="disabled"
       track-by="id"
       label="name"
+      :multiple="multiple"
       :searchable="true"
       :close-on-select="true"
       :show-labels="false"
-      placeholder="Kies categorie"
+      :placeholder="placeholder"
     />
+    <div v-if="categoriesError" class="error">
+      Categorieën konden niet worden ingeladen, probeer het later opnieuw.
+    </div>
   </div>
 </template>
 
@@ -18,23 +24,44 @@ import VueMultiselect from 'vue-multiselect';
 import { computed } from 'vue';
 import { useCategoriesQuery } from '@/composables/queries';
 
-const {
-  data: categories,
-  isLoading: categoriesLoading,
-  isSuccess: categoriesLoaded,
-} = useCategoriesQuery();
-
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   modelValue: {
     type: Object,
     default: null,
   },
+  multiple: {
+    type: Boolean,
+    default: false,
+  },
 });
+// TODO VueUse composable
 const model = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 });
+
+const placeholder = computed(() => {
+  let placeholder = 'Kies categorie';
+  if (props.multiple) placeholder += 'ën';
+  return placeholder;
+});
+
+const {
+  data: categories,
+  isLoading: categoriesLoading,
+  isError: categoriesError,
+} = useCategoriesQuery();
+const disabled = computed(
+  () => categoriesLoading.value || categoriesError.value,
+);
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@import '@/styles/_mixins.scss';
+
+.error {
+  @include error-text;
+  margin-top: 0.5rem;
+}
+</style>

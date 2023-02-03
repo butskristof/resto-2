@@ -50,4 +50,13 @@ body {
   //);
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  //min-width: $min-body-width; // TODO only for order?
+  max-width: $max-body-width;
+  margin: auto;
+}
+
 @import '_buttons.scss';

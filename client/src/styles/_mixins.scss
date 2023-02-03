@@ -130,6 +130,11 @@
   color: lighten($body-text-color, 30%);
 }
 
+@mixin error-text {
+  font-size: 80%;
+  color: $red;
+}
+
 @mixin category-color-block {
   align-self: stretch;
   min-height: 2.5rem;

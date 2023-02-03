@@ -4,6 +4,8 @@ import ToppingsService from '@/services/resto-api/toppings.service';
 import CategoriesService from '@/services/resto-api/categories.service';
 import ProductsService from '@/services/resto-api/products.service';
 
+// TODO add property that extracts .results
+
 export function useToppingsQuery() {
   return useQuery({
     queryKey: QUERY_KEYS.TOPPINGS,

@@ -18,19 +18,13 @@
 <script setup>
 import { computed } from 'vue';
 
-const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   errors: {
     type: Array,
     required: false,
     default: () => [],
   },
-  // modelValue: {},
 });
-// const model = computed({
-//   get: () => props.modelValue,
-//   set: (value) => emit('update:modelValue', value),
-// });
 const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 

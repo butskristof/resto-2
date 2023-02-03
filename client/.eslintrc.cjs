@@ -32,6 +32,6 @@ module.exports = {
         patterns: ['../*'],
       },
     ],
-    'vue/no-multiple-template-root': 'error',
+    // 'vue/no-multiple-template-root': 'error',
   },
 };

@@ -32,7 +32,16 @@
         </GenericInput>
 
         <div class="form-actions">
-          <div class="left"></div>
+          <div class="left">
+            <LoadingIndicator v-if="mutationLoading">
+              Product {{ actionLabel }}
+            </LoadingIndicator>
+            <div v-if="mutationHasError">
+              <ApiValidationErrors
+                :api-response="mutationError.response.data"
+              />
+            </div>
+          </div>
 
           <div class="right">
             <button type="submit" class="btn-blue btn-icon">
@@ -61,6 +70,8 @@ import ToppingPicker from '@/components/manage/products/edit/ToppingPicker.vue';
 import ProductsService from '@/services/resto-api/products.service';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { QUERY_KEYS } from '@/utilities/constants';
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
+import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -149,6 +160,7 @@ const {
   isLoading: mutationLoading,
   isError: mutationHasError,
   error: mutationError,
+  // isSuccess: mutationSuccess,
   mutate: triggerMutation,
 } = useMutation({
   mutationFn: createOrUpdateProduct,
