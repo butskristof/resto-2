@@ -3,11 +3,11 @@
     <h2>Menu</h2>
 
     <div class="search">
-      <input type="text" v-model.trim="search" />
+      <input v-model.trim="search" type="text" />
     </div>
 
-    <div class="loading" v-if="loading">loading</div>
-    <div class="menu-items" v-if="!loading && products.length">
+    <div v-if="loading" class="loading">loading</div>
+    <div v-if="!loading && products.length" class="menu-items">
       <MenuItem
         v-for="product in filteredProducts"
         :key="product.id"

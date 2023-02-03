@@ -1,6 +1,6 @@
 <template>
   <button :type="type">
-    <span class="icon" v-if="$slots.icon">
+    <span v-if="$slots.icon" class="icon">
       <slot name="icon"></slot>
     </span>
     <span class="label"><slot></slot></span>

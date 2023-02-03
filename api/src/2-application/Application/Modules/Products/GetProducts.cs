@@ -52,7 +52,9 @@ public static class GetProducts
 			var productsQuery = _dbContext
 				.Products
 				.AsNoTracking()
-				.OrderByDescending(p => p.LastModifiedOn)
+				.OrderBy(p => p.Category.Name)
+				.ThenBy(p => p.LastModifiedOn)
+				// .OrderByDescending(p => p.LastModifiedOn)
 				.AsQueryable();
 
 			var result = await productsQuery

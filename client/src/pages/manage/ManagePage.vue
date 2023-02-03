@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <router-link :to="{ name: 'ManageProducts' }">Maaltijden</router-link>
+    <router-link :to="{ name: 'ManageProducts' }">Gerechten</router-link>
     <router-link :to="{ name: 'ManageToppings' }">Toppings</router-link>
     <router-link :to="{ name: 'ManageCategories' }">Categorieën</router-link>
   </nav>
@@ -17,6 +17,7 @@ import { RouterView } from 'vue-router';
 @import '@/styles/_mixins.scss';
 
 nav {
+  @include box-shadow;
   margin: calc(-1 * $box-padding);
   margin-bottom: $box-padding;
   display: flex;

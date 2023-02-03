@@ -1,5 +1,5 @@
 <template>
-  <EditModal entity="categorie" @close="tryClose" :is-edit="isEdit">
+  <EditModal entity="categorie" :is-edit="isEdit" @close="tryClose">
     <template #body>
       <form @submit="onSubmit">
         <TextInput v-model="name" :errors="nameErrors">
@@ -12,8 +12,10 @@
 
         <div class="form-actions">
           <div class="left">
-            <div v-if="mutationLoading === true">Submitting...</div>
-            <div v-if="mutationHasError === true">
+            <LoadingIndicator v-if="mutationLoading">
+              Categorie {{ actionLabel }}
+            </LoadingIndicator>
+            <div v-if="mutationHasError">
               <ApiValidationErrors
                 :api-response="mutationError.response.data"
               />
@@ -23,7 +25,7 @@
           <div class="right">
             <button type="submit" class="btn-blue btn-icon">
               <i :class="actionIcon"></i>
-              {{ actionLabel }}
+              {{ capitalize(actionLabel) }}
             </button>
           </div>
         </div>
@@ -44,6 +46,8 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import TextInput from '@/components/common/form/TextInput.vue';
 import ColorInput from '@/components/common/form/ColorInput.vue';
 import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
+import { capitalize } from '@/utilities/filters';
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -55,8 +59,30 @@ const props = defineProps({
 const isEdit = computed(() => props.category != null);
 
 //#region UI
+// TODO composable
 const actionLabel = computed(() => (isEdit.value ? 'opslaan' : 'aanmaken'));
 const actionIcon = computed(() => 'icon-' + (isEdit.value ? 'save' : 'plus'));
+//#endregion
+
+//#region form
+const validationSchema = yup.object({
+  name: yup.string().required('Naam is verplicht'),
+  color: yup
+    .string()
+    .required('Kleur is verplicht')
+    .matches(HEX_COLOR_REGEX, 'Ongeldige kleurcode'),
+});
+const { handleSubmit, meta: formMeta } = useForm({ validationSchema });
+
+const { value: name, errors: nameErrors } = useField('name', undefined, {
+  initialValue: props.category?.name,
+});
+const { value: color, errors: colorErrors } = useField('color', undefined, {
+  initialValue: props.category?.color,
+});
+const onSubmit = handleSubmit((values) => {
+  triggerMutation(values);
+});
 //#endregion
 
 //#region query
@@ -87,27 +113,6 @@ const {
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CATEGORIES });
     tryClose(true);
   },
-});
-//#endregion
-
-//#region form
-const validationSchema = yup.object({
-  name: yup.string().required('Naam is verplicht'),
-  color: yup
-    .string()
-    .required('Kleur is verplicht')
-    .matches(HEX_COLOR_REGEX, 'Ongeldige kleurcode'),
-});
-const { handleSubmit, meta: formMeta } = useForm({ validationSchema });
-
-const { value: name, errors: nameErrors } = useField('name', undefined, {
-  initialValue: props.category?.name,
-});
-const { value: color, errors: colorErrors } = useField('color', undefined, {
-  initialValue: props.category?.color,
-});
-const onSubmit = handleSubmit((values) => {
-  triggerMutation(values);
 });
 //#endregion
 

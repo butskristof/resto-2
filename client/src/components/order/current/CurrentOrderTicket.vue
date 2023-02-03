@@ -1,6 +1,6 @@
 <template>
   <div class="ticket">
-    <div class="current-order-item" v-for="(item, i) in currentOrder" :key="i">
+    <div v-for="(item, i) in currentOrder" :key="i" class="current-order-item">
       <div class="description">{{ item.description }}</div>
       <div class="amount">
         <button type="button" @click="increment(i)">+</button>

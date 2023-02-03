@@ -1,11 +1,11 @@
 <template>
   <DeleteModal
-    @close="emit('close')"
-    @delete="triggerMutation"
     entity="categorie"
     :name="category.name"
     :is-loading="isLoading"
     :is-error="isError"
+    @close="emit('close')"
+    @delete="triggerMutation"
   >
     <template #extra-info>
       De categorie zal enkel verwijderd kunnen worden als er geen producten meer
@@ -50,14 +50,13 @@ const {
 
 <style scoped lang="scss">
 @import '@/styles/_variables.scss';
+@import '@/styles/_mixins.scss';
 
 .body {
   margin-top: $box-padding;
 
   .extra-info {
-    font-style: italic;
-    font-size: 80%;
-    color: lighten($body-text-color, 30%);
+    @include extra-info-text;
   }
 }
 

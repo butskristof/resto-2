@@ -28,11 +28,16 @@
     <div class="list">
       <div v-if="listSuccess">
         <CategoryListItem
-          v-for="category in categories.results"
+          v-for="category in categories"
           :key="category.id"
           :category="category"
           @edit="openEditModal"
           @delete="openDeleteModal"
+        />
+        <LoadNextPage
+          v-if="listHasNextPage"
+          entity="categorieën"
+          @load-next-page="listFetchNextPage"
         />
       </div>
     </div>
@@ -53,28 +58,33 @@
 <script setup>
 import { computed, ref } from 'vue';
 import EditCategoryModal from '@/components/manage/categories/EditCategoryModal.vue';
-import { useQuery } from '@tanstack/vue-query';
-import { QUERY_KEYS } from '@/utilities/constants';
-import CategoriesService from '@/services/resto-api/categories.service';
 import CategoryListItem from '@/components/manage/categories/CategoryListItem.vue';
 import DeleteCategoryModal from '@/components/manage/categories/DeleteCategoryModal.vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
+import { useCategoriesQuery } from '@/composables/queries';
+import LoadNextPage from '@/components/common/LoadNextPage.vue';
 
 //#region list
 const {
-  data: categories,
-  isFetching: listFetching,
+  categories,
+
+  fetchNextPage: listFetchNextPage,
+  hasNextPage: listHasNextPage,
+
   isLoading: listLoading,
-  isError: listFailed,
+  isFetching: listFetching,
+  isFetchingNextPage: listFetchingNextPage,
+
   isSuccess: listSuccess,
+  isError: listFailed,
   error: listError,
-} = useQuery({
-  queryKey: QUERY_KEYS.CATEGORIES,
-  queryFn: async () => (await CategoriesService.get()).data,
-});
-const loading = computed(() => listLoading.value || listFetching.value);
+} = useCategoriesQuery();
+const loading = computed(
+  () => listLoading.value || listFetching.value || listFetchingNextPage.value,
+);
 const loadingLabel = computed(() => {
-  if (listLoading.value) return 'Categorieën laden';
+  if (listLoading.value || listFetchingNextPage.value)
+    return 'Categorieën laden';
   else if (listFetching.value) return 'Categorieën bijwerken';
   return '';
 });

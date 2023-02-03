@@ -20,36 +20,36 @@
           class="btn-blue btn-icon"
           @click="openEditModal(null)"
         >
-          <i class="icon-plus"></i> Topping toevoegen
+          <i class="icon-plus"></i> Gerecht toevoegen
         </button>
       </div>
     </div>
 
     <div class="list">
       <div v-if="listSuccess">
-        <ToppingListItem
-          v-for="topping in toppings"
-          :key="topping.id"
-          :topping="topping"
+        <ProductListItem
+          v-for="product in products"
+          :key="product.id"
+          :product="product"
           @edit="openEditModal"
           @delete="openDeleteModal"
         />
         <LoadNextPage
           v-if="listHasNextPage"
-          entity="toppings"
+          entity="gerechten"
           @load-next-page="listFetchNextPage"
         />
       </div>
     </div>
 
-    <EditToppingModal
+    <EditProductModal
       v-if="showEditModal"
-      :topping="toppingToEdit"
+      :product="productToEdit"
       @close="closeEditModal"
     />
-    <DeleteToppingModal
+    <DeleteProductModal
       v-if="showDeleteModal"
-      :topping="toppingToDelete"
+      :product="productToDelete"
       @close="closeDeleteModal"
     />
   </div>
@@ -57,16 +57,16 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import ProductListItem from '@/components/manage/products/ProductListItem.vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
-import ToppingListItem from '@/components/manage/toppings/ToppingListItem.vue';
-import DeleteToppingModal from '@/components/manage/toppings/DeleteToppingModal.vue';
-import EditToppingModal from '@/components/manage/toppings/EditToppingModal.vue';
-import { useToppingsQuery } from '@/composables/queries';
+import EditProductModal from '@/components/manage/products/EditProductModal.vue';
+import { useProductsQuery } from '@/composables/queries';
+import DeleteProductModal from '@/components/manage/products/DeleteProductModal.vue';
 import LoadNextPage from '@/components/common/LoadNextPage.vue';
 
 //#region list
 const {
-  toppings,
+  products,
 
   fetchNextPage: listFetchNextPage,
   hasNextPage: listHasNextPage,
@@ -78,39 +78,35 @@ const {
   isSuccess: listSuccess,
   isError: listFailed,
   error: listError,
-} = useToppingsQuery();
+} = useProductsQuery();
 const loading = computed(
   () => listLoading.value || listFetching.value || listFetchingNextPage.value,
 );
 const loadingLabel = computed(() => {
-  if (listLoading.value || listFetchingNextPage.value) return 'Toppings laden';
-  else if (listFetching.value) return 'Toppings bijwerken';
+  if (listLoading.value || listFetchingNextPage.value) return 'Gerechten laden';
+  else if (listFetching.value) return 'Gerechten bijwerken';
   return '';
 });
 //#endregion
 
-//#region create & update model
+//#region create & update modal
 const showEditModal = ref(false);
-const toppingToEdit = ref(null);
-const openEditModal = (topping) => {
-  toppingToEdit.value = topping;
+const productToEdit = ref(null);
+const openEditModal = (product) => {
+  productToEdit.value = product;
   showEditModal.value = true;
 };
 const closeEditModal = () => {
-  toppingToEdit.value = null;
+  productToEdit.value = null;
   showEditModal.value = false;
 };
 //#endregion
 
 //#region delete
-const toppingToDelete = ref(null);
-const showDeleteModal = computed(() => toppingToDelete.value != null);
-const openDeleteModal = (topping) => {
-  toppingToDelete.value = topping;
-};
-const closeDeleteModal = () => {
-  toppingToDelete.value = null;
-};
+const productToDelete = ref(null);
+const showDeleteModal = computed(() => productToDelete.value != null);
+const openDeleteModal = (product) => (productToDelete.value = product);
+const closeDeleteModal = () => (productToDelete.value = null);
 //#endregion
 </script>
 

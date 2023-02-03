@@ -1,11 +1,11 @@
 <template>
   <DeleteModal
-    @close="emit('close')"
-    @delete="triggerMutation"
     entity="topping"
     :name="topping.name"
     :is-loading="isLoading"
     :is-error="isError"
+    @close="emit('close')"
+    @delete="triggerMutation"
   >
     <template #extra-info>
       De topping zal enkel verwijderd kunnen worden als er geen producten meer

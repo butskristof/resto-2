@@ -7,6 +7,11 @@
           ><i class="icon-github"></i
         ></a>
       </div>
+
+      <div>
+        <a href="#"><i class="icon-line-chart"></i></a>
+      </div>
+
       <div>
         <router-link to="/manage">
           <i class="icon-settings"></i>
