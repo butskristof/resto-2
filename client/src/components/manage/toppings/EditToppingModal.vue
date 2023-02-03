@@ -1,5 +1,5 @@
 <template>
-  <EditModal entity="topping" @close="tryClose" :is-edit="isEdit">
+  <EditModal entity="topping" :is-edit="isEdit" @close="tryClose">
     <template #body>
       <form @submit="onSubmit">
         <TextInput v-model="name" :errors="nameErrors">

@@ -10,12 +10,12 @@
     </div>
     <div class="extras">
       <div class="toppings">
-        <div class="topping" v-for="topping in toppings" :key="topping.id">
+        <div v-for="topping in toppings" :key="topping.id" class="topping">
           <div class="left">
             <label>
               <input
-                :type="inputType"
                 v-model="selectedToppingIds"
+                :type="inputType"
                 :value="topping.id"
               />
               {{ topping.name }}

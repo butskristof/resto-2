@@ -6,11 +6,11 @@
       </span>
       <span class="input-errors">
         <input
-          type="color"
           v-model.trim="model"
+          type="color"
           :class="{ invalid: hasErrors }"
         />
-        <div class="errors" v-if="hasErrors">
+        <div v-if="hasErrors" class="errors">
           <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
         </div>
       </span>

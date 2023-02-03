@@ -3,7 +3,7 @@
   <div>Total: {{ currentOrderTotal }}</div>
   <label>
     Cash received:
-    <input type="number" v-model.number="cashReceived" />
+    <input v-model.number="cashReceived" type="number" />
   </label>
   <div>To return: {{ cashToReturn }}</div>
   <div>

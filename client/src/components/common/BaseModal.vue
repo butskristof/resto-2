@@ -21,13 +21,13 @@
 <script>
 export default {
   name: 'BaseModal',
-  emits: ['close'],
   props: {
     show: {
       type: Boolean,
       default: false,
     },
   },
+  emits: ['close'],
 };
 </script>
 

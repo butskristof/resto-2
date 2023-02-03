@@ -7,12 +7,12 @@
 
       <span class="input-errors">
         <input
+          v-model.number="model"
           type="number"
           min="0"
-          v-model.number="model"
           :class="{ invalid: hasErrors }"
         />
-        <div class="errors" v-if="hasErrors">
+        <div v-if="hasErrors" class="errors">
           <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
         </div>
       </span>

@@ -8,7 +8,7 @@
 
     <div class="input-errors">
       <slot name="input"></slot>
-      <div class="errors" v-if="hasErrors">
+      <div v-if="hasErrors" class="errors">
         <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
       </div>
     </div>

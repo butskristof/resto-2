@@ -1,11 +1,11 @@
 <template>
   <DeleteModal
-    @close="emit('close')"
-    @delete="triggerMutation"
     entity="categorie"
     :name="category.name"
     :is-loading="isLoading"
     :is-error="isError"
+    @close="emit('close')"
+    @delete="triggerMutation"
   >
     <template #extra-info>
       De categorie zal enkel verwijderd kunnen worden als er geen producten meer

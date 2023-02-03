@@ -5,7 +5,7 @@
     <div class="row-2"></div>
     <div class="name-toppings">
       <div class="name">{{ product.name }}</div>
-      <div class="toppings" v-if="product.toppings.length > 0">
+      <div v-if="product.toppings.length > 0" class="toppings">
         <div>
           Toppings
           <span v-if="product.multipleToppingsAllowed">
@@ -13,9 +13,9 @@
           </span>
         </div>
         <div
-          class="topping"
           v-for="topping in product.toppings"
           :key="topping.name"
+          class="topping"
         >
           {{ topping.name }} ({{ formatCurrency(topping.price) }})
         </div>

@@ -1,11 +1,11 @@
 <template>
   <DeleteModal
-    @close="emit('close')"
-    @delete="triggerMutation"
     entity="gerecht"
     :name="product.name"
     :is-loading="isLoading"
     :is-error="isError"
+    @close="emit('close')"
+    @delete="triggerMutation"
   />
 </template>
 
