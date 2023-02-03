@@ -7,9 +7,10 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/vue3-essential',
     'eslint:recommended',
+    'plugin:vue/vue3-recommended',
     '@vue/eslint-config-prettier',
+    'plugin:vue-scoped-css/vue3-recommended',
   ],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -31,6 +32,6 @@ module.exports = {
         patterns: ['../*'],
       },
     ],
-    // 'vue/multi-word-component-names': 0,
+    'vue/no-multiple-template-root': 'error',
   },
 };
