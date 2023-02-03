@@ -34,6 +34,10 @@
           @edit="openEditModal"
           @delete="openDeleteModal"
         />
+        <LoadNextPage
+          v-if="listHasNextPage"
+          @load-next-page="listFetchNextPage"
+        />
       </div>
     </div>
 
@@ -57,19 +61,28 @@ import ToppingListItem from '@/components/manage/toppings/ToppingListItem.vue';
 import DeleteToppingModal from '@/components/manage/toppings/DeleteToppingModal.vue';
 import EditToppingModal from '@/components/manage/toppings/EditToppingModal.vue';
 import { useToppingsQuery } from '@/composables/queries';
+import LoadNextPage from '@/components/common/LoadNextPage.vue';
 
 //#region list
 const {
   toppings,
-  isFetching: listFetching,
+
+  fetchNextPage: listFetchNextPage,
+  hasNextPage: listHasNextPage,
+
   isLoading: listLoading,
-  isError: listFailed,
+  isFetching: listFetching,
+  isFetchingNextPage: listFetchingNextPage,
+
   isSuccess: listSuccess,
+  isError: listFailed,
   error: listError,
 } = useToppingsQuery();
-const loading = computed(() => listLoading.value || listFetching.value);
+const loading = computed(
+  () => listLoading.value || listFetching.value || listFetchingNextPage.value,
+);
 const loadingLabel = computed(() => {
-  if (listLoading.value) return 'Toppings laden';
+  if (listLoading.value || listFetchingNextPage.value) return 'Toppings laden';
   else if (listFetching.value) return 'Toppings bijwerken';
   return '';
 });

@@ -51,7 +51,7 @@ const {
   toppings,
   isLoading: toppingsLoading,
   isError: toppingQueryError,
-} = useToppingsQuery();
+} = useToppingsQuery(true);
 const disabled = computed(
   () => toppingsLoading.value || toppingQueryError.value,
 );

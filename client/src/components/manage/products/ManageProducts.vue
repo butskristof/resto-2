@@ -34,6 +34,10 @@
           @edit="openEditModal"
           @delete="openDeleteModal"
         />
+        <LoadNextPage
+          v-if="listHasNextPage"
+          @load-next-page="listFetchNextPage"
+        />
       </div>
     </div>
 
@@ -57,19 +61,28 @@ import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import EditProductModal from '@/components/manage/products/EditProductModal.vue';
 import { useProductsQuery } from '@/composables/queries';
 import DeleteProductModal from '@/components/manage/products/DeleteProductModal.vue';
+import LoadNextPage from '@/components/common/LoadNextPage.vue';
 
 //#region list
 const {
   products,
-  isFetching: listFetching,
+
+  fetchNextPage: listFetchNextPage,
+  hasNextPage: listHasNextPage,
+
   isLoading: listLoading,
-  isError: listFailed,
+  isFetching: listFetching,
+  isFetchingNextPage: listFetchingNextPage,
+
   isSuccess: listSuccess,
+  isError: listFailed,
   error: listError,
 } = useProductsQuery();
-const loading = computed(() => listLoading.value || listFetching.value);
+const loading = computed(
+  () => listLoading.value || listFetching.value || listFetchingNextPage.value,
+);
 const loadingLabel = computed(() => {
-  if (listLoading.value) return 'Gerechten laden';
+  if (listLoading.value || listFetchingNextPage.value) return 'Gerechten laden';
   else if (listFetching.value) return 'Gerechten bijwerken';
   return '';
 });

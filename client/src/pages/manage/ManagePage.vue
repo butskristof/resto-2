@@ -17,6 +17,7 @@ import { RouterView } from 'vue-router';
 @import '@/styles/_mixins.scss';
 
 nav {
+  @include box-shadow;
   margin: calc(-1 * $box-padding);
   margin-bottom: $box-padding;
   display: flex;

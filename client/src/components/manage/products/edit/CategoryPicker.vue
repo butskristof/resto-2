@@ -51,7 +51,7 @@ const {
   categories,
   isLoading: categoriesLoading,
   isError: categoriesError,
-} = useCategoriesQuery();
+} = useCategoriesQuery(true);
 const disabled = computed(
   () => categoriesLoading.value || categoriesError.value,
 );

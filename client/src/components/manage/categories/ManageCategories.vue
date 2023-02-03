@@ -34,6 +34,10 @@
           @edit="openEditModal"
           @delete="openDeleteModal"
         />
+        <LoadNextPage
+          v-if="listHasNextPage"
+          @load-next-page="listFetchNextPage"
+        />
       </div>
     </div>
 
@@ -57,19 +61,29 @@ import CategoryListItem from '@/components/manage/categories/CategoryListItem.vu
 import DeleteCategoryModal from '@/components/manage/categories/DeleteCategoryModal.vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import { useCategoriesQuery } from '@/composables/queries';
+import LoadNextPage from '@/components/common/LoadNextPage.vue';
 
 //#region list
 const {
   categories,
-  isFetching: listFetching,
+
+  fetchNextPage: listFetchNextPage,
+  hasNextPage: listHasNextPage,
+
   isLoading: listLoading,
-  isError: listFailed,
+  isFetching: listFetching,
+  isFetchingNextPage: listFetchingNextPage,
+
   isSuccess: listSuccess,
+  isError: listFailed,
   error: listError,
 } = useCategoriesQuery();
-const loading = computed(() => listLoading.value || listFetching.value);
+const loading = computed(
+  () => listLoading.value || listFetching.value || listFetchingNextPage.value,
+);
 const loadingLabel = computed(() => {
-  if (listLoading.value) return 'Categorieën laden';
+  if (listLoading.value || listFetchingNextPage.value)
+    return 'Categorieën laden';
   else if (listFetching.value) return 'Categorieën bijwerken';
   return '';
 });
