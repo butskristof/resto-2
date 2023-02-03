@@ -14,11 +14,6 @@ const router = createRouter({
       component: OrderPage,
     },
     {
-      path: '/create/category',
-      name: 'CreateCategory',
-      component: () => import('@/pages/create/CreateCategory.vue'),
-    },
-    {
       path: '/manage',
       name: 'Manage',
       redirect: { name: 'ManageProducts' },
