@@ -32,7 +32,7 @@
           :key="product.id"
           :product="product"
           @edit="openEditModal"
-          @close="closeEditModal"
+          @delete="openDeleteModal"
         />
       </div>
     </div>
@@ -41,6 +41,11 @@
       v-if="showEditModal"
       :product="productToEdit"
       @close="closeEditModal"
+    />
+    <DeleteProductModal
+      v-if="showDeleteModal"
+      :product="productToDelete"
+      @close="closeDeleteModal"
     />
   </div>
 </template>
@@ -51,6 +56,7 @@ import ProductListItem from '@/components/manage/products/ProductListItem.vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import EditProductModal from '@/components/manage/products/EditProductModal.vue';
 import { useProductsQuery } from '@/composables/queries';
+import DeleteProductModal from '@/components/manage/products/DeleteProductModal.vue';
 
 //#region list
 const {
@@ -80,6 +86,13 @@ const closeEditModal = () => {
   productToEdit.value = null;
   showEditModal.value = false;
 };
+//#endregion
+
+//#region delete
+const productToDelete = ref(null);
+const showDeleteModal = computed(() => productToDelete.value != null);
+const openDeleteModal = (product) => (productToDelete.value = product);
+const closeDeleteModal = () => (productToDelete.value = null);
 //#endregion
 </script>
 
