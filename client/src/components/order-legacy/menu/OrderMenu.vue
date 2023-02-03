@@ -26,7 +26,7 @@ export default {
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useProductsStore } from '@/stores/products';
-import MenuItem from '@/components/order/menu/MenuItem.vue';
+import MenuItem from '@/components/order-legacy/menu/MenuItem.vue';
 import { computed, ref } from 'vue';
 
 const { fetchProducts } = useProductsStore();

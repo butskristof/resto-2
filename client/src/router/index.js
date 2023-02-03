@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import LegacyOrderPage from '@/pages/LegacyOrderPage.vue';
 import OrderPage from '@/pages/OrderPage.vue';
 
 const router = createRouter({
@@ -6,12 +7,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/order',
+      redirect: '/order-legacy',
     },
     {
       path: '/order',
       name: 'Order',
       component: OrderPage,
+    },
+    {
+      path: '/order-legacy',
+      name: 'LegacyOrder',
+      component: LegacyOrderPage,
     },
     {
       path: '/manage',

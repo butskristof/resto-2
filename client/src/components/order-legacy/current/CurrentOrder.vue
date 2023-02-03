@@ -19,7 +19,7 @@ export default {
 </script>
 
 <script setup>
-import CurrentOrderTicket from '@/components/order/current/CurrentOrderTicket.vue';
+import CurrentOrderTicket from '@/components/order-legacy/current/CurrentOrderTicket.vue';
 import { storeToRefs } from 'pinia';
 import { useCurrentOrderStore } from '@/stores/current-order';
 import { computed, ref } from 'vue';

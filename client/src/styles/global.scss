@@ -54,7 +54,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  //min-width: $min-body-width; // TODO only for order?
+  //min-width: $min-body-width; // TODO only for order-legacy?
   max-width: $max-body-width;
   margin: auto;
 }
