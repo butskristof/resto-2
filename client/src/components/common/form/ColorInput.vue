@@ -5,11 +5,7 @@
         <slot name="label"></slot>
       </span>
       <span class="input-errors">
-        <input
-          v-model.trim="model"
-          type="color"
-          :class="{ invalid: hasErrors }"
-        />
+        <input v-model="model" type="color" :class="{ invalid: hasErrors }" />
         <div v-if="hasErrors" class="errors">
           <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
         </div>
@@ -18,30 +14,24 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue';
+import { useVModel } from '@vueuse/core';
 
-export default {
-  props: {
-    errors: {
-      type: Array,
-      required: false,
-      default: () => [],
-    },
-    modelValue: {
-      type: String,
-    },
+const emit = defineEmits(['update:modelValue']);
+const props = defineProps({
+  errors: {
+    type: Array,
+    required: false,
+    default: () => [],
   },
-  setup(props, { emit }) {
-    // https://vanoneang.github.io/article/v-model-in-vue3.html
-    const model = computed({
-      get: () => props.modelValue,
-      set: (value) => emit('update:modelValue', value),
-    });
-    const hasErrors = computed(() => props.errors && props.errors.length > 0);
-    return { model, hasErrors };
+  modelValue: {
+    type: String,
   },
-};
+});
+
+const model = useVModel(props, 'modelValue', emit);
+const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 
 <style scoped lang="scss">

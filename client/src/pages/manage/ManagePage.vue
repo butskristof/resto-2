@@ -27,6 +27,8 @@ nav {
     text-align: center;
   }
 
+  // eslint-disable vue-scoped-css/no-unused-selector
+  // disable eslint rule since a tags & .router-link-active won't appear explicitly in the template
   a {
     @include reset-link;
     @include transition;
@@ -43,5 +45,6 @@ nav {
       font-weight: bold;
     }
   }
+  // eslint-enable
 }
 </style>

@@ -26,7 +26,10 @@ const props = defineProps({
     required: false,
     default: () => [],
   },
-  modelValue: Number,
+  modelValue: {
+    type: Number,
+    default: null,
+  },
   options: {
     type: Object,
     default: () => ({

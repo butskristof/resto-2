@@ -23,6 +23,7 @@
 import VueMultiselect from 'vue-multiselect';
 import { computed } from 'vue';
 import { useToppingsQuery } from '@/composables/queries';
+import { useVModel } from '@vueuse/core';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
@@ -35,11 +36,7 @@ const props = defineProps({
     default: true,
   },
 });
-// TODO VueUse composable
-const model = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
-});
+const model = useVModel(props, 'modelValue', emit);
 
 const placeholder = computed(() => {
   let placeholder = 'Kies topping';
