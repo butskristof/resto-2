@@ -28,7 +28,7 @@
     <div class="list">
       <div v-if="listSuccess">
         <CategoryListItem
-          v-for="category in categories.results"
+          v-for="category in categories"
           :key="category.id"
           :category="category"
           @edit="openEditModal"
@@ -60,7 +60,7 @@ import { useCategoriesQuery } from '@/composables/queries';
 
 //#region list
 const {
-  data: categories,
+  categories,
   isFetching: listFetching,
   isLoading: listLoading,
   isError: listFailed,

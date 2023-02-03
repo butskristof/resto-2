@@ -28,7 +28,7 @@
     <div class="list">
       <div v-if="listSuccess">
         <ProductListItem
-          v-for="product in products.results"
+          v-for="product in products"
           :key="product.id"
           :product="product"
           @edit="openEditModal"
@@ -60,7 +60,7 @@ import DeleteProductModal from '@/components/manage/products/DeleteProductModal.
 
 //#region list
 const {
-  data: products,
+  products,
   isFetching: listFetching,
   isLoading: listLoading,
   isError: listFailed,

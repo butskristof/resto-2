@@ -3,7 +3,7 @@
     <VueMultiselect
       v-model="model"
       :loading="categoriesLoading"
-      :options="categories?.results ?? []"
+      :options="categories"
       :disabled="disabled"
       track-by="id"
       label="name"
@@ -48,7 +48,7 @@ const placeholder = computed(() => {
 });
 
 const {
-  data: categories,
+  categories,
   isLoading: categoriesLoading,
   isError: categoriesError,
 } = useCategoriesQuery();

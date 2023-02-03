@@ -28,7 +28,7 @@
     <div class="list">
       <div v-if="listSuccess">
         <ToppingListItem
-          v-for="topping in toppings.results"
+          v-for="topping in toppings"
           :key="topping.id"
           :topping="topping"
           @edit="openEditModal"
@@ -60,7 +60,7 @@ import { useToppingsQuery } from '@/composables/queries';
 
 //#region list
 const {
-  data: toppings,
+  toppings,
   isFetching: listFetching,
   isLoading: listLoading,
   isError: listFailed,

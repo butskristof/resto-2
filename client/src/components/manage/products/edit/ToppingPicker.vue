@@ -48,11 +48,10 @@ const placeholder = computed(() => {
 });
 
 const {
-  data: response,
+  toppings,
   isLoading: toppingsLoading,
   isError: toppingQueryError,
 } = useToppingsQuery();
-const toppings = computed(() => response.value?.results ?? []);
 const disabled = computed(
   () => toppingsLoading.value || toppingQueryError.value,
 );
