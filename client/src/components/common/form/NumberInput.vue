@@ -6,11 +6,7 @@
       </span>
 
       <span class="input-errors">
-        <input
-          v-model.number="model"
-          type="number"
-          :class="{ invalid: hasErrors }"
-        />
+        <input ref="inputRef" :class="{ invalid: hasErrors }" type="text" />
         <div v-if="hasErrors" class="errors">
           <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
         </div>
@@ -21,22 +17,28 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useCurrencyInput } from 'vue-currency-input';
 
-const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   errors: {
     type: Array,
     required: false,
     default: () => [],
   },
-  modelValue: {
-    type: [Number],
+  modelValue: Number,
+  options: {
+    locale: 'nl-NL',
+    currency: 'EUR',
+    currencyDisplay: 'hidden',
+    hideCurrencySymbolOnFocus: true,
+    hideGroupingSeparatorOnFocus: false,
+    hideNegligibleDecimalDigitsOnFocus: false,
+    autoDecimalDigits: false,
+    useGrouping: true,
+    accountingSign: false,
   },
 });
-const model = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', (value = Number(value))),
-});
+const { inputRef } = useCurrencyInput(props.options);
 const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 

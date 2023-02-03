@@ -1,13 +1,4 @@
-const CURRENCIES = {
-  EUR: new Intl.NumberFormat('nl-BE', {
-    style: 'currency',
-    currency: 'EUR',
-  }),
-  USD: new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }),
-};
+import { CURRENCIES } from '@/utilities/currencies';
 
 export function formatCurrency(amount, currency = CURRENCIES.EUR) {
   return currency.format(amount);

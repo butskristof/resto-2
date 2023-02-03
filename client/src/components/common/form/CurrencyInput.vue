@@ -6,12 +6,7 @@
       </span>
 
       <span class="input-errors">
-        <input
-          v-model.number="model"
-          type="number"
-          min="0"
-          :class="{ invalid: hasErrors }"
-        />
+        <input ref="inputRef" :class="{ invalid: hasErrors }" type="text" />
         <div v-if="hasErrors" class="errors">
           <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
         </div>
@@ -22,8 +17,9 @@
 
 <script setup>
 import { computed } from 'vue';
+import { useCurrencyInput } from 'vue-currency-input';
+// https://dm4t2.github.io/vue-currency-input/playground.html
 
-const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   errors: {
     type: Array,
@@ -31,13 +27,28 @@ const props = defineProps({
     default: () => [],
   },
   modelValue: {
-    type: [String, Number], // TODO
+    type: Number,
+    default: null,
+  },
+  options: {
+    type: Object,
+    default: () => ({
+      locale: 'nl-BE',
+      currency: 'EUR',
+      currencyDisplay: 'symbol',
+      valueRange: {
+        min: 0,
+      },
+      hideCurrencySymbolOnFocus: false,
+      hideGroupingSeparatorOnFocus: false,
+      hideNegligibleDecimalDigitsOnFocus: false,
+      autoDecimalDigits: false,
+      useGrouping: true,
+      accountingSign: false,
+    }),
   },
 });
-const model = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', (value = Number(value))),
-});
+const { inputRef } = useCurrencyInput(props.options);
 const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 

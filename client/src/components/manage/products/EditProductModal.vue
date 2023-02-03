@@ -92,6 +92,7 @@ const validationSchema = yup.object({
   name: yup.string().required('Naam is verplicht'),
   price: yup
     .number()
+    .nullable()
     .required('Prijs is verplicht')
     .min(0, 'Prijs kan niet negatief zijn'),
   multipleToppingsAllowed: yup.boolean(),

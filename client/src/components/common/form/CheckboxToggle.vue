@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { useVModel } from '@vueuse/core';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
@@ -16,10 +16,7 @@ const props = defineProps({
   },
 });
 
-const model = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
-});
+const model = useVModel(props, 'modelValue', emit);
 </script>
 
 <style scoped lang="scss">

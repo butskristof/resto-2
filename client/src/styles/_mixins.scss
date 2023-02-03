@@ -70,8 +70,7 @@
     }
 
     .errors {
-      color: $red;
-      margin-top: 0.5rem;
+      @include error-text;
     }
   }
 }
@@ -132,7 +131,6 @@
 
 @mixin error-text {
   font-size: 80%;
-  color: $red;
 }
 
 @mixin category-color-block {

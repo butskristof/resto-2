@@ -17,6 +17,7 @@
 <script setup>
 import { computed } from 'vue';
 import CheckboxToggle from '@/components/common/form/CheckboxToggle.vue';
+import { useVModel } from '@vueuse/core';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
@@ -30,10 +31,7 @@ const props = defineProps({
     default: false,
   },
 });
-const model = computed({
-  get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value),
-});
+const model = useVModel(props, 'modelValue', emit);
 const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 
@@ -53,50 +51,6 @@ const hasErrors = computed(() => props.errors && props.errors.length > 0);
   .input-errors {
     input {
       width: initial;
-    }
-  }
-
-  .checkbox {
-    input[type='checkbox'] {
-      height: 0;
-      width: 0;
-      visibility: hidden;
-    }
-
-    label {
-      cursor: pointer;
-      text-indent: -9999px;
-      width: 200px;
-      height: 100px;
-      background: grey;
-      display: block;
-      border-radius: 100px;
-      position: relative;
-    }
-
-    label:after {
-      content: '';
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      width: 90px;
-      height: 90px;
-      background: #fff;
-      border-radius: 90px;
-      transition: 0.3s;
-    }
-
-    input:checked + label {
-      background: #bada55;
-    }
-
-    input:checked + label:after {
-      left: calc(100% - 5px);
-      transform: translateX(-100%);
-    }
-
-    label:active:after {
-      width: 130px;
     }
   }
 }
