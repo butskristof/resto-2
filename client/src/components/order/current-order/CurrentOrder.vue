@@ -6,19 +6,12 @@
       <div class="discount">
         <div class="left">Bestelling voor</div>
         <div class="right">
-          <label>
-            <input type="radio" value="1" />
-            Klant
-          </label>
-
-          <label>
-            <input type="radio" value="2" />
-            Leiding
-          </label>
-
-          <label>
-            <input type="radio" value="3" />
-            Helper
+          <label
+            v-for="discount in Object.values(ORDER_DISCOUNT)"
+            :key="discount.value"
+          >
+            <input v-model="selectedDiscount" type="radio" :value="discount" />
+            {{ discount.displayValue }}
           </label>
         </div>
       </div>
@@ -45,7 +38,7 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="btn-danger btn-icon">
+        <button type="button" class="btn-danger btn-icon" @click="reset">
           <i class="icon-trash"></i>
           Wissen
         </button>
@@ -63,8 +56,12 @@ import { formatCurrency } from '@/utilities/filters';
 import CurrentOrderTicket from '@/components/order/current-order/CurrentOrderTicket.vue';
 import { useCurrentOrderStore } from '@/stores/current-order';
 import { storeToRefs } from 'pinia';
+import { ORDER_DISCOUNT } from '@/utilities/order-discount';
 
-const { total } = storeToRefs(useCurrentOrderStore());
+const { total, discount: selectedDiscount } = storeToRefs(
+  useCurrentOrderStore(),
+);
+const { reset } = useCurrentOrderStore();
 </script>
 
 <style scoped lang="scss">

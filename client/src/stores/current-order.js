@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useProductsQuery } from '@/composables/queries';
+import { ORDER_DISCOUNT } from '@/utilities/order-discount';
 
 export const useCurrentOrderStore = defineStore('current-order', () => {
   const currentOrder = ref([]);
+  const discount = ref(ORDER_DISCOUNT.None);
 
   const { products } = useProductsQuery(true);
 
@@ -33,6 +35,7 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
   });
 
   const total = computed(() => {
+    if (discount.value.value !== ORDER_DISCOUNT.None.value) return 0;
     return extendedCurrentOrder.value.reduce(
       (runningTotal, orderLine) => runningTotal + orderLine.totalPrice,
       0,
@@ -73,6 +76,7 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
   return {
     orderLines: extendedCurrentOrder,
     total,
+    discount,
 
     add,
     increment,
