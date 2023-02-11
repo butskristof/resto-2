@@ -26,13 +26,15 @@
 
         <div class="cash-received">
           <div class="left">Cash ontvangen</div>
-          <div class="right">123</div>
+          <div class="right">
+            <input v-model.number="cashReceived" type="number" />
+          </div>
         </div>
 
         <div class="cash-return">
           <div class="left">Terug te geven</div>
           <div class="right">
-            {{ formatCurrency(0) }}
+            {{ formatCurrency(cashToReturn) }}
           </div>
         </div>
       </div>
@@ -57,11 +59,19 @@ import CurrentOrderTicket from '@/components/order/current-order/CurrentOrderTic
 import { useCurrentOrderStore } from '@/stores/current-order';
 import { storeToRefs } from 'pinia';
 import { ORDER_DISCOUNT } from '@/utilities/order-discount';
+import { computed, ref } from 'vue';
 
 const { total, discount: selectedDiscount } = storeToRefs(
   useCurrentOrderStore(),
 );
-const { reset } = useCurrentOrderStore();
+const { reset: resetCurrentOrder } = useCurrentOrderStore();
+const cashReceived = ref(0);
+const cashToReturn = computed(() => total.value - cashReceived.value);
+
+function reset() {
+  cashReceived.value = 0;
+  resetCurrentOrder();
+}
 </script>
 
 <style scoped lang="scss">
