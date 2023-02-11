@@ -1,0 +1,63 @@
+@import '@/styles/utilities/_general.scss';
+@import '@/styles/_colors.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+
+button {
+  @include transition;
+  cursor: pointer;
+
+  list-style: none;
+  display: inline-block;
+  outline: none;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  padding: $button-padding;
+  border-radius: $button-border-radius;
+  border: $button-border-width solid $background-contrast-color;
+
+  color: $body-text-color;
+  background-color: $background-contrast-color;
+
+  &:hover {
+    background-color: $background-contrast-color-darker;
+    border: $button-border-width solid $body-text-color;
+  }
+
+  &:focus {
+    background-color: $background-contrast-color-darker;
+    border: $button-border-width solid $body-text-color;
+  }
+
+  &:disabled {
+    background-color: darken($background-contrast-color, 20%);
+    border-color:  darken($background-contrast-color, 20%);
+    color: rgba($body-text-color, 0.6);
+    pointer-events: none;
+  }
+}
+
+.btn-icon {
+  i {
+    margin-right: 0.25rem;
+  }
+}
+
+.btn-danger {
+  background-color: $dark-red;
+  color: white;
+
+  &:hover,
+  &:focus {
+    background-color: darken($dark-red, 10%);
+  }
+
+  &:disabled {
+    background-color: lighten($dark-red, 30%);
+  }
+}

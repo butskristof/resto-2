@@ -5,18 +5,19 @@
 </template>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/utilities/_typography.scss';
+@import '@/styles/_colors.scss';
 
 header {
+  // default padding Y / centered X
   margin: $box-padding auto;
-
   @include brand-font;
-  color: $meta-text-color;
+  color: $background-contrast-color;
 }
 
 h1 {
-  font-size: 2.1rem;
-  margin: auto; // also resets top & bottom margin of h1
+  // resets default h1 Y + adds centered X
+  margin: auto;
 }
 </style>

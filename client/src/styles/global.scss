@@ -1,62 +1,11 @@
+// external dependencies
+@import 'normalize.css/normalize.css';
 @import 'lucide-static/font/lucide.css';
-@import "_variables.scss";
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-@font-face {
-  font-family: VAG;
-  src: url("../assets/VAGRoundedBold.ttf");
-}
 
-html,
-body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-
-  font-family: 'Lato', Arial, sans-serif;
-
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-}
-
-body {
-  background-color: $background-color;
-  color: $body-text-color;
-  // https://www.joshwcomeau.com/gradient-generator/
-  //background-image: linear-gradient(
-  //                220deg,
-  //                hsl(196deg 100% 47%) 0%,
-  //                hsl(201deg 89% 54%) 5%,
-  //                hsl(206deg 91% 59%) 10%,
-  //                hsl(211deg 92% 64%) 15%,
-  //                hsl(218deg 92% 68%) 20%,
-  //                hsl(227deg 89% 72%) 25%,
-  //                hsl(239deg 82% 75%) 30%,
-  //                hsl(253deg 76% 73%) 35%,
-  //                hsl(267deg 69% 69%) 40%,
-  //                hsl(281deg 62% 66%) 45%,
-  //                hsl(295deg 55% 62%) 50%,
-  //                hsl(308deg 61% 60%) 55%,
-  //                hsl(317deg 72% 60%) 60%,
-  //                hsl(324deg 81% 59%) 65%,
-  //                hsl(329deg 88% 58%) 70%,
-  //                hsl(333deg 93% 57%) 75%,
-  //                hsl(337deg 95% 55%) 80%,
-  //                hsl(341deg 96% 53%) 85%,
-  //                hsl(346deg 94% 53%) 90%,
-  //                hsl(353deg 90% 54%) 95%,
-  //                hsl(3deg 85% 53%) 100%
-  //);
-}
-
-#app {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  //min-width: $min-body-width; // TODO only for order-legacy?
-  max-width: $max-body-width;
-  margin: auto;
-}
-
-@import '_buttons.scss';
+// app setup
+@import 'utilities/_typography.scss';
+@import 'ui/_theme.scss';
+@import 'ui/_layout.scss';
+@import 'elements/_forms.scss';
+@import 'elements/_buttons.scss';

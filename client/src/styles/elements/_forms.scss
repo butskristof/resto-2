@@ -1,0 +1,12 @@
+@import '@/styles/utilities/_padding-margin.scss';
+
+input[type=text] {
+  display: block;
+  width: 100%;
+  padding: $button-padding;
+}
+
+pre {
+  display: block;
+  overflow-x: auto;
+}

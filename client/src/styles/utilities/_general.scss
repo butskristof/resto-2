@@ -1,0 +1,27 @@
+@import '@/styles/utilities/_padding-margin.scss';
+
+@mixin transition {
+  transition: all 300ms;
+}
+
+@mixin striped-rows {
+  @include transition;
+
+  $odd: white;
+  $even: darken($odd, 5%);
+  $hover: darken($odd, 10%);
+
+  //border-bottom: $box-border-width solid $hover;
+
+  &:nth-child(even) {
+    background-color: $even;
+  }
+
+  &:nth-child(odd) {
+    background-color: $odd;
+  }
+
+  &:hover {
+    background-color: $hover;
+  }
+}
