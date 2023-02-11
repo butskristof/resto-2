@@ -11,7 +11,7 @@
   $even: darken($odd, 5%);
   $hover: darken($odd, 10%);
 
-  //border-bottom: $box-border-width solid $hover;
+  border-bottom: $box-border-width solid $even;
 
   &:nth-child(even) {
     background-color: $even;

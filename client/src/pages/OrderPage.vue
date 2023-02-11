@@ -16,6 +16,7 @@ import CurrentOrder from '@/components/order/current-order/CurrentOrder.vue';
 @import '@/styles/utilities/_padding-margin.scss';
 
 .order-page {
+  height: 100%;
   max-height: 100%;
 
   @include flex-row;
