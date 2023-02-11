@@ -19,7 +19,7 @@ button {
 
   padding: $button-padding;
   border-radius: $button-border-radius;
-  border: $button-border-width solid $background-contrast-color;
+  border: $button-border-width solid $body-text-color-lighter;
 
   color: $body-text-color;
   background-color: $background-contrast-color;
@@ -50,14 +50,17 @@ button {
 
 .btn-danger {
   background-color: $dark-red;
+  border-color: $dark-red;
   color: white;
 
   &:hover,
   &:focus {
     background-color: darken($dark-red, 10%);
+    border-color: darken($dark-red, 10%);
   }
 
   &:disabled {
     background-color: lighten($dark-red, 30%);
+    border-color: lighten($dark-red, 30%);
   }
 }

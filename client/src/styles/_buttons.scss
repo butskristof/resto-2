@@ -1,29 +1,29 @@
 @import '@/styles/_variables.scss';
 @import '@/styles/_mixins.scss';
 
-button {
-  @include transition;
-  //border-radius: $button-border-radius;
-  //border-style: none;
-  //box-sizing: border-box;
-  //color: $body-text-color;
-  //cursor: pointer;
-  display: inline-block;
-  list-style: none;
-  outline: none;
-  padding: $button-padding;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: baseline;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-button:hover,
-button:focus {
-}
+//button {
+//  @include transition;
+//  //border-radius: $button-border-radius;
+//  //border-style: none;
+//  //box-sizing: border-box;
+//  //color: $body-text-color;
+//  //cursor: pointer;
+//  display: inline-block;
+//  list-style: none;
+//  outline: none;
+//  padding: $button-padding;
+//  position: relative;
+//  text-align: center;
+//  text-decoration: none;
+//  vertical-align: baseline;
+//  user-select: none;
+//  -webkit-user-select: none;
+//  touch-action: manipulation;
+//}
+//
+//button:hover,
+//button:focus {
+//}
 
 button:disabled {
   color: lighten($body-text-color, 50%);

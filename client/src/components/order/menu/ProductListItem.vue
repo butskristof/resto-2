@@ -120,9 +120,11 @@ function add() {
 
 .btn-add {
   background-color: white;
+  border-color: white;
 
   &:hover {
     background-color: white;
+    border-color: $body-text-color;
   }
 }
 </style>

@@ -15,6 +15,10 @@
   color: $background-contrast-color;
 }
 
+@mixin reset-link {
+  text-decoration: none;
+}
+
 @mixin contrast-link {
   a {
     color: $background-contrast-color;

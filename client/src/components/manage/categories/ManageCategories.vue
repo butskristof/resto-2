@@ -15,11 +15,7 @@
       </div>
 
       <div class="right">
-        <button
-          type="button"
-          class="btn-blue btn-icon"
-          @click="openEditModal(null)"
-        >
+        <button type="button" class="btn-icon" @click="openEditModal(null)">
           <i class="icon-plus"></i> Categorie toevoegen
         </button>
       </div>

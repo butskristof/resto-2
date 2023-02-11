@@ -1,25 +1,37 @@
 <template>
-  <nav>
-    <router-link :to="{ name: 'ManageProducts' }">Gerechten</router-link>
-    <router-link :to="{ name: 'ManageToppings' }">Toppings</router-link>
-    <router-link :to="{ name: 'ManageCategories' }">Categorieën</router-link>
-  </nav>
+  <div class="manage-page">
+    <nav>
+      <router-link :to="{ name: routeInfo.manage.products.name }">
+        Gerechten
+      </router-link>
+      <router-link :to="{ name: routeInfo.manage.toppings.name }">
+        Toppings
+      </router-link>
+      <router-link :to="{ name: routeInfo.manage.categories.name }">
+        Categorieën
+      </router-link>
+    </nav>
 
-  <RouterView />
+    <div class="manage-wrapper">
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { RouterView } from 'vue-router';
+import routeInfo from '@/router/route-info';
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/utilities/_typography.scss';
+@import '@/styles/utilities/_general.scss';
 
 nav {
-  @include box-shadow;
   margin: calc(-1 * $box-padding);
   margin-bottom: $box-padding;
+
   display: flex;
   flex-direction: row;
   > * {
@@ -30,19 +42,23 @@ nav {
   // eslint-disable vue-scoped-css/no-unused-selector
   // disable eslint rule since a tags & .router-link-active won't appear explicitly in the template
   a {
+    $base: white;
+    $active: darken($base, 5%);
+    $hover: darken($base, 10%);
+
     @include reset-link;
     @include transition;
-    border-bottom: 1px solid $gray-light;
+    border-bottom: 1px solid $hover;
     padding: $button-padding;
     color: $body-text-color;
 
-    &:hover {
-      background-color: $gray-lighter;
+    &.router-link-active {
+      background-color: $active;
+      font-weight: 600;
     }
 
-    &.router-link-active {
-      background-color: $gray-lighter;
-      font-weight: bold;
+    &:hover {
+      background-color: $hover;
     }
   }
   // eslint-enable
