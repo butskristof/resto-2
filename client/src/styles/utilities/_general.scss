@@ -1,4 +1,5 @@
 @import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/_colors.scss';
 
 @mixin transition {
   transition: all 300ms;
@@ -24,4 +25,12 @@
   &:hover {
     background-color: $hover;
   }
+}
+
+@mixin category-color-block {
+  align-self: stretch;
+  min-height: 2.5rem;
+  width: 100px;
+  border-left: 1px solid $body-text-color-lighter;
+  border-right: 1px solid $body-text-color-lighter;
 }

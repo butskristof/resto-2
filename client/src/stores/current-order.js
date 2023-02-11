@@ -71,6 +71,7 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
 
   function reset() {
     currentOrder.value = [];
+    discount.value = ORDER_DISCOUNT.None;
   }
 
   return {

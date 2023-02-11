@@ -59,20 +59,28 @@ const colorBlockStyle = computed(() => ({
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
+@import '@/styles/ui/_layout.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/utilities/_typography.scss';
+@import '@/styles/manage/_common.scss';
+@import '@/styles/utilities/_general.scss';
 
 .product {
   $row-padding: 0.5rem;
 
-  width: 100%;
-
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  @include flex-row;
+  align-items: center;
   gap: $box-padding;
   @include striped-rows;
   padding: $row-padding 0;
+
+  .color {
+    @include category-color-block;
+    width: 2rem;
+    align-self: stretch;
+    margin-top: calc(-1 * $row-padding);
+    margin-bottom: calc(-1 * $row-padding);
+  }
 
   .name-toppings {
     flex-grow: 1;
@@ -85,21 +93,7 @@ const colorBlockStyle = computed(() => ({
     }
   }
 
-  .color {
-    @include category-color-block;
-    width: 2rem;
-    align-self: stretch;
-    margin-top: calc(-1 * $row-padding);
-    margin-bottom: calc(-1 * $row-padding);
-  }
-
-  .price {
-    padding-top: 0.4rem;
-  }
-
   .actions {
-    button {
-    }
     :not(:last-child) {
       margin-right: 0.5rem;
     }

@@ -7,21 +7,15 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'LoadingIndicator',
-};
-</script>
-
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
+@import '@/styles/_colors.scss';
+@import '@/styles/ui/_layout.scss';
 
 $foreground: $body-text-color;
-$background: $white;
+$background: white;
 
 .loader-wrapper {
-  display: flex;
-  flex-direction: row;
+  @include flex-row;
   align-items: center;
   gap: 0.5rem;
 }
@@ -47,25 +41,4 @@ $background: $white;
     transform: rotate(1turn);
   }
 }
-
-//.loader {
-//  display: inline-block;
-//  border: 2px solid $gray-light; /* Light grey */
-//  border-top: 2px solid $body-text-color; /* Blue */
-//  border-radius: 50%;
-//  width: 1.25rem;
-//  height: 1.25rem;
-//  //width: 120px;
-//  //height: 120px;
-//  animation: spin 2s linear infinite;
-//}
-//
-//@keyframes spin {
-//  0% {
-//    transform: rotate(0deg);
-//  }
-//  100% {
-//    transform: rotate(360deg);
-//  }
-//}
 </style>

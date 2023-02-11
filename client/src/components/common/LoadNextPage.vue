@@ -17,9 +17,11 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/utilities/_padding-margin.scss';
+
 .load-next-page {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: $box-padding;
 }
 </style>

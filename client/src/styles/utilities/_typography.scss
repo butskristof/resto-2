@@ -28,3 +28,13 @@
     }
   }
 }
+
+@mixin extra-info-text {
+  font-style: italic;
+  font-size: 80%;
+  color: lighten($body-text-color, 30%);
+}
+
+@mixin error-text {
+  font-size: 80%;
+}

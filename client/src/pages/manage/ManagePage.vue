@@ -1,21 +1,17 @@
 <template>
-  <div class="manage-page">
-    <nav>
-      <router-link :to="{ name: routeInfo.manage.products.name }">
-        Gerechten
-      </router-link>
-      <router-link :to="{ name: routeInfo.manage.toppings.name }">
-        Toppings
-      </router-link>
-      <router-link :to="{ name: routeInfo.manage.categories.name }">
-        Categorieën
-      </router-link>
-    </nav>
+  <nav>
+    <router-link :to="{ name: routeInfo.manage.products.name }">
+      Gerechten
+    </router-link>
+    <router-link :to="{ name: routeInfo.manage.toppings.name }">
+      Toppings
+    </router-link>
+    <router-link :to="{ name: routeInfo.manage.categories.name }">
+      Categorieën
+    </router-link>
+  </nav>
 
-    <div class="manage-wrapper">
-      <RouterView />
-    </div>
-  </div>
+  <RouterView />
 </template>
 
 <script setup>

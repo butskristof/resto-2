@@ -79,7 +79,6 @@ const { increment, decrement } = useCurrentOrderStore();
 .ticket-table {
   border-collapse: collapse;
   width: 100%;
-  @include sticky-table-header;
   table-layout: fixed;
 
   $money-column-width: 90px;

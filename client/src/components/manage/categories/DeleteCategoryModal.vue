@@ -34,8 +34,6 @@ const queryClient = useQueryClient();
 const {
   isLoading,
   isError,
-  // error,
-  // isSuccess,
   mutate: triggerMutation,
 } = useMutation({
   mutationFn: () => CategoriesService.delete(props.category.id),
@@ -48,32 +46,4 @@ const {
 //#endregion
 </script>
 
-<style scoped lang="scss">
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
-
-.body {
-  margin-top: $box-padding;
-
-  .extra-info {
-    @include extra-info-text;
-  }
-}
-
-.footer {
-  margin-top: calc($box-padding * 2);
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 1rem;
-
-  .right {
-    flex-shrink: 0;
-
-    :not(:last-child) {
-      margin-right: 0.5rem;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

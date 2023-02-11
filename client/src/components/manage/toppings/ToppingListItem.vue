@@ -38,14 +38,14 @@ const topping = computed(() => props.topping);
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
+@import '@/styles/manage/_common.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/utilities/_general.scss';
+@import '@/styles/ui/_layout.scss';
 
 .topping {
-  width: 100%;
-  height: 2.5rem;
-  display: flex;
-  flex-direction: row;
+  height: $list-row-height;
+  @include flex-row;
   align-items: center;
   gap: $box-padding;
   @include striped-rows;
@@ -57,8 +57,6 @@ const topping = computed(() => props.topping);
   }
 
   .actions {
-    button {
-    }
     :not(:last-child) {
       margin-right: 0.5rem;
     }

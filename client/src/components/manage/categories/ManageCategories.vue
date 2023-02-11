@@ -1,6 +1,6 @@
 <template>
-  <div class="manage">
-    <div class="header">
+  <ManageBase>
+    <template #header>
       <div class="left">
         <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
         <div v-if="listFailed">
@@ -19,9 +19,9 @@
           <i class="icon-plus"></i> Categorie toevoegen
         </button>
       </div>
-    </div>
+    </template>
 
-    <div class="list">
+    <template #list>
       <div v-if="listSuccess">
         <CategoryListItem
           v-for="category in categories"
@@ -36,19 +36,21 @@
           @load-next-page="listFetchNextPage"
         />
       </div>
-    </div>
+    </template>
 
-    <EditCategoryModal
-      v-if="showEditModal"
-      :category="categoryToEdit"
-      @close="closeEditModal"
-    />
-    <DeleteCategoryModal
-      v-if="showDeleteModal"
-      :category="categoryToDelete"
-      @close="closeDeleteModal"
-    />
-  </div>
+    <template #modals>
+      <EditCategoryModal
+        v-if="showEditModal"
+        :category="categoryToEdit"
+        @close="closeEditModal"
+      />
+      <DeleteCategoryModal
+        v-if="showDeleteModal"
+        :category="categoryToDelete"
+        @close="closeDeleteModal"
+      />
+    </template>
+  </ManageBase>
 </template>
 
 <script setup>
@@ -59,6 +61,7 @@ import DeleteCategoryModal from '@/components/manage/categories/DeleteCategoryMo
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import { useCategoriesQuery } from '@/composables/queries';
 import LoadNextPage from '@/components/common/LoadNextPage.vue';
+import ManageBase from '@/components/manage/common/ManageBase.vue';
 
 //#region list
 const {
@@ -88,7 +91,7 @@ const loadingLabel = computed(() => {
 
 //#region create & update modal
 const showEditModal = ref(false);
-let categoryToEdit = ref(null);
+const categoryToEdit = ref(null);
 const openEditModal = (category) => {
   categoryToEdit.value = category;
   showEditModal.value = true;
@@ -111,12 +114,4 @@ const closeDeleteModal = () => {
 //#endregion
 </script>
 
-<style scoped lang="scss">
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-</style>
+<style scoped lang="scss"></style>

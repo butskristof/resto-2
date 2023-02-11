@@ -183,13 +183,11 @@ const tryClose = (force = false) => {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/ui/_layout.scss';
 
 .form-actions {
   margin-top: $box-padding;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  @include flex-row-space-between;
 }
 </style>
