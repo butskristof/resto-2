@@ -6,7 +6,7 @@
 
     <template v-else>
       <div class="search">
-        <input v-model.trim="search" type="text" placeholder="Zoek gerecht" />
+        <TextInput v-model.trim="search" placeholder="Zoek gerecht" />
       </div>
 
       <div class="products">
@@ -39,6 +39,7 @@ import { useProductsQuery } from '@/composables/queries';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import ProductListItem from '@/components/order/menu/ProductListItem.vue';
 import { useCurrentOrderStore } from '@/stores/current-order';
+import TextInput from '@/components/common/form/inputs/TextInput.vue';
 
 const search = ref('');
 const {
