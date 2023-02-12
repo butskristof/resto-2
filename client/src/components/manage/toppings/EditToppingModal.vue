@@ -2,13 +2,13 @@
   <EditModal entity="topping" :is-edit="isEdit" @close="tryClose">
     <template #body>
       <form @submit="onSubmit">
-        <TextInput v-model="name" :errors="nameErrors">
+        <TextFormInput v-model="name" :errors="nameErrors">
           <template #label>Naam</template>
-        </TextInput>
+        </TextFormInput>
 
-        <CurrencyInput v-model="price" :errors="priceErrors">
+        <CurrencyFormInput v-model="price" :errors="priceErrors">
           <template #label>Prijs</template>
-        </CurrencyInput>
+        </CurrencyFormInput>
 
         <div class="form-actions">
           <div class="left">
@@ -39,13 +39,13 @@ import EditModal from '@/components/manage/common/EditModal.vue';
 import { computed } from 'vue';
 import * as yup from 'yup';
 import { useField, useForm } from 'vee-validate';
-import TextInput from '@/components/common/form/TextInput.vue';
+import TextFormInput from '@/components/common/form/rows/TextFormInput.vue';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { QUERY_KEYS } from '@/utilities/constants';
 import ToppingsService from '@/services/resto-api/toppings.service';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import { capitalize } from '@/utilities/filters';
-import CurrencyInput from '@/components/common/form/CurrencyInput.vue';
+import CurrencyFormInput from '@/components/common/form/rows/CurrencyFormInput.vue';
 import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
 
 const emit = defineEmits(['close']);

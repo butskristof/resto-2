@@ -6,7 +6,7 @@
       </span>
     </label>
     <div class="input-errors">
-      <CheckboxToggle v-model="model" />
+      <CheckboxInput v-model="model" />
       <div v-if="hasErrors" class="errors">
         <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
       </div>
@@ -16,7 +16,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import CheckboxToggle from '@/components/common/form/CheckboxToggle.vue';
+import CheckboxInput from '@/components/common/form/inputs/CheckboxInput.vue';
 import { useVModel } from '@vueuse/core';
 
 const emit = defineEmits(['update:modelValue']);

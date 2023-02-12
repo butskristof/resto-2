@@ -2,13 +2,13 @@
   <EditModal entity="categorie" :is-edit="isEdit" @close="tryClose">
     <template #body>
       <form @submit="onSubmit">
-        <TextInput v-model="name" :errors="nameErrors">
+        <TextFormInput v-model="name" :errors="nameErrors">
           <template #label>Naam</template>
-        </TextInput>
+        </TextFormInput>
 
-        <ColorInput v-model="color" :errors="colorErrors">
+        <ColorFormInput v-model="color" :errors="colorErrors">
           <template #label>Kleur</template>
-        </ColorInput>
+        </ColorFormInput>
 
         <div class="form-actions">
           <div class="left">
@@ -43,8 +43,8 @@ import { HEX_COLOR_REGEX } from '@/utilities/validation';
 import * as yup from 'yup';
 import EditModal from '@/components/manage/common/EditModal.vue';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import TextInput from '@/components/common/form/TextInput.vue';
-import ColorInput from '@/components/common/form/ColorInput.vue';
+import TextFormInput from '@/components/common/form/rows/TextFormInput.vue';
+import ColorFormInput from '@/components/common/form/rows/ColorFormInput.vue';
 import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
 import { capitalize } from '@/utilities/filters';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';

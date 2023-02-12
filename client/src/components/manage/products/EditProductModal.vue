@@ -2,34 +2,34 @@
   <EditModal entity="gerecht" :is-edit="isEdit" @close="tryClose">
     <template #body>
       <form @submit="onSubmit">
-        <TextInput v-model="name" :errors="nameErrors">
+        <TextFormInput v-model="name" :errors="nameErrors">
           <template #label>Naam</template>
-        </TextInput>
+        </TextFormInput>
 
-        <CurrencyInput v-model="price" :errors="priceErrors">
+        <CurrencyFormInput v-model="price" :errors="priceErrors">
           <template #label>Prijs</template>
-        </CurrencyInput>
+        </CurrencyFormInput>
 
-        <CheckBoxInput
+        <CheckboxFormInput
           v-model="multipleToppingsAllowed"
           :errors="multipleToppingsAllowedErrors"
         >
           <template #label>Meerdere toppings</template>
-        </CheckBoxInput>
+        </CheckboxFormInput>
 
-        <GenericInput :errors="categoryErrors">
+        <GenericFormInput :errors="categoryErrors">
           <template #label>Categorie</template>
           <template #input>
             <CategoryPicker v-model="category" />
           </template>
-        </GenericInput>
+        </GenericFormInput>
 
-        <GenericInput :errors="toppingErrors">
+        <GenericFormInput :errors="toppingErrors">
           <template #label>Toppings</template>
           <template #input>
             <ToppingPicker v-model="toppings" />
           </template>
-        </GenericInput>
+        </GenericFormInput>
 
         <div class="form-actions">
           <div class="left">
@@ -59,13 +59,13 @@
 import EditModal from '@/components/manage/common/EditModal.vue';
 import { computed, ref, watch } from 'vue';
 import CategoryPicker from '@/components/manage/products/edit/CategoryPicker.vue';
-import GenericInput from '@/components/common/form/GenericInput.vue';
+import GenericFormInput from '@/components/common/form/rows/GenericFormInput.vue';
 import * as yup from 'yup';
 import { useField, useForm } from 'vee-validate';
 import { capitalize } from '@/utilities/filters';
-import TextInput from '@/components/common/form/TextInput.vue';
-import CurrencyInput from '@/components/common/form/CurrencyInput.vue';
-import CheckBoxInput from '@/components/common/form/CheckBoxInput.vue';
+import TextFormInput from '@/components/common/form/rows/TextFormInput.vue';
+import CurrencyFormInput from '@/components/common/form/rows/CurrencyFormInput.vue';
+import CheckboxFormInput from '@/components/common/form/rows/CheckboxFormInput.vue';
 import ToppingPicker from '@/components/manage/products/edit/ToppingPicker.vue';
 import ProductsService from '@/services/resto-api/products.service';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
