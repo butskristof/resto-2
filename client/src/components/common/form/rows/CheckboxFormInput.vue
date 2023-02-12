@@ -39,7 +39,7 @@ const hasErrors = computed(() => props.errors && props.errors.length > 0);
 @import '@/styles/_mixins.scss';
 
 .checkbox-input {
-  @include form-input;
+  @include form-row;
 
   display: flex;
   flex-direction: row;

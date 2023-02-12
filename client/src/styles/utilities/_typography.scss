@@ -37,4 +37,6 @@
 
 @mixin error-text {
   font-size: 80%;
+  color: $red;
+  font-weight: 500;
 }

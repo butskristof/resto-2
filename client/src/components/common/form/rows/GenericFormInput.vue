@@ -4,9 +4,16 @@
       <span class="label">
         <slot name="label"></slot>
       </span>
+
+      <div v-if="nestedInput" class="input-errors">
+        <slot name="input"></slot>
+        <div v-if="hasErrors" class="errors">
+          <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
+        </div>
+      </div>
     </label>
 
-    <div class="input-errors">
+    <div v-if="!nestedInput" class="input-errors">
       <slot name="input"></slot>
       <div v-if="hasErrors" class="errors">
         <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
@@ -24,17 +31,21 @@ const props = defineProps({
     required: false,
     default: () => [],
   },
+  nestedInput: {
+    type: Boolean,
+    default: false,
+  },
 });
 const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_mixins.scss';
+@import '@/styles/ui/_layout.scss';
+@import '@/styles/elements/_forms.scss';
 
 .input {
-  @include form-input;
-  display: flex;
-  flex-direction: row;
+  @include form-row;
+  @include flex-row;
 
   label {
     flex-grow: 1;

@@ -8,9 +8,9 @@
 @mixin striped-rows {
   @include transition;
 
-  $odd: white;
-  $even: darken($odd, 5%);
-  $hover: darken($odd, 10%);
+  $even: white;
+  $odd: darken($even, 5%);
+  $hover: darken($even, 10%);
 
   border-bottom: $box-border-width solid $even;
 

@@ -1,4 +1,5 @@
 @import "_variables.scss";
+@import '@/styles/utilities/_padding-margin.scss';
 
 @mixin transition {
   transition: all 300ms;
@@ -16,66 +17,68 @@
   @include brand-font;
   color: $styled-h2-color;
 }
-
-@mixin form-input {
-  @include transition;
-  width: 100%;
-  padding: 0.5rem 1rem;
-  @include striped-rows;
-
-  label {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 1rem;
-
-    .label {
-      margin-top: 0.25rem;
-    }
-
-    .input-errors {
-      flex-basis: 60%;
-      align-self: flex-start;
-
-      input {
-        width: 100%;
-        padding: 0.25rem;
-        border-radius: $button-border-radius;
-        border: 1px solid $gray-light;
-
-        &.invalid {
-          border: 2px solid $red;
-        }
-      }
-
-      .errors {
-        color: $red;
-        margin-top: 0.5rem;
-      }
-    }
-  }
-
-  .input-errors {
-    flex-basis: 60%;
-    align-self: flex-start;
-
-    input {
-      width: 100%;
-      padding: 0.25rem;
-      border-radius: $button-border-radius;
-      border: 1px solid $gray-dark;
-
-      &.invalid {
-        border: 2px solid $red;
-      }
-    }
-
-    .errors {
-      @include error-text;
-    }
-  }
-}
-
+//
+//@mixin form-row {
+//  @include transition;
+//  width: 100%;
+//  padding: 0.5rem 1rem;
+//  @include striped-rows;
+//
+//  label {
+//    display: flex;
+//    flex-direction: row;
+//    justify-content: space-between;
+//    gap: 1rem;
+//
+//    .label {
+//      margin-top: 0.25rem;
+//    }
+//
+//    .input-errors {
+//      flex-basis: 60%;
+//      align-self: flex-start;
+//
+//      //input {
+//      //  width: 100%;
+//      //  padding: 0.25rem;
+//      //  border-radius: $button-border-radius;
+//      //  border: 1px solid $gray-light;
+//      //
+//      //  &.invalid {
+//      //    border: 2px solid $red;
+//      //  }
+//      //}
+//
+//      .errors {
+//        color: $red;
+//        margin-top: $box-padding;
+//      }
+//    }
+//  }
+//
+//  .input-errors {
+//    flex-basis: 60%;
+//    align-self: flex-start;
+//
+//    //input {
+//    //  width: 100%;
+//    //  padding: 0.25rem;
+//    //  border-radius: $button-border-radius;
+//    //  border: 1px solid $gray-dark;
+//    //
+//    //  &.invalid {
+//    //    border: 2px solid $red;
+//    //  }
+//    //}
+//
+//    .errors {
+//      @include error-text;
+//      color: $red;
+//      margin-top: $button-padding-y;
+//    }
+//  }
+//}
+//
 @mixin striped-rows {
   @include transition;
   border-bottom: $box-border-width solid $gray-light;
@@ -132,6 +135,7 @@
 
 @mixin error-text {
   font-size: 80%;
+  color: $red;
 }
 
 @mixin category-color-block {
