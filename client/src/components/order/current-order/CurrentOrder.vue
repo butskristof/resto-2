@@ -27,7 +27,7 @@
         <div class="cash-received">
           <div class="left">Cash ontvangen</div>
           <div class="right">
-            <input v-model.number="cashReceived" type="number" />
+            <CurrencyInput v-model="cashReceived" class="cash-received-input" />
           </div>
         </div>
 
@@ -60,6 +60,7 @@ import { useCurrentOrderStore } from '@/stores/current-order';
 import { storeToRefs } from 'pinia';
 import { ORDER_DISCOUNT } from '@/utilities/order-discount';
 import { computed, ref } from 'vue';
+import CurrencyInput from '@/components/common/form/inputs/CurrencyInput.vue';
 
 const { total, discount: selectedDiscount } = storeToRefs(
   useCurrentOrderStore(),
@@ -121,11 +122,16 @@ function reset() {
       .cash-received,
       .cash-return {
         @include flex-row-space-between;
+        align-items: center;
         margin-bottom: $box-padding;
 
         .right {
           font-weight: 500;
         }
+      }
+
+      .cash-received .right {
+        flex-basis: 125px;
       }
     }
 

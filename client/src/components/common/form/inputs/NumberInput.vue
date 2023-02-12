@@ -5,6 +5,7 @@
 <script setup>
 import { useCurrencyInput } from 'vue-currency-input';
 import { DEFAULT_NUMBER_INPUT_OPTIONS } from '@/utilities/currencies';
+import { watch } from 'vue';
 
 // https://dm4t2.github.io/vue-currency-input/playground.html
 const props = defineProps({
@@ -21,7 +22,21 @@ const props = defineProps({
     default: () => DEFAULT_NUMBER_INPUT_OPTIONS,
   },
 });
-const { inputRef } = useCurrencyInput(props.options);
+const { inputRef, setOptions, setValue } = useCurrencyInput(props.options);
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    setValue(value);
+  },
+);
+
+watch(
+  () => props.options,
+  (options) => {
+    setOptions(options);
+  },
+);
 </script>
 
 <style scoped lang="scss">
