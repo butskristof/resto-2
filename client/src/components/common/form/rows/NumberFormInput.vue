@@ -1,52 +1,40 @@
 <template>
-  <div class="number-input">
-    <label>
-      <span class="label">
-        <slot name="label"></slot>
-      </span>
+  <GenericFormInput :errors="errors" :nested-input="true">
+    <template #label>
+      <slot name="label"></slot>
+    </template>
 
-      <span class="input-errors">
-        <input ref="inputRef" :class="{ invalid: hasErrors }" type="text" />
-        <div v-if="hasErrors" class="errors">
-          <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-        </div>
-      </span>
-    </label>
-  </div>
+    <template #input>
+      <NumberInput v-model="model" :invalid="hasErrors" :options="options" />
+    </template>
+  </GenericFormInput>
 </template>
 
 <script setup>
 import { computed } from 'vue';
-import { useCurrencyInput } from 'vue-currency-input';
+import GenericFormInput from '@/components/common/form/rows/GenericFormInput.vue';
+import NumberInput from '@/components/common/form/inputs/NumberInput.vue';
+import { useVModel } from '@vueuse/core';
+import { DEFAULT_NUMBER_INPUT_OPTIONS } from '@/utilities/currencies';
 
+const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   errors: {
     type: Array,
     required: false,
     default: () => [],
   },
-  modelValue: Number,
+  modelValue: {
+    type: Number,
+    default: null,
+  },
   options: {
-    locale: 'nl-NL',
-    currency: 'EUR',
-    currencyDisplay: 'hidden',
-    hideCurrencySymbolOnFocus: true,
-    hideGroupingSeparatorOnFocus: false,
-    hideNegligibleDecimalDigitsOnFocus: false,
-    autoDecimalDigits: false,
-    useGrouping: true,
-    accountingSign: false,
+    type: Object,
+    default: () => DEFAULT_NUMBER_INPUT_OPTIONS,
   },
 });
-const { inputRef } = useCurrencyInput(props.options);
+const model = useVModel(props, 'modelValue', emit);
 const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 
-<style scoped lang="scss">
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
-
-.number-input {
-  @include form-row;
-}
-</style>
+<style scoped lang="scss"></style>

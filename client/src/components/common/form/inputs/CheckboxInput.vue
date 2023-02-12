@@ -20,14 +20,11 @@ const model = useVModel(props, 'modelValue', emit);
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
+@import '@/styles/_colors.scss';
 
-$background: $gray-light;
+$background: darken(white, 20%);
 $foreground: $klj-blue;
 
-//$width: 60px;
-//$height: 34px;
-//$slider-size: 26px;
 $width: 40px;
 $height: 23px;
 $slider-size: 17px;
@@ -69,7 +66,7 @@ $slider-margin: calc(($height - $slider-size) / 2);
   width: $slider-size;
   left: $slider-margin;
   bottom: $slider-margin;
-  background-color: $white;
+  background-color: white;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }

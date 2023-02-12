@@ -1,25 +1,23 @@
 <template>
-  <div class="currency-input">
-    <label>
-      <span class="label">
-        <slot name="label"></slot>
-      </span>
+  <GenericFormInput :errors="errors" :nested-input="true">
+    <template #label>
+      <slot name="label"></slot>
+    </template>
 
-      <span class="input-errors">
-        <input ref="inputRef" :class="{ invalid: hasErrors }" type="text" />
-        <div v-if="hasErrors" class="errors">
-          <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-        </div>
-      </span>
-    </label>
-  </div>
+    <template #input>
+      <CurrencyInput v-model="model" :invalid="hasErrors" :options="options" />
+    </template>
+  </GenericFormInput>
 </template>
 
 <script setup>
 import { computed } from 'vue';
-import { useCurrencyInput } from 'vue-currency-input';
-// https://dm4t2.github.io/vue-currency-input/playground.html
+import { useVModel } from '@vueuse/core';
+import CurrencyInput from '@/components/common/form/inputs/CurrencyInput.vue';
+import { DEFAULT_CURRENCY_INPUT_OPTIONS } from '@/utilities/currencies';
+import GenericFormInput from '@/components/common/form/rows/GenericFormInput.vue';
 
+const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
   errors: {
     type: Array,
@@ -32,30 +30,11 @@ const props = defineProps({
   },
   options: {
     type: Object,
-    default: () => ({
-      locale: 'nl-BE',
-      currency: 'EUR',
-      currencyDisplay: 'symbol',
-      valueRange: {
-        min: 0,
-      },
-      hideCurrencySymbolOnFocus: false,
-      hideGroupingSeparatorOnFocus: false,
-      hideNegligibleDecimalDigitsOnFocus: false,
-      autoDecimalDigits: false,
-      useGrouping: true,
-      accountingSign: false,
-    }),
+    default: () => DEFAULT_CURRENCY_INPUT_OPTIONS,
   },
 });
-const { inputRef } = useCurrencyInput(props.options);
+const model = useVModel(props, 'modelValue', emit);
 const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 
-<style scoped lang="scss">
-@import '@/styles/_mixins.scss';
-
-.currency-input {
-  @include form-row;
-}
-</style>
+<style scoped lang="scss"></style>

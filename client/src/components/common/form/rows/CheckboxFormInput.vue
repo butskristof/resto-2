@@ -1,23 +1,19 @@
 <template>
-  <div class="checkbox-input">
-    <label>
-      <span class="label">
-        <slot name="label"></slot>
-      </span>
-    </label>
-    <div class="input-errors">
+  <GenericFormInput :errors="errors" :nested-input="false">
+    <template #label>
+      <slot name="label"></slot>
+    </template>
+
+    <template #input>
       <CheckboxInput v-model="model" />
-      <div v-if="hasErrors" class="errors">
-        <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
-      </div>
-    </div>
-  </div>
+    </template>
+  </GenericFormInput>
 </template>
 
 <script setup>
-import { computed } from 'vue';
 import CheckboxInput from '@/components/common/form/inputs/CheckboxInput.vue';
 import { useVModel } from '@vueuse/core';
+import GenericFormInput from '@/components/common/form/rows/GenericFormInput.vue';
 
 const emit = defineEmits(['update:modelValue']);
 const props = defineProps({
@@ -32,26 +28,6 @@ const props = defineProps({
   },
 });
 const model = useVModel(props, 'modelValue', emit);
-const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 
-<style scoped lang="scss">
-@import '@/styles/_mixins.scss';
-
-.checkbox-input {
-  @include form-row;
-
-  display: flex;
-  flex-direction: row;
-
-  label {
-    flex-grow: 1;
-  }
-
-  .input-errors {
-    input {
-      width: initial;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>
