@@ -45,7 +45,7 @@
           Wissen
         </button>
         <button type="button" class="btn-submit btn-icon">
-          <i class="icon-printer"></i>
+          <i class="icon-soup"></i>
           Bestellen
         </button>
       </div>
