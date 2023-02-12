@@ -55,7 +55,7 @@ const disabled = computed(
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_mixins.scss';
+@import '@/styles/utilities/_typography.scss';
 
 .error {
   @include error-text;
