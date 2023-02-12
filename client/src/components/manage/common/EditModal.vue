@@ -47,14 +47,13 @@ const headerText = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/ui/_layout.scss';
 
 .header {
   margin-bottom: $box-padding;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  @include flex-row-space-between;
   align-items: center;
 
   h3 {

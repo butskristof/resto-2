@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import routeInfo from '@/router/route-info';
 import OrderPage from '@/pages/OrderPage.vue';
 
 const router = createRouter({
@@ -6,40 +7,40 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/order',
+      redirect: { name: routeInfo.order.name },
     },
     {
-      path: '/order',
-      name: 'Order',
+      name: routeInfo.order.name,
+      path: routeInfo.order.path,
       component: OrderPage,
     },
     {
-      path: '/create/category',
-      name: 'CreateCategory',
-      component: () => import('@/pages/create/CreateCategory.vue'),
-    },
-    {
-      path: '/manage',
-      name: 'Manage',
-      redirect: { name: 'ManageProducts' },
+      path: routeInfo.manage.path,
+      name: routeInfo.manage.name,
+      redirect: { name: routeInfo.manage.products.name },
       component: () => import('@/pages/manage/ManagePage.vue'),
       children: [
         {
-          path: 'products',
-          name: 'ManageProducts',
+          path: routeInfo.manage.products.path,
+          name: routeInfo.manage.products.name,
           component: () => import('@/pages/manage/ManageProductsPage.vue'),
         },
         {
-          path: 'toppings',
-          name: 'ManageToppings',
+          path: routeInfo.manage.toppings.path,
+          name: routeInfo.manage.toppings.name,
           component: () => import('@/pages/manage/ManageToppingsPage.vue'),
         },
         {
-          path: 'categories',
-          name: 'ManageCategories',
+          path: routeInfo.manage.categories.path,
+          name: routeInfo.manage.categories.name,
           component: () => import('@/pages/manage/ManageCategoriesPage.vue'),
         },
       ],
+    },
+    {
+      name: routeInfo.stats.name,
+      path: routeInfo.stats.path,
+      component: () => import('@/pages/StatsPage.vue'),
     },
   ],
 });

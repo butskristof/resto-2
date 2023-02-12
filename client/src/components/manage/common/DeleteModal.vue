@@ -67,26 +67,24 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/utilities/_typography.scss';
+@import '@/styles/ui/_layout.scss';
 
 .body {
   margin-top: $box-padding;
 
   .extra-info {
     margin-top: calc($box-padding / 2);
-    font-style: italic;
-    font-size: 80%;
-    color: lighten($body-text-color, 30%);
+    @include extra-info-text;
   }
 }
 
 .footer {
   margin-top: calc($box-padding * 2);
 
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 1rem;
+  @include flex-row-space-between;
+  gap: $box-padding;
 
   .right {
     flex-shrink: 0;

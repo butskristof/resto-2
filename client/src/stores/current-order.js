@@ -1,22 +1,20 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import { useProductsStore } from '@/stores/products';
+import { useProductsQuery } from '@/composables/queries';
+import { ORDER_DISCOUNT } from '@/utilities/order-discount';
 
 export const useCurrentOrderStore = defineStore('current-order', () => {
   const currentOrder = ref([]);
+  const discount = ref(ORDER_DISCOUNT.None);
+
+  const { products } = useProductsQuery(true);
 
   const extendedCurrentOrder = computed(() => {
-    const { products } = useProductsStore();
     return currentOrder.value.map((orderLine) => {
-      const product = products.find((p) => p.id === orderLine.productId);
+      const product = products.value.find((p) => p.id === orderLine.productId);
       const toppings = product.toppings.filter((t) =>
         orderLine.toppingIds.includes(t.id),
       );
-
-      let description = product.name;
-      if (toppings.length > 0) {
-        description += `, ${toppings.map((t) => t.name).join(', ')}`;
-      }
 
       const unitPrice =
         product.price +
@@ -27,21 +25,24 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
 
       const totalPrice = orderLine.count * unitPrice;
       return {
-        description,
-        count: orderLine.count,
+        ...orderLine,
+        product,
+        toppings,
         unitPrice,
         totalPrice,
       };
     });
   });
-  const currentOrderTotal = computed(() => {
+
+  const total = computed(() => {
+    if (discount.value.value !== ORDER_DISCOUNT.None.value) return 0;
     return extendedCurrentOrder.value.reduce(
       (runningTotal, orderLine) => runningTotal + orderLine.totalPrice,
       0,
     );
   });
 
-  function addToOrder({ productId, toppingIds }) {
+  function add({ productId, toppingIds }) {
     const existing = currentOrder.value.find(
       (ol) =>
         ol.productId === productId &&
@@ -70,14 +71,15 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
 
   function reset() {
     currentOrder.value = [];
+    discount.value = ORDER_DISCOUNT.None;
   }
 
   return {
-    currentOrder,
-    extendedCurrentOrder,
-    currentOrderTotal,
+    orderLines: extendedCurrentOrder,
+    total,
+    discount,
 
-    addToOrder,
+    add,
     increment,
     decrement,
     reset,

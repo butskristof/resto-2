@@ -32,7 +32,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
+@import '@/styles/ui/_layout.scss';
+@import '@/styles/utilities/_padding-margin.scss';
 
 .modal-mask {
   position: fixed;
@@ -43,15 +44,16 @@ export default {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-container {
-  max-width: calc(0.75 * $max-body-width);
-  width: 95%;
-  margin: auto;
-  padding: 1rem;
-  background-color: #fff;
+  max-width: calc(0.6 * $app-width);
+  width: 100%;
+  margin: auto calc(2 * $box-padding);
+  padding: $box-padding;
+  background-color: white;
   border-radius: $box-border-radius;
-  //box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
 }
 </style>

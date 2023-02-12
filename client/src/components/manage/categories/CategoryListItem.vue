@@ -38,14 +38,14 @@ const colorBlockStyle = computed(() => ({
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
+@import '@/styles/utilities/_padding-margin.scss';
+@import '@/styles/utilities/_general.scss';
+@import '@/styles/ui/_layout.scss';
+@import '@/styles/manage/_common.scss';
 
 .category {
-  width: 100%;
-  height: 2.5rem;
-  display: flex;
-  flex-direction: row;
+  min-height: $list-row-height;
+  @include flex-row;
   align-items: center;
   gap: $box-padding;
   @include striped-rows;
@@ -59,8 +59,6 @@ const colorBlockStyle = computed(() => ({
   }
 
   .actions {
-    button {
-    }
     :not(:last-child) {
       margin-right: 0.5rem;
     }

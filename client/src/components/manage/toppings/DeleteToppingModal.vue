@@ -46,33 +46,4 @@ const {
 //#endregion
 </script>
 
-<style scoped lang="scss">
-@import '@/styles/_variables.scss';
-
-.body {
-  margin-top: $box-padding;
-
-  .extra-info {
-    font-style: italic;
-    font-size: 80%;
-    color: lighten($body-text-color, 30%);
-  }
-}
-
-.footer {
-  margin-top: calc($box-padding * 2);
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 1rem;
-
-  .right {
-    flex-shrink: 0;
-
-    :not(:last-child) {
-      margin-right: 0.5rem;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

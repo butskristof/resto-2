@@ -1,37 +1,40 @@
 <template>
-  <div class="order">
-    <div class="menu">
-      <OrderMenu />
-    </div>
-    <div class="current-order">
-      <CurrentOrder />
-    </div>
+  <div class="order-page">
+    <OrderMenu class="menu" />
+    <CurrentOrder class="current-order" />
   </div>
 </template>
 
-<script>
+<script setup>
 import OrderMenu from '@/components/order/menu/OrderMenu.vue';
-import CurrentOrder from '@/components/order/current/CurrentOrder.vue';
-
-export default {
-  name: 'OrderPage',
-  components: { CurrentOrder, OrderMenu },
-};
+import CurrentOrder from '@/components/order/current-order/CurrentOrder.vue';
 </script>
 
 <style scoped lang="scss">
-.order {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+@import '@/styles/ui/_layout.scss';
+@import '@/styles/utilities/_responsiveness.scss';
+@import '@/styles/utilities/_padding-margin.scss';
 
+.order-page {
+  height: 100%;
   max-height: 100%;
-  overflow: auto;
-}
 
-.menu,
-.current-order {
-  flex-grow: 1;
-  flex-basis: 50%;
+  @include flex-row;
+  gap: $box-padding;
+
+  // only wrap below lg breakpoint
+  // otherwise, distribute evenly w/ flex-basis 50%
+  flex-wrap: wrap;
+  @include breakpoint-lg-up {
+    flex-wrap: initial;
+  }
+
+  .menu,
+  .current-order {
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: 50%;
+    overflow: auto;
+  }
 }
 </style>

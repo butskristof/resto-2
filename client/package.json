@@ -13,6 +13,7 @@
     "@vueuse/core": "^9.12.0",
     "axios": "^1.2.3",
     "lucide-static": "^0.108.0",
+    "normalize.css": "^8.0.1",
     "pinia": "^2.0.28",
     "sass": "^1.57.1",
     "vee-validate": "^4.7.3",
@@ -20,6 +21,7 @@
     "vue-currency-input": "^3.0.3",
     "vue-multiselect": "^3.0.0-alpha.2",
     "vue-router": "^4.1.6",
+    "vue-tippy": "^6.0.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {

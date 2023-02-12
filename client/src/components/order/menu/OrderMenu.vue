@@ -1,61 +1,89 @@
 <template>
-  <div class="menu-wrapper">
-    <h2>Menu</h2>
+  <div class="menu">
+    <LoadingIndicator v-if="productsLoading" class="loading-indicator">
+      Gerechten laden
+    </LoadingIndicator>
 
-    <div class="search">
-      <input v-model.trim="search" type="text" />
-    </div>
+    <template v-else>
+      <div class="search">
+        <input v-model.trim="search" type="text" placeholder="Zoek gerecht" />
+      </div>
 
-    <div v-if="loading" class="loading">loading</div>
-    <div v-if="!loading && products.length" class="menu-items">
-      <MenuItem
-        v-for="product in filteredProducts"
-        :key="product.id"
-        :product="product"
-      />
-    </div>
+      <div class="products">
+        <div v-if="productsQueryFailed">
+          <div>
+            Er liep iets mis bij het ophalen van de gerechten, probeer het later
+            opnieuw.
+          </div>
+          <div>
+            <pre>{{ productsQueryError }}</pre>
+          </div>
+        </div>
+
+        <template v-if="productsQuerySuccess">
+          <ProductListItem
+            v-for="product in filteredProducts"
+            :key="product.id"
+            :product="product"
+            @add="addToCurrentOrder"
+          />
+        </template>
+      </div>
+    </template>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'OrderMenu',
-};
-</script>
-
 <script setup>
-import { storeToRefs } from 'pinia';
-import { useProductsStore } from '@/stores/products';
-import MenuItem from '@/components/order/menu/MenuItem.vue';
 import { computed, ref } from 'vue';
+import { useProductsQuery } from '@/composables/queries';
+import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
+import ProductListItem from '@/components/order/menu/ProductListItem.vue';
+import { useCurrentOrderStore } from '@/stores/current-order';
 
-const { fetchProducts } = useProductsStore();
-fetchProducts();
-
-const { products, loading } = storeToRefs(useProductsStore());
 const search = ref('');
+const {
+  products,
+  isLoading: productsLoading,
+  isError: productsQueryFailed,
+  error: productsQueryError,
+  isSuccess: productsQuerySuccess,
+} = useProductsQuery(true);
 const filteredProducts = computed(() => {
   const lcSearch = search.value.toLowerCase();
   return products.value.filter((p) => p.name.toLowerCase().includes(lcSearch));
 });
+const { add: addToCurrentOrder } = useCurrentOrderStore();
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_mixins.scss';
+@import '@/styles/utilities/_padding-margin.scss';
 
-.menu-wrapper {
+.menu {
   max-height: 100%;
+
   display: flex;
   flex-direction: column;
-}
+  gap: $box-padding;
 
-h2 {
-  @include styled-h2;
-}
+  .loading-indicator {
+    display: flex;
+    justify-content: center;
+    padding: $box-padding;
+  }
 
-.menu-items {
-  flex-grow: 1;
-  max-height: 100%;
-  overflow: auto;
+  .search {
+    flex-shrink: 0;
+    padding: $box-padding;
+
+    input {
+      //margin: $box-padding;
+      //width: 100%;
+    }
+  }
+
+  .products {
+    max-height: 100%;
+    overflow: auto;
+  }
 }
 </style>

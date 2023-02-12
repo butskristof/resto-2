@@ -1,6 +1,6 @@
 <template>
-  <div class="manage">
-    <div class="header">
+  <ManageBase>
+    <template #header>
       <div class="left">
         <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
         <div v-if="listFailed">
@@ -23,9 +23,9 @@
           <i class="icon-plus"></i> Topping toevoegen
         </button>
       </div>
-    </div>
+    </template>
 
-    <div class="list">
+    <template #list>
       <div v-if="listSuccess">
         <ToppingListItem
           v-for="topping in toppings"
@@ -40,19 +40,21 @@
           @load-next-page="listFetchNextPage"
         />
       </div>
-    </div>
+    </template>
 
-    <EditToppingModal
-      v-if="showEditModal"
-      :topping="toppingToEdit"
-      @close="closeEditModal"
-    />
-    <DeleteToppingModal
-      v-if="showDeleteModal"
-      :topping="toppingToDelete"
-      @close="closeDeleteModal"
-    />
-  </div>
+    <template #modals>
+      <EditToppingModal
+        v-if="showEditModal"
+        :topping="toppingToEdit"
+        @close="closeEditModal"
+      />
+      <DeleteToppingModal
+        v-if="showDeleteModal"
+        :topping="toppingToDelete"
+        @close="closeDeleteModal"
+      />
+    </template>
+  </ManageBase>
 </template>
 
 <script setup>
@@ -63,6 +65,7 @@ import DeleteToppingModal from '@/components/manage/toppings/DeleteToppingModal.
 import EditToppingModal from '@/components/manage/toppings/EditToppingModal.vue';
 import { useToppingsQuery } from '@/composables/queries';
 import LoadNextPage from '@/components/common/LoadNextPage.vue';
+import ManageBase from '@/components/manage/common/ManageBase.vue';
 
 //#region list
 const {
@@ -114,12 +117,4 @@ const closeDeleteModal = () => {
 //#endregion
 </script>
 
-<style scoped lang="scss">
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-</style>
+<style scoped lang="scss"></style>
