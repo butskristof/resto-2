@@ -16,7 +16,9 @@ public static class DependencyInjectionExtensions
 	{
 		services
 			.RegisterOptions<IClientConfiguration, ClientConfiguration>
-				(configuration, ConfigurationConstants.Clients);
+				(configuration, ConfigurationConstants.Clients)
+			.RegisterOptions<ITicketPrintingConfiguration, TicketPrintingConfiguration>
+				(configuration, ConfigurationConstants.TicketPrinting);
 		return services;
 	}
 

@@ -12,4 +12,8 @@
       <ProjectReference Include="..\..\..\1-core\Common\Common.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ESCPOS_NET" Version="1.6.0" />
+    </ItemGroup>
+
 </Project>
