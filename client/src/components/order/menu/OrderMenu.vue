@@ -75,11 +75,6 @@ const { add: addToCurrentOrder } = useCurrentOrderStore();
   .search {
     flex-shrink: 0;
     padding: $box-padding;
-
-    input {
-      //margin: $box-padding;
-      //width: 100%;
-    }
   }
 
   .products {

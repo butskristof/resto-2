@@ -4,6 +4,7 @@ import ToppingsService from '@/services/resto-api/toppings.service';
 import CategoriesService from '@/services/resto-api/categories.service';
 import ProductsService from '@/services/resto-api/products.service';
 import { computed, watchEffect } from 'vue';
+import OrdersService from '@/services/resto-api/orders.service';
 
 //#region utilities
 
@@ -81,5 +82,21 @@ export function useProductsQuery(fetchAllPages = false) {
   return {
     ...query,
     products,
+  };
+}
+
+export function useOrdersQuery() {
+  const query = useInfiniteQuery({
+    queryKey: QUERY_KEYS.ORDERS,
+    queryFn: async ({ pageParam = 1 }) =>
+      (await OrdersService.get(pageParam)).data,
+    getNextPageParam,
+  });
+
+  const orders = computed(() => getAllResults(query));
+
+  return {
+    ...query,
+    orders,
   };
 }

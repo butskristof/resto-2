@@ -44,7 +44,7 @@
           <i class="icon-trash"></i>
           Wissen
         </button>
-        <button type="button" class="btn-submit btn-icon">
+        <button type="button" class="btn-submit btn-icon" @click="create">
           <i class="icon-soup"></i>
           Bestellen
         </button>
@@ -65,7 +65,7 @@ import CurrencyInput from '@/components/common/form/inputs/CurrencyInput.vue';
 const { total, discount: selectedDiscount } = storeToRefs(
   useCurrentOrderStore(),
 );
-const { reset: resetCurrentOrder } = useCurrentOrderStore();
+const { reset: resetCurrentOrder, create } = useCurrentOrderStore();
 const cashReceived = ref(0);
 const cashToReturn = computed(() => total.value - cashReceived.value);
 

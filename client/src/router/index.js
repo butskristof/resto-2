@@ -15,6 +15,11 @@ const router = createRouter({
       component: OrderPage,
     },
     {
+      name: routeInfo.orderHistory.name,
+      path: routeInfo.orderHistory.path,
+      component: () => import('@/pages/OrderHistoryPage.vue'),
+    },
+    {
       path: routeInfo.manage.path,
       name: routeInfo.manage.name,
       redirect: { name: routeInfo.manage.products.name },

@@ -3,6 +3,10 @@ export default {
     name: 'Order',
     path: '/order',
   },
+  orderHistory: {
+    name: 'OrderHistory',
+    path: '/order-history',
+  },
   manage: {
     name: 'Manage',
     path: '/manage',

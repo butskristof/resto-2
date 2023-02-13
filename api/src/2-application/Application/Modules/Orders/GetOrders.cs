@@ -4,19 +4,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Requests.Common;
 using Resto.Application.Common.Contracts.Responses.Common;
-using Resto.Application.Common.Contracts.Responses.Products;
+using Resto.Application.Common.Contracts.Responses.Orders;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
-using Resto.Domain.Entities.Products;
+using Resto.Domain.Entities.Orders;
 
-namespace Resto.Application.Modules.Products;
+namespace Resto.Application.Modules.Orders;
 
-public static class GetProducts
+public static class GetOrders
 {
-	public class Request : PagedRequest, IRequest<Response> {}
+	public class Request : PagedRequest, IRequest<Response>
+	{
+	}
 
-	public class Response : PagedResponse<ProductDto>, IMapFrom<PagedResponse<ProductDto>>
+	public class Response : PagedResponse<OrderDto>, IMapFrom<PagedResponse<OrderDto>>
 	{
 	}
 
@@ -46,23 +48,21 @@ public static class GetProducts
 
 		public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
 		{
-			_logger.LogDebug("Get products: page {Page} w/ page size {PageSize}",
+			_logger.LogDebug("Get orders: page {Page} w/ page size {PageSize}",
 				request.Page, request.PageSize);
 
-			var productsQuery = _dbContext
-				.Products
+			var ordersQuery = _dbContext
+				.Orders
 				.AsNoTracking()
-				.OrderBy(p => p.Category.Name)
-				.ThenBy(p => p.LastModifiedOn)
-				// .OrderByDescending(p => p.LastModifiedOn)
+				.OrderByDescending(o => o.Timestamp)
 				.AsQueryable();
 
-			var result = await productsQuery
-				.GetPagedAsync<Product, ProductDto>(_mapper, request.Page, request.PageSize,
+			var result = await ordersQuery
+				.GetPagedAsync<Order, OrderDto>(_mapper, request.Page, request.PageSize,
 					cancellationToken: cancellationToken);
-			_logger.LogDebug("Fetched mapped products from database");
-
+			_logger.LogDebug("Fetched mapped orders from database");
+			
 			return _mapper.Map<Response>(result);
 		}
 	}
-}
+}	

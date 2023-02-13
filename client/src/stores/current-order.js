@@ -2,6 +2,9 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useProductsQuery } from '@/composables/queries';
 import { ORDER_DISCOUNT } from '@/utilities/order-discount';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import OrdersService from '@/services/resto-api/orders.service';
+import { QUERY_KEYS } from '@/utilities/constants';
 
 export const useCurrentOrderStore = defineStore('current-order', () => {
   const currentOrder = ref([]);
@@ -74,6 +77,25 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
     discount.value = ORDER_DISCOUNT.None;
   }
 
+  const queryClient = useQueryClient();
+  const { mutate: createOrder } = useMutation({
+    mutationFn: () => {
+      const request = {
+        orderLines: currentOrder.value.map((ol) => ({
+          productId: ol.productId,
+          toppingIds: [...ol.toppingIds],
+          quantity: ol.count,
+        })),
+      };
+      return OrdersService.create(request);
+    },
+    onSuccess: () => {
+      reset();
+      return queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ORDERS });
+      // TODO tippy
+    },
+  });
+
   return {
     orderLines: extendedCurrentOrder,
     total,
@@ -83,5 +105,6 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
     increment,
     decrement,
     reset,
+    create: createOrder,
   };
 });
