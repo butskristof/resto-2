@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/vue-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/vue-query';
 import { QUERY_KEYS } from '@/utilities/constants';
 import ToppingsService from '@/services/resto-api/toppings.service';
 import CategoriesService from '@/services/resto-api/categories.service';
@@ -99,4 +99,11 @@ export function useOrdersQuery() {
     ...query,
     orders,
   };
+}
+
+export function useOrderStatisticsQuery() {
+  return useQuery({
+    queryKey: QUERY_KEYS.ORDER_STATS,
+    queryFn: async () => (await OrdersService.getStats()).data,
+  });
 }
