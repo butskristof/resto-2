@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Resto.Domain.Entities.Orders;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Persistence.Configuration;
 
@@ -17,7 +16,7 @@ internal class OrderLineConfiguration : IEntityTypeConfiguration<OrderLine>
 			.ValueGeneratedOnAdd();
 
 		builder
-			.HasOne<Product>()
+			.HasOne(ol => ol.Product)
 			.WithMany()
 			.HasForeignKey(ol => ol.ProductId)
 			.OnDelete(DeleteBehavior.Restrict);

@@ -49,15 +49,65 @@ internal class TicketPrintingService : ITicketPrintingService
 			return Task.CompletedTask;
 		}
 
-		var e = new EPSON();
-		_printer.Write(
-			e.PrintLine("ORDER TICKET"), 
-			e.PrintLine(data.Id.ToSafeString()), 
-			e.PrintLine("----------------------------------------------------------------"),
-			e.PartialCutAfterFeed(100)
-		);
+		var content = GetOrderTicketContent(data);
+		_printer.Write(content);
 		_logger.LogDebug("Sent order ticket to printer");
 		
 		return Task.CompletedTask;
+	}
+
+	private const int CurrencyWidth = 10;
+	private const int QuantityWidth = 4;
+	private const int TabWidth = 4;
+
+		private string FormatCurrency(decimal value)
+		=> value.ToString("N2");
+	
+	private byte[][] GetOrderTicketContent(OrderTicketData data)
+	{
+		var e = new EPSON();
+		var content = new List<byte[]>();
+		
+		content.Add(e.CenterAlign());
+		content.Add(e.PrintLine("KLJ Wiekevorst"));
+		content.Add(e.PrintLine("Restaurantdag 2023"));
+		
+		content.Add(e.LeftAlign());
+		content.Add(e.FeedLines(1));
+		content.Add(e.PrintLine("Tafel:"));
+		content.Add(e.FeedLines(4));
+		
+		content.Add(e.PrintLine("================================================"));
+		content.Add(e.PrintLine($"Order ID: {data.Id.ToSafeString()}"));
+		content.Add(e.PrintLine($"Timestamp: {data.Timestamp:u}"));
+		content.Add(e.PrintLine("================================================"));
+		content.Add(e.FeedLines(1));
+		
+		foreach (var orderLine in data.OrderLines)
+		{
+			content.Add(e.LeftAlign());
+			content.Add(e.PrintLine($"{orderLine.Quantity,-QuantityWidth}{orderLine.Product.Name}"));
+			foreach (var orderLineTopping in orderLine.Toppings)
+			{
+				content.Add(e.PrintLine(
+					$"{string.Empty,-QuantityWidth}{string.Empty,-TabWidth}{orderLineTopping.Name}"
+					));
+			}
+			content.Add(e.RightAlign());
+			content.Add(e.PrintLine(
+				$"{FormatCurrency(orderLine.Price),+CurrencyWidth}{FormatCurrency(orderLine.OrderLineTotal),+CurrencyWidth}"
+				));
+		}
+		
+		content.Add(e.LeftAlign());
+		content.Add(e.PrintLine("------------------------------------------------"));
+		content.Add(e.RightAlign());
+		content.Add(e.PrintLine($"Totaal:{FormatCurrency(data.OrderTotal),+CurrencyWidth}"));
+		content.Add(e.LeftAlign());
+	
+		content.Add(e.FeedLines(3));
+		content.Add(e.PartialCutAfterFeed(10));
+		
+		return content.ToArray();
 	}
 }

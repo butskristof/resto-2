@@ -4,6 +4,7 @@ using Resto.Application.Modules.Categories;
 using Resto.Application.Modules.Orders;
 using Resto.Application.Modules.Products;
 using Resto.Application.Modules.Toppings;
+using Resto.Common.Integrations.TicketPrinting.Models;
 using Resto.Domain.Entities.Orders;
 using Resto.Domain.Entities.Products;
 
@@ -16,6 +17,7 @@ internal class MappingProfile : Profile
 		ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
 		CreateRequestMaps();
 		CreateEnumMaps();
+		CreateAdditionalMaps();
 	}
 
 	private void ApplyMappingsFromAssembly(Assembly assembly)
@@ -74,5 +76,15 @@ internal class MappingProfile : Profile
 
 	private void CreateEnumMaps()
 	{
+	}
+
+	private void CreateAdditionalMaps()
+	{
+		CreateMap<Order, OrderTicketData>();
+		CreateMap<OrderLine, OrderTicketData.OrderTicketOrderLine>()
+			.ForMember(dest => dest.Toppings, opt => opt
+				.MapFrom(src => src.Toppings.Select(olt => olt.Topping)));
+		CreateMap<Product, OrderTicketData.OrderTicketProduct>();
+		CreateMap<Topping, OrderTicketData.OrderTicketTopping>();
 	}
 }

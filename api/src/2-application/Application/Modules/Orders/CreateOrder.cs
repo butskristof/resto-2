@@ -1,13 +1,15 @@
 using AutoMapper;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
+using Resto.Common.Integrations.TicketPrinting;
+using Resto.Common.Integrations.TicketPrinting.Models;
 using Resto.Common.Services;
 using Resto.Domain.Entities.Orders;
-using Resto.Domain.Events;
 
 namespace Resto.Application.Modules.Orders;
 
@@ -66,13 +68,15 @@ public static class CreateOrder
 		private readonly IAppDbContext _dbContext;
 		private readonly IMapper _mapper;
 		private readonly IDateTime _dateTime;
+		private readonly ITicketPrintingService _ticketPrintingService;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper, IDateTime dateTime)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper, IDateTime dateTime, ITicketPrintingService ticketPrintingService)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
 			_mapper = mapper;
 			_dateTime = dateTime;
+			_ticketPrintingService = ticketPrintingService;
 		}
 
 		#endregion
@@ -83,14 +87,36 @@ public static class CreateOrder
 
 			var order = _mapper.Map<Order>(request);
 			order.Timestamp = _dateTime.Now;
-			order.AddDomainEvent(new OrderCreatedEvent(order));
 			_logger.LogDebug("Mapped request to entity type");
 
 			_dbContext.Orders.Add(order);
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted new order to database");
-			
-			// TODO print ticket
+
+			try
+			{
+				_logger.LogDebug("Trying to print ticket for newly created order");
+				
+				await _dbContext
+					.Entry(order)
+					.Collection(o => o.OrderLines)
+					.Query()
+					.Include(ol => ol.Product)
+					.Include(ol => ol.Toppings)
+					.ThenInclude(olt => olt.Topping)
+					.LoadAsync(cancellationToken);
+				_logger.LogDebug("Fetched related information for new order from database");
+				
+				var ticketData = _mapper.Map<OrderTicketData>(order);
+				_logger.LogDebug("Mapped order to ticket data"); 
+				
+				await _ticketPrintingService.PrintOrderTicketAsync(ticketData, cancellationToken);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Failed to print ticket for Order with ID {OrderId} after creation",
+					order.Id);
+			}
 
 			return new Response(order.Id);
 		}

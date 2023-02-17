@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Resto.Domain.Entities.Orders;
 using Resto.Domain.Entities.Products;
 
@@ -12,4 +13,5 @@ public interface IAppDbContext
 	DbSet<Order> Orders { get; }
 
 	Task<int> SaveChangesAsync();
+	EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
 }
