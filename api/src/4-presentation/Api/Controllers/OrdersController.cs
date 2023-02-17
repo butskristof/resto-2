@@ -22,4 +22,9 @@ public class OrdersController : ApiControllerBase
 		await Mediator.Send(request);
 		return NoContent();
 	}
+
+	[HttpGet("stats")]
+	public async Task<ActionResult<GetOrderStatistics.Response>> GetOrderStatistics(
+		[FromQuery] GetOrderStatistics.Request request)
+		=> await Mediator.Send(request);
 }

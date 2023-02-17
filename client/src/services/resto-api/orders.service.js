@@ -13,5 +13,10 @@ class OrdersService {
   print(orderId) {
     return restoApi.post(`/orders/${orderId}/print`, { orderId });
   }
+
+  getStats() {
+    // await new Promise((r) => setTimeout(r, 1000));
+    return restoApi.get(`/orders/stats`);
+  }
 }
 export default new OrdersService();

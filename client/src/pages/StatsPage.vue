@@ -1,10 +1,16 @@
 <template>
   <div class="stats-page">
-    <div>hey</div>
+    <pre>
+      {{ JSON.stringify(stats, null, 2) }}
+    </pre>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import OrdersService from '@/services/resto-api/orders.service';
+
+const stats = await OrdersService.getStats();
+</script>
 
 <style scoped lang="scss">
 @import '@/styles/_colors.scss';
