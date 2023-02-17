@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Resto.Domain.Entities.Orders;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Persistence.Configuration;
 
@@ -17,7 +16,7 @@ internal class OrderLineToppingConfiguration : IEntityTypeConfiguration<OrderLin
 			.ValueGeneratedOnAdd();
 
 		builder
-			.HasOne<Topping>()
+			.HasOne(olt => olt.Topping)
 			.WithMany()
 			.HasForeignKey(olt => olt.ToppingId)
 			.OnDelete(DeleteBehavior.Restrict);

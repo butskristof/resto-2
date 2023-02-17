@@ -2,10 +2,17 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { useProductsQuery } from '@/composables/queries';
 import { ORDER_DISCOUNT } from '@/utilities/order-discount';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import OrdersService from '@/services/resto-api/orders.service';
+import { QUERY_KEYS } from '@/utilities/constants';
 
 export const useCurrentOrderStore = defineStore('current-order', () => {
   const currentOrder = ref([]);
   const discount = ref(ORDER_DISCOUNT.None);
+  const cashReceived = ref(0);
+  const cashToReturn = computed(() =>
+    Math.max(0, -1 * (total.value - cashReceived.value)),
+  );
 
   const { products } = useProductsQuery(true);
 
@@ -72,16 +79,40 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
   function reset() {
     currentOrder.value = [];
     discount.value = ORDER_DISCOUNT.None;
+    cashReceived.value = 0;
   }
+
+  const queryClient = useQueryClient();
+  const { mutate: createOrder } = useMutation({
+    mutationFn: () => {
+      const request = {
+        orderLines: currentOrder.value.map((ol) => ({
+          productId: ol.productId,
+          toppingIds: [...ol.toppingIds],
+          quantity: ol.count,
+        })),
+        discount: discount.value.value,
+      };
+      return OrdersService.create(request);
+    },
+    onSuccess: () => {
+      reset();
+      return queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ORDERS });
+      // TODO toast
+    },
+  });
 
   return {
     orderLines: extendedCurrentOrder,
     total,
     discount,
+    cashReceived,
+    cashToReturn,
 
     add,
     increment,
     decrement,
     reset,
+    create: createOrder,
   };
 });

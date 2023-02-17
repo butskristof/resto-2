@@ -44,7 +44,7 @@
           <i class="icon-trash"></i>
           Wissen
         </button>
-        <button type="button" class="btn-submit btn-icon">
+        <button type="button" class="btn-submit btn-icon" @click="create">
           <i class="icon-soup"></i>
           Bestellen
         </button>
@@ -59,20 +59,15 @@ import CurrentOrderTicket from '@/components/order/current-order/CurrentOrderTic
 import { useCurrentOrderStore } from '@/stores/current-order';
 import { storeToRefs } from 'pinia';
 import { ORDER_DISCOUNT } from '@/utilities/order-discount';
-import { computed, ref } from 'vue';
 import CurrencyInput from '@/components/common/form/inputs/CurrencyInput.vue';
 
-const { total, discount: selectedDiscount } = storeToRefs(
-  useCurrentOrderStore(),
-);
-const { reset: resetCurrentOrder } = useCurrentOrderStore();
-const cashReceived = ref(0);
-const cashToReturn = computed(() => total.value - cashReceived.value);
-
-function reset() {
-  cashReceived.value = 0;
-  resetCurrentOrder();
-}
+const {
+  total,
+  discount: selectedDiscount,
+  cashReceived,
+  cashToReturn,
+} = storeToRefs(useCurrentOrderStore());
+const { reset, create } = useCurrentOrderStore();
 </script>
 
 <style scoped lang="scss">

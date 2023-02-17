@@ -22,6 +22,15 @@
 
       <div>
         <router-link
+          v-tippy="getTippyConfiguration('Bestelhistoriek')"
+          :to="{ name: routeInfo.orderHistory.name }"
+        >
+          <i class="icon-history"></i>
+        </router-link>
+      </div>
+
+      <div>
+        <router-link
           v-tippy="getTippyConfiguration('Statistieken')"
           :to="{ name: routeInfo.stats.name }"
         >

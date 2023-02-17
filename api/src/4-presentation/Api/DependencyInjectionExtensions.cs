@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Resto.Common.Configuration;
@@ -16,7 +17,9 @@ public static class DependencyInjectionExtensions
 	{
 		services
 			.RegisterOptions<IClientConfiguration, ClientConfiguration>
-				(configuration, ConfigurationConstants.Clients);
+				(configuration, ConfigurationConstants.Clients)
+			.RegisterOptions<ITicketPrintingConfiguration, TicketPrintingConfiguration>
+				(configuration, ConfigurationConstants.TicketPrinting);
 		return services;
 	}
 
@@ -39,7 +42,11 @@ public static class DependencyInjectionExtensions
 			.AddCorsPolicy();
 
 		services
-			.AddControllers();
+			.AddControllers()
+			.AddJsonOptions(options =>
+			{
+				options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+			});
 		
 		services
 			.AddSwaggerGen(options =>
