@@ -52,10 +52,7 @@ public static class GetOrders
 				request.Page, request.PageSize);
 
 			var ordersQuery = _dbContext
-				.Orders
-				.AsNoTracking()
-				.OrderByDescending(o => o.Timestamp)
-				.AsQueryable();
+				.OrdersBaseQuery(false);
 
 			var result = await ordersQuery
 				.GetPagedAsync<Order, OrderDto>(_mapper, request.Page, request.PageSize,

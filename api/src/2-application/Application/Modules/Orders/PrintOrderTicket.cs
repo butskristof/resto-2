@@ -53,13 +53,7 @@ public static class PrintOrderTicket
 			_logger.LogDebug("Printing ticket for Order with ID {OrderId}", request.OrderId);
 
 			var order = await _dbContext
-				.Orders
-				.AsNoTracking()
-				.Include(o => o.OrderLines)
-				.ThenInclude(ol => ol.Product)
-				.Include(o => o.OrderLines)
-				.ThenInclude(ol => ol.Toppings)
-				.ThenInclude(olt => olt.Topping)
+				.OrdersBaseQuery(false)
 				.ProjectTo<OrderTicketData>(_mapper.ConfigurationProvider)
 				.SingleOrDefaultAsync(o => o.Id == request.OrderId,
 					cancellationToken: cancellationToken)

@@ -1,7 +1,7 @@
 import restoApi from '@/services/resto-api/resto-api';
 
 class OrdersService {
-  async get(page = 1, pageSize = 1) {
+  async get(page = 1, pageSize = 10) {
     // await new Promise((r) => setTimeout(r, 1000));
     return await restoApi.get(`/orders?page=${page}&pageSize=${pageSize}`);
   }

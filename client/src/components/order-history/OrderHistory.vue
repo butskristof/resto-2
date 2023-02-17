@@ -1,22 +1,23 @@
 <template>
-  <h2>Bestellingshistoriek</h2>
   <div class="header">
     <div class="left">
-      <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
-      <div v-if="isError">
-        <div>
-          Er liep iets mis bij het ophalen van de bestellingen, probeer het
-          later opnieuw.
-        </div>
-        <div>
-          <pre>{{ error }}</pre>
-        </div>
-      </div>
+      <h2>Bestellingshistoriek</h2>
     </div>
     <div class="right">
-      <div>{{ orders.length }} bestellingen geladen</div>
+      <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
     </div>
   </div>
+
+  <div v-if="isError">
+    <div>
+      Er liep iets mis bij het ophalen van de bestellingen, probeer het later
+      opnieuw.
+    </div>
+    <div>
+      <pre>{{ error }}</pre>
+    </div>
+  </div>
+
   <div v-if="isSuccess">
     <div class="orders">
       <OrderHistoryListItem
@@ -25,6 +26,7 @@
         :order="order"
       />
     </div>
+
     <LoadNextPage
       v-if="hasNextPage"
       entity="bestellingen"

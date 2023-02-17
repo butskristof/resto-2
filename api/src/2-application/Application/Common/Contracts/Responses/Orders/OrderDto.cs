@@ -9,4 +9,7 @@ public class OrderDto : IMapFrom<Order>
 	public Guid Id { get; set; }
 	public OrderDiscount Discount { get; set; }
 	public DateTime Timestamp { get; set; }
+	public decimal OrderTotal { get; set; }
+	
+	public IEnumerable<OrderLineDto> OrderLines { get; set; }
 }
