@@ -15,6 +15,7 @@ internal class TicketPrintingService : ITicketPrintingService
 	private readonly ILogger<TicketPrintingService> _logger;
 	private readonly ITicketPrintingConfiguration _configuration;
 	private readonly FilePrinter _printer;
+	private readonly byte[] _headerImage;
 
 	public TicketPrintingService(ILogger<TicketPrintingService> logger, ITicketPrintingConfiguration configuration)
 	{
@@ -35,6 +36,20 @@ internal class TicketPrintingService : ITicketPrintingService
 				_logger.LogWarning("Printer path is available, but file does not exist");
 			}
 		}
+
+		if (configuration.UseHeaderImage)
+		{
+			logger.LogDebug("Header image path is available, trying to read content");
+			if (File.Exists(_configuration.HeaderImagePath))
+			{
+				_headerImage = File.ReadAllBytes(configuration.HeaderImagePath);
+				logger.LogInformation("Set up ticket header image");
+			}
+			else
+			{
+				logger.LogWarning("Header image path is available, but file does not exist");
+			}
+		}
 	}
 
 	#endregion
@@ -49,8 +64,29 @@ internal class TicketPrintingService : ITicketPrintingService
 			return Task.CompletedTask;
 		}
 
-		var content = GetOrderTicketContent(data);
-		_printer.Write(content);
+		var orderLines = data.OrderLines.Select(ol => ol).ToList();
+		var soupOrderLines = data.OrderLines
+			.Where(ol => ol.Product.Name.Contains("soep", StringComparison.InvariantCultureIgnoreCase))
+			.ToList();
+
+		var e = new EPSON();
+		var ticketCommands = new List<byte[]>();
+		
+		if (soupOrderLines.Any())
+		{
+			orderLines.RemoveAll(ol => soupOrderLines.Contains(ol));
+			
+			SetOrderTicketHeader(ticketCommands, e, data);
+			SetOrderTicketOrderLines(ticketCommands, e, soupOrderLines);
+			SetTicketCut(ticketCommands, e);
+		}
+		
+		SetOrderTicketHeader(ticketCommands, e, data);
+		SetOrderTicketOrderLines(ticketCommands, e, orderLines);
+		SetOrderTicketFooter(ticketCommands, e, data);
+		SetTicketCut(ticketCommands, e);
+		
+		_printer.Write(ticketCommands.ToArray());
 		_logger.LogDebug("Sent order ticket to printer");
 		
 		return Task.CompletedTask;
@@ -60,19 +96,16 @@ internal class TicketPrintingService : ITicketPrintingService
 	private const int QuantityWidth = 4;
 	private const int TabWidth = 4;
 
-		private string FormatCurrency(decimal value)
+	private string FormatCurrency(decimal value)
 		=> value.ToString("N2");
 	
-	private byte[][] GetOrderTicketContent(OrderTicketData data)
+	private void SetOrderTicketHeader(ICollection<byte[]> content, ICommandEmitter e, OrderTicketData data)
 	{
-		var e = new EPSON();
-		var content = new List<byte[]>();
-		
 		content.Add(e.CenterAlign());
 
-		if (!string.IsNullOrWhiteSpace(_configuration.HeaderImagePath) && File.Exists(_configuration.HeaderImagePath))
+		if (_headerImage != null)
 		{
-			content.Add(e.PrintImage(File.ReadAllBytes(_configuration.HeaderImagePath), true, false, 550));
+			content.Add(e.PrintImage(_headerImage, true, false, 550));
 		}
 		else
 		{
@@ -90,8 +123,12 @@ internal class TicketPrintingService : ITicketPrintingService
 		content.Add(e.PrintLine($"Timestamp: {data.Timestamp:u}"));
 		content.Add(e.PrintLine("================================================"));
 		content.Add(e.FeedLines(1));
-		
-		foreach (var orderLine in data.OrderLines)
+	}
+
+	private void SetOrderTicketOrderLines(ICollection<byte[]> content, ICommandEmitter e,
+		IEnumerable<OrderTicketData.OrderTicketOrderLine> orderLines)
+	{
+		foreach (var orderLine in orderLines)
 		{
 			content.Add(e.LeftAlign());
 			content.Add(e.PrintLine($"{orderLine.Quantity,-QuantityWidth}{orderLine.Product.Name}"));
@@ -99,23 +136,28 @@ internal class TicketPrintingService : ITicketPrintingService
 			{
 				content.Add(e.PrintLine(
 					$"{string.Empty,-QuantityWidth}{string.Empty,-TabWidth}{orderLineTopping.Name}"
-					));
+				));
 			}
 			content.Add(e.RightAlign());
 			content.Add(e.PrintLine(
 				$"{FormatCurrency(orderLine.Price),+CurrencyWidth}{FormatCurrency(orderLine.OrderLineTotal),+CurrencyWidth}"
-				));
+			));
+			
+			content.Add(e.LeftAlign());
 		}
-		
-		content.Add(e.LeftAlign());
+	}
+
+	private void SetOrderTicketFooter(ICollection<byte[]> content, ICommandEmitter e, OrderTicketData data)
+	{
 		content.Add(e.PrintLine("------------------------------------------------"));
 		content.Add(e.RightAlign());
 		content.Add(e.PrintLine($"Totaal:{FormatCurrency(data.OrderTotal),+CurrencyWidth}"));
 		content.Add(e.LeftAlign());
-	
+	}
+
+	private void SetTicketCut(ICollection<byte[]> content, ICommandEmitter e)
+	{
 		content.Add(e.FeedLines(3));
 		content.Add(e.PartialCutAfterFeed(10));
-		
-		return content.ToArray();
 	}
 }
