@@ -21,11 +21,19 @@ internal class TicketPrintingService : ITicketPrintingService
 		_logger = logger;
 		_configuration = configuration;
 		
-		if (_configuration.PrinterAvailable)
+		if (_configuration.UsePrinter)
 		{
 			_logger.LogDebug("Printer path is available, trying to set up connection");
-			_printer = new FilePrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
-			logger.LogInformation("Set up printer connection");
+			if (File.Exists(_configuration.PrinterPath))
+			{
+				_printer = new FilePrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
+				
+				_logger.LogInformation("Set up printer connection");
+			}
+			else
+			{
+				_logger.LogWarning("Printer path is available, but file does not exist");
+			}
 		}
 	}
 
@@ -34,10 +42,10 @@ internal class TicketPrintingService : ITicketPrintingService
 	public Task PrintOrderTicketAsync(OrderTicketData data, CancellationToken cancellationToken = default)
 	{
 		_logger.LogDebug("Printing order ticket");
-		
-		if (!_configuration.PrinterAvailable) // TODO printer obj status
+
+		if (_printer == null)
 		{
-			_logger.LogDebug("Printer not available, returning");
+			_logger.LogDebug("Printer not available");
 			return Task.CompletedTask;
 		}
 
@@ -45,7 +53,8 @@ internal class TicketPrintingService : ITicketPrintingService
 		_printer.Write(
 			e.PrintLine("ORDER TICKET"), 
 			e.PrintLine(data.Id.ToSafeString()), 
-			e.PartialCutAfterFeed(5)
+			e.PrintLine("----------------------------------------------------------------"),
+			e.PartialCutAfterFeed(100)
 		);
 		_logger.LogDebug("Sent order ticket to printer");
 		

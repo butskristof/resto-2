@@ -13,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="ESCPOS_NET" Version="1.6.0" />
+      <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
     </ItemGroup>
 
 </Project>
