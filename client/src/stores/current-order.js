@@ -9,6 +9,10 @@ import { QUERY_KEYS } from '@/utilities/constants';
 export const useCurrentOrderStore = defineStore('current-order', () => {
   const currentOrder = ref([]);
   const discount = ref(ORDER_DISCOUNT.None);
+  const cashReceived = ref(0);
+  const cashToReturn = computed(() =>
+    Math.max(0, -1 * (total.value - cashReceived.value)),
+  );
 
   const { products } = useProductsQuery(true);
 
@@ -75,6 +79,7 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
   function reset() {
     currentOrder.value = [];
     discount.value = ORDER_DISCOUNT.None;
+    cashReceived.value = 0;
   }
 
   const queryClient = useQueryClient();
@@ -101,6 +106,8 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
     orderLines: extendedCurrentOrder,
     total,
     discount,
+    cashReceived,
+    cashToReturn,
 
     add,
     increment,
