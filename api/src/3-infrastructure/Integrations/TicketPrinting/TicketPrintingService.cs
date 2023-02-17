@@ -98,6 +98,16 @@ internal class TicketPrintingService : ITicketPrintingService
 
 	private string FormatCurrency(decimal value)
 		=> value.ToString("N2");
+
+	private string GetDiscountPrintValue(OrderTicketData.OrderTicketDiscount discount)
+	{
+		return discount switch
+		{
+			OrderTicketData.OrderTicketDiscount.Member => "Leiding",
+			OrderTicketData.OrderTicketDiscount.Volunteer => "Helper",
+			_ => string.Empty,
+		};
+	}
 	
 	private void SetOrderTicketHeader(ICollection<byte[]> content, ICommandEmitter e, OrderTicketData data)
 	{
@@ -150,6 +160,12 @@ internal class TicketPrintingService : ITicketPrintingService
 	private void SetOrderTicketFooter(ICollection<byte[]> content, ICommandEmitter e, OrderTicketData data)
 	{
 		content.Add(e.PrintLine("------------------------------------------------"));
+		
+		if (data.Discount is not OrderTicketData.OrderTicketDiscount.None)
+		{
+			content.Add(e.PrintLine($"Korting: {GetDiscountPrintValue(data.Discount)}"));
+		}
+		
 		content.Add(e.RightAlign());
 		content.Add(e.PrintLine($"Totaal:{FormatCurrency(data.OrderTotal),+CurrencyWidth}"));
 		content.Add(e.LeftAlign());

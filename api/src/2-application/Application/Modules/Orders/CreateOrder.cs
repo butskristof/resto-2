@@ -10,6 +10,7 @@ using Resto.Common.Integrations.TicketPrinting;
 using Resto.Common.Integrations.TicketPrinting.Models;
 using Resto.Common.Services;
 using Resto.Domain.Entities.Orders;
+using Resto.Domain.Enumerations;
 
 namespace Resto.Application.Modules.Orders;
 
@@ -18,6 +19,7 @@ public static class CreateOrder
 	public class Request : IRequest<Response>
 	{
 		public IEnumerable<OrderLineRequest> OrderLines { get; set; }
+		public OrderDiscount Discount { get; set; }
 
 		public class OrderLineRequest
 		{
@@ -33,6 +35,14 @@ public static class CreateOrder
 	{
 		public Validator(IAppDbContext dbContext)
 		{
+			RuleFor(r => r.Discount)
+				.IsInEnum()
+				.WithErrorCode(ErrorCode.Invalid);
+
+			RuleFor(r => r.OrderLines)
+				.NotEmpty()
+				.WithErrorCode(ErrorCode.Required);
+			
 			RuleForEach(r => r.OrderLines)
 				.SetValidator(new OrderLineValidator(dbContext));
 		}

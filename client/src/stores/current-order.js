@@ -86,6 +86,7 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
           toppingIds: [...ol.toppingIds],
           quantity: ol.count,
         })),
+        discount: discount.value.value,
       };
       return OrdersService.create(request);
     },

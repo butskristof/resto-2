@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Resto.Common.Configuration;
@@ -41,7 +42,11 @@ public static class DependencyInjectionExtensions
 			.AddCorsPolicy();
 
 		services
-			.AddControllers();
+			.AddControllers()
+			.AddJsonOptions(options =>
+			{
+				options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+			});
 		
 		services
 			.AddSwaggerGen(options =>
