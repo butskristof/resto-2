@@ -19,6 +19,9 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import CategoriesService from '@/services/resto-api/categories.service';
 import { QUERY_KEYS } from '@/utilities/constants';
 import DeleteModal from '@/components/manage/common/DeleteModal.vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -38,6 +41,7 @@ const {
 } = useMutation({
   mutationFn: () => CategoriesService.delete(props.category.id),
   onSuccess: () => {
+    toast.success('Categorie verwijderd');
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CATEGORIES });
     emit('close');
   },

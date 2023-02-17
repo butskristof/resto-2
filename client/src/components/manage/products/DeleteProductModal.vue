@@ -14,6 +14,9 @@ import DeleteModal from '@/components/manage/common/DeleteModal.vue';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import ProductsService from '@/services/resto-api/products.service';
 import { QUERY_KEYS } from '@/utilities/constants';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -32,6 +35,7 @@ const {
 } = useMutation({
   mutationFn: () => ProductsService.delete(props.product.id),
   onSuccess: () => {
+    toast.success('Gerecht verwijderd');
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PRODUCTS });
     emit('close');
   },
