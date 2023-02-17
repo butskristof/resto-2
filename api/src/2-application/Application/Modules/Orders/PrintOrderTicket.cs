@@ -55,6 +55,11 @@ public static class PrintOrderTicket
 			var order = await _dbContext
 				.Orders
 				.AsNoTracking()
+				.Include(o => o.OrderLines)
+				.ThenInclude(ol => ol.Product)
+				.Include(o => o.OrderLines)
+				.ThenInclude(ol => ol.Toppings)
+				.ThenInclude(olt => olt.Topping)
 				.ProjectTo<OrderTicketData>(_mapper.ConfigurationProvider)
 				.SingleOrDefaultAsync(o => o.Id == request.OrderId,
 					cancellationToken: cancellationToken)

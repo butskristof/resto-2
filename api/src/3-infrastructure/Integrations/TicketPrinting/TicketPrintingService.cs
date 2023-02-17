@@ -69,8 +69,16 @@ internal class TicketPrintingService : ITicketPrintingService
 		var content = new List<byte[]>();
 		
 		content.Add(e.CenterAlign());
-		content.Add(e.PrintLine("KLJ Wiekevorst"));
-		content.Add(e.PrintLine("Restaurantdag 2023"));
+
+		if (!string.IsNullOrWhiteSpace(_configuration.HeaderImagePath) && File.Exists(_configuration.HeaderImagePath))
+		{
+			content.Add(e.PrintImage(File.ReadAllBytes(_configuration.HeaderImagePath), true, false, 550));
+		}
+		else
+		{
+			content.Add(e.PrintLine("KLJ Wiekevorst"));
+			content.Add(e.PrintLine("Restaurantdag 2023"));
+		}
 		
 		content.Add(e.LeftAlign());
 		content.Add(e.FeedLines(1));
