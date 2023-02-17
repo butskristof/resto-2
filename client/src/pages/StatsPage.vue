@@ -2,7 +2,19 @@
   <div class="stats-page">
     <LoadingIndicator v-if="loading">Statistieken laden</LoadingIndicator>
     <div v-if="isError" class="error">{{ error }}</div>
-    <pre v-if="isSuccess">{{ JSON.stringify(data, null, 2) }}</pre>
+    <div v-if="isSuccess">
+      <ul>
+        <li v-for="product in data.products" :key="product.id">
+          {{ product.product.name }}: {{ product.quantity }}
+          <ul v-if="product.toppings.length > 0">
+            <li v-for="topping in product.toppings" :key="topping.topping.id">
+              {{ topping.topping.name }}: {{ topping.quantity }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!--    <pre v-if="isSuccess">{{ JSON.stringify(data, null, 2) }}</pre>-->
   </div>
 </template>
 

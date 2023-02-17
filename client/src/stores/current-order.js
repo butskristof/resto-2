@@ -98,7 +98,7 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
     onSuccess: () => {
       reset();
       return queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ORDERS });
-      // TODO tippy
+      // TODO toast
     },
   });
 
