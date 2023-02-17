@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Resto.Domain.Entities.Orders;
+using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Common.Persistence;
 
@@ -22,6 +23,20 @@ internal static class AppDbContextExtensions
 			.ThenInclude(ol => ol.Toppings)
 			.ThenInclude(olt => olt.Topping);
 		
+		return query;
+	}
+
+	internal static IQueryable<Product> ProductsBaseQuery(this IAppDbContext context, bool tracking = true)
+	{
+		var query = context
+			.Products
+			.OrderBy(p => p.Category.Name)
+			.ThenBy(p => p.LastModifiedOn)
+			.AsQueryable();
+
+		if (!tracking)
+			query = query.AsNoTracking();
+
 		return query;
 	}
 }

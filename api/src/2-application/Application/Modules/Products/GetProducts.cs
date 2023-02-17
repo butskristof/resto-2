@@ -1,6 +1,5 @@
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Requests.Common;
 using Resto.Application.Common.Contracts.Responses.Common;
@@ -50,12 +49,7 @@ public static class GetProducts
 				request.Page, request.PageSize);
 
 			var productsQuery = _dbContext
-				.Products
-				.AsNoTracking()
-				.OrderBy(p => p.Category.Name)
-				.ThenBy(p => p.LastModifiedOn)
-				// .OrderByDescending(p => p.LastModifiedOn)
-				.AsQueryable();
+				.ProductsBaseQuery(false);
 
 			var result = await productsQuery
 				.GetPagedAsync<Product, ProductDto>(_mapper, request.Page, request.PageSize,
