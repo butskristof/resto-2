@@ -16,21 +16,8 @@ public static class GetOrderStatistics
 
 	public class Response
 	{
+		public int OrderCount { get; set; }
 		public IEnumerable<ProductDto> Products { get; set; }
-		
-		// public class OrderStatisticsProduct
-		// {
-		// 	public ProductDto Product { get; set; }
-		// 	public int Quantity { get; set; }
-		//
-		// 	public IEnumerable<OrderStatisticsTopping> Toppings { get; set; }
-		// }
-		//
-		// public class OrderStatisticsTopping
-		// {
-		// 	public ToppingDto Topping { get; set; }
-		// 	public int Quantity { get; set; }
-		// }
 
 		public class ProductDto : IMapFrom<Product>
 		{
@@ -114,6 +101,7 @@ public static class GetOrderStatistics
 
 			return new Response
 			{
+				OrderCount = await _dbContext.OrdersBaseQuery(false).CountAsync(cancellationToken),
 				Products = stats,
 			};
 		}

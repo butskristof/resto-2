@@ -25,6 +25,7 @@
             v-for="product in filteredProducts"
             :key="product.id"
             :product="product"
+            :order-key="orderKey"
             @add="addToCurrentOrder"
           />
         </template>
@@ -40,6 +41,7 @@ import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import ProductListItem from '@/components/order/menu/ProductListItem.vue';
 import { useCurrentOrderStore } from '@/stores/current-order';
 import TextInput from '@/components/common/form/inputs/TextInput.vue';
+import { storeToRefs } from 'pinia';
 
 const search = ref('');
 const {
@@ -54,6 +56,7 @@ const filteredProducts = computed(() => {
   return products.value.filter((p) => p.name.toLowerCase().includes(lcSearch));
 });
 const { add: addToCurrentOrder } = useCurrentOrderStore();
+const { key: orderKey } = storeToRefs(useCurrentOrderStore());
 </script>
 
 <style scoped lang="scss">

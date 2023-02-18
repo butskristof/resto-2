@@ -37,7 +37,7 @@
 
 <script setup>
 import { formatCurrency } from '@/utilities/filters';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { getTextColor } from '@/utilities/color';
 
 const emit = defineEmits(['add']);
@@ -46,17 +46,15 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  orderKey: {
+    type: Number,
+    default: 0,
+  },
 });
 const categoryColorStyle = computed(() => ({
   'background-color': props.product.category.color,
   color: getTextColor(props.product.category.color),
 }));
-
-const selectedToppingIds = ref([]);
-
-const inputType = computed(() =>
-  props.product.multipleToppingsAllowed ? 'checkbox' : 'radio',
-);
 
 function add() {
   // when using radio buttons (so only a single topping is allowed), the v-model
@@ -72,6 +70,39 @@ function add() {
     toppingIds: toppingIds,
   });
 }
+
+//#region topping selection
+
+const selectedToppingIds = ref([]);
+
+const inputType = computed(() =>
+  props.product.multipleToppingsAllowed ? 'checkbox' : 'radio',
+);
+
+function setDefaultToppingSelection() {
+  // if there are toppings available, and the list is rendered as a radio,
+  // select the first option by default
+  if (inputType.value === 'radio' && props.product.toppings.length > 0)
+    selectedToppingIds.value = props.product.toppings[0].id;
+  else selectedToppingIds.value = [];
+}
+
+// when the current order resets, reset the selected toppings
+watch(
+  () => props.orderKey,
+  () => {
+    setDefaultToppingSelection();
+  },
+);
+watch(
+  () => props.product,
+  () => {
+    setDefaultToppingSelection();
+  },
+  { immediate: true },
+);
+
+//#endregion
 </script>
 
 <style scoped lang="scss">
