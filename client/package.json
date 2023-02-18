@@ -13,6 +13,7 @@
     "@vueuse/core": "^9.12.0",
     "axios": "^1.2.3",
     "chart.js": "^4.2.1",
+    "chartjs-adapter-moment": "^1.0.1",
     "lucide-static": "^0.108.0",
     "normalize.css": "^8.0.1",
     "pinia": "^2.0.28",

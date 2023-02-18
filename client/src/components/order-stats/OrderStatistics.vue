@@ -10,6 +10,7 @@
   <div v-if="isError" class="error">{{ error }}</div>
   <div v-if="isSuccess">
     <div class="order-count">Aantal bestellingen: {{ data.orderCount }}</div>
+    <OrderStatsLineChart />
     <ProductStatsBarChart />
   </div>
 </template>
@@ -19,6 +20,7 @@ import { useOrderStatisticsQuery } from '@/composables/queries';
 import { computed } from 'vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import ProductStatsBarChart from '@/components/order-stats/charts/ProductStatsBarChart.vue';
+import OrderStatsLineChart from '@/components/order-stats/charts/OrderStatsLineChart.vue';
 
 const { data, isLoading, isFetching, isSuccess, isError, error } =
   useOrderStatisticsQuery();
