@@ -1,5 +1,6 @@
 <template>
   <div class="product-stats">
+    <h3>Bestellingen per product</h3>
     <Bar :data="chartData" :options="chartOptions" />
   </div>
 </template>
@@ -18,7 +19,7 @@ import {
 import { useOrderStatisticsQuery } from '@/composables/queries';
 import { computed } from 'vue';
 const { data } = useOrderStatisticsQuery();
-const products = computed(() => data.value?.products);
+const products = computed(() => data.value?.productStatistics);
 
 ChartJS.register(Title, Tooltip, BarElement, CategoryScale, LinearScale);
 
@@ -69,6 +70,15 @@ const chartData = computed(() => {
 });
 const chartOptions = {
   responsive: true,
+  scales: {
+    y: {
+      title: {
+        display: true,
+        text: 'Aantal',
+      },
+      min: 0,
+    },
+  },
 };
 </script>
 

@@ -48,6 +48,9 @@ import ColorFormInput from '@/components/common/form/rows/ColorFormInput.vue';
 import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
 import { capitalize } from '@/utilities/filters';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -110,6 +113,7 @@ const {
 } = useMutation({
   mutationFn: createOrUpdateCategory,
   onSuccess: () => {
+    toast.success('Categorie ' + (isEdit.value ? 'bijgewerkt' : 'aangemaakt'));
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.CATEGORIES });
     tryClose(true);
   },

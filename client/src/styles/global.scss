@@ -1,11 +1,7 @@
-// external dependencies
-@import 'normalize.css/normalize.css';
-@import 'lucide-static/font/lucide.css';
-
-
 // app setup
 @import 'utilities/_typography.scss';
 @import 'ui/_theme.scss';
 @import 'ui/_layout.scss';
+@import 'ui/_toasts.scss';
 @import 'elements/_forms.scss';
 @import 'elements/_buttons.scss';

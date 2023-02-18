@@ -44,7 +44,12 @@
           <i class="icon-trash"></i>
           Wissen
         </button>
-        <button type="button" class="btn-submit btn-icon" @click="create">
+        <button
+          type="button"
+          class="btn-submit btn-icon"
+          :disabled="!canCreate"
+          @click="create"
+        >
           <i class="icon-soup"></i>
           Bestellen
         </button>
@@ -66,6 +71,7 @@ const {
   discount: selectedDiscount,
   cashReceived,
   cashToReturn,
+  canCreate,
 } = storeToRefs(useCurrentOrderStore());
 const { reset, create } = useCurrentOrderStore();
 </script>
@@ -149,6 +155,12 @@ const { reset, create } = useCurrentOrderStore();
         &:focus {
           background-color: darken($klj-green, 10%);
           border-color: transparent;
+        }
+
+        &:disabled {
+          background-color: lighten($klj-green, 20%);
+          border-color: transparent;
+          color: $body-text-color-lighter;
         }
       }
     }

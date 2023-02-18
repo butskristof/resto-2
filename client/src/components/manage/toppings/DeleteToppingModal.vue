@@ -20,6 +20,9 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import ToppingsService from '@/services/resto-api/toppings.service';
 import { QUERY_KEYS } from '@/utilities/constants';
 import DeleteModal from '@/components/manage/common/DeleteModal.vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -39,6 +42,7 @@ const {
 } = useMutation({
   mutationFn: () => ToppingsService.delete(topping.value.id),
   onSuccess: () => {
+    toast.success('Topping verwijderd');
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TOPPINGS });
     emit('close');
   },

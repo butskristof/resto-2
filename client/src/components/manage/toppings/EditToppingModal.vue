@@ -47,6 +47,9 @@ import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import { capitalize } from '@/utilities/filters';
 import CurrencyFormInput from '@/components/common/form/rows/CurrencyFormInput.vue';
 import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -105,6 +108,7 @@ const {
 } = useMutation({
   mutationFn: createOrUpdateTopping,
   onSuccess: () => {
+    toast.success('Topping ' + (isEdit.value ? 'bijgewerkt' : 'aangemaakt'));
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TOPPINGS });
     tryClose(true);
   },

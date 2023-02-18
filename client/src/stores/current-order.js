@@ -5,9 +5,15 @@ import { ORDER_DISCOUNT } from '@/utilities/order-discount';
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import OrdersService from '@/services/resto-api/orders.service';
 import { QUERY_KEYS } from '@/utilities/constants';
+import { useToast } from 'vue-toastification';
 
 export const useCurrentOrderStore = defineStore('current-order', () => {
+  const toast = useToast();
+
+  const key = ref(0);
+
   const currentOrder = ref([]);
+  const canCreate = computed(() => currentOrder.value.length > 0);
   const discount = ref(ORDER_DISCOUNT.None);
   const cashReceived = ref(0);
   const cashToReturn = computed(() =>
@@ -80,6 +86,7 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
     currentOrder.value = [];
     discount.value = ORDER_DISCOUNT.None;
     cashReceived.value = 0;
+    ++key.value;
   }
 
   const queryClient = useQueryClient();
@@ -96,16 +103,20 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
       return OrdersService.create(request);
     },
     onSuccess: () => {
+      toast.success('Bestelling aanvaard');
       reset();
       return queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ORDERS });
-      // TODO toast
+    },
+    onError: () => {
+      toast.error('Bestelling mislukt');
     },
   });
 
   return {
+    key,
     orderLines: extendedCurrentOrder,
-    total,
     discount,
+    total,
     cashReceived,
     cashToReturn,
 
@@ -113,6 +124,8 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
     increment,
     decrement,
     reset,
+
+    canCreate,
     create: createOrder,
   };
 });

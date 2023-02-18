@@ -72,6 +72,9 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { QUERY_KEYS } from '@/utilities/constants';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import ApiValidationErrors from '@/components/common/ApiValidationErrors.vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const emit = defineEmits(['close']);
 const props = defineProps({
@@ -166,6 +169,7 @@ const {
 } = useMutation({
   mutationFn: createOrUpdateProduct,
   onSuccess: () => {
+    toast.success('Gerecht ' + (isEdit.value ? 'bijgewerkt' : 'aangemaakt'));
     queryClient.invalidateQueries({ queryKey: QUERY_KEYS.PRODUCTS });
     tryClose(true);
   },
