@@ -1,19 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>disable</Nullable>
-        <AssemblyName>Resto.Infrastructure.Integrations.TicketPrinting</AssemblyName>
-        <RootNamespace>Resto.Infrastructure.Integrations.TicketPrinting</RootNamespace>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\1-core\Common\Common.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
-    </ItemGroup>
-
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>Resto.Infrastructure.Integrations.TicketPrinting</AssemblyName>
+    <RootNamespace>Resto.Infrastructure.Integrations.TicketPrinting</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\1-core\Common\Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ESCPOS_NET" />
+  </ItemGroup>
 </Project>
