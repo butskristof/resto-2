@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
@@ -19,7 +19,7 @@ WORKDIR /app/src
 RUN dotnet publish -c Release -o /app --no-restore 4-presentation/Api
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 copy --from=build /app ./
 ENTRYPOINT ["dotnet", "Resto.Api.dll"]
