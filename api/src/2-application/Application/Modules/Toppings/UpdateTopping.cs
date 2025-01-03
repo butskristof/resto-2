@@ -58,7 +58,7 @@ public static class UpdateTopping
 
 		#endregion
 
-		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+		public async Task Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Updating topping with id {ToppingId}", request.Id);
 
@@ -71,8 +71,6 @@ public static class UpdateTopping
 			_logger.LogDebug("Mapped update request to entity");
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted changes to database");
-
-			return Unit.Value;
 		}
 	}
 }

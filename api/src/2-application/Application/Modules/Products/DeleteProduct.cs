@@ -41,7 +41,7 @@ public static class DeleteProduct
 
 		#endregion
 
-		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+		public async Task Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Deleting product with id {ProductId}", request.ProductId);
 
@@ -49,8 +49,6 @@ public static class DeleteProduct
 			_dbContext.Products.Remove(product);
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Removed product from database");
-			
-			return Unit.Value;
 		}
 	}
 }

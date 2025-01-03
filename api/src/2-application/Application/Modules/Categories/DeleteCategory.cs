@@ -42,7 +42,7 @@ public static class DeleteCategory
 
 		#endregion
 
-		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+		public async Task Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Deleting category with id {CategoryId}", request.CategoryId);
 
@@ -53,8 +53,6 @@ public static class DeleteCategory
 			// the resulting query will remove the row by id
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Removed category from database");
-
-			return Unit.Value;
 		}
 	}
 }

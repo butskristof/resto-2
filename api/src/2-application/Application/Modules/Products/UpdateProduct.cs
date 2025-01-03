@@ -71,7 +71,7 @@ public static class UpdateProduct
 
 		#endregion
 
-		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+		public async Task Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Updating product with id {ProductId}", request.Id);
 
@@ -101,8 +101,6 @@ public static class UpdateProduct
 			
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted changes to database");
-
-			return Unit.Value;
 		}
 	}
 }
