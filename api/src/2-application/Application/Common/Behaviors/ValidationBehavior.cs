@@ -6,7 +6,7 @@ using ValidationException = Resto.Application.Common.Exceptions.ValidationExcept
 namespace Resto.Application.Common.Behaviors;
 
 internal class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-	where TRequest : IRequest<TResponse>
+	where TRequest : IBaseRequest
 {
 	#region construction
 

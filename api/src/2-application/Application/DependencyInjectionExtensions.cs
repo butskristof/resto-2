@@ -8,23 +8,23 @@ namespace Resto.Application;
 
 public static class DependencyInjectionExtensions
 {
-	public static IServiceCollection AddApplication(this IServiceCollection services)
-	{
-		services.AddAutoMapper(Assembly.GetExecutingAssembly());
-		services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
-		
-		services.AddMediatR(Assembly.GetExecutingAssembly());
-		services.AddMediatrPipelineBehaviors();
-		
-		return services;
-	}
+    public static IServiceCollection AddApplication(this IServiceCollection services)
+    {
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
 
-	private static IServiceCollection AddMediatrPipelineBehaviors(this IServiceCollection services)
-	{
-		// order matters!
-		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-		services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-		
-		return services;
-	}
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddMediatrPipelineBehaviors();
+
+        return services;
+    }
+
+    private static IServiceCollection AddMediatrPipelineBehaviors(this IServiceCollection services)
+    {
+        // order matters!
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+        return services;
+    }
 }

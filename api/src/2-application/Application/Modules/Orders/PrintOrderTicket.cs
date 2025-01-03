@@ -48,7 +48,7 @@ public static class PrintOrderTicket
 
 		#endregion
 
-		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+		public async Task Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Printing ticket for Order with ID {OrderId}", request.OrderId);
 
@@ -60,8 +60,6 @@ public static class PrintOrderTicket
 				?? throw new NotFoundException($"Could not find product with id {request.OrderId}");
 			
 			await _ticketPrintingService.PrintOrderTicketAsync(order, cancellationToken);
-			
-			return Unit.Value;
 		}
 	}
 }

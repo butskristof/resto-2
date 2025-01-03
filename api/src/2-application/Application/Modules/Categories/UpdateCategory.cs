@@ -63,7 +63,7 @@ public static class UpdateCategory
 
 		#endregion
 
-		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+		public async Task Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Updating category with id {CategoryId}", request.Id);
 			
@@ -76,8 +76,6 @@ public static class UpdateCategory
 			_logger.LogDebug("Mapped update request to entity");
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted changes to database");
-
-			return Unit.Value;
 		}
 	}
 }

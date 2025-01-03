@@ -41,7 +41,7 @@ public static class DeleteTopping
 
 		#endregion
 
-		public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+		public async Task Handle(Request request, CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("Deleting topping with id {ToppingId}", request.ToppingId);
 
@@ -49,8 +49,6 @@ public static class DeleteTopping
 			_dbContext.Toppings.Remove(topping);
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Removed topping from database");
-
-			return Unit.Value;
 		}
 	}
 }
