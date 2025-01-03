@@ -11,6 +11,5 @@
     <PackageReference Include="MediatR.Contracts" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
-    <PackageReference Include="Scrutor" />
   </ItemGroup>
 </Project>
