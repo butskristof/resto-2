@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  api:
+    name: Build API image
+    uses: ./.github/workflows/jobs/ci-docker.yml
+    with:
+      CONTEXT: api
+    secrets: inherit
+  
+  client:
+    name: Build client image
+    uses: ./.github/workflows/jobs/ci-docker.yml
+    with:
+      CONTEXT: client
+    secrets: inherit
