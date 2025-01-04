@@ -7,7 +7,7 @@ COPY **/*.csproj ./
 COPY **/**/**/*.csproj ./
 COPY **/**/**/**/*.csproj ./
 RUN dotnet sln list | grep ".csproj" \
-    | while read -r line; do \ 
+    | while read -r line; do \
     mkdir -p $(dirname $line); \
     mv $(basename $line) $(dirname $line); \
     done;
