@@ -8,7 +8,6 @@ using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Integrations.TicketPrinting;
 using Resto.Common.Integrations.TicketPrinting.Models;
-using Resto.Common.Services;
 using Resto.Domain.Entities.Orders;
 using Resto.Domain.Enumerations;
 
@@ -77,15 +76,15 @@ public static class CreateOrder
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
 		private readonly IMapper _mapper;
-		private readonly IDateTime _dateTime;
+		private readonly TimeProvider _timeProvider;
 		private readonly ITicketPrintingService _ticketPrintingService;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper, IDateTime dateTime, ITicketPrintingService ticketPrintingService)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper, TimeProvider timeProvider, ITicketPrintingService ticketPrintingService)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
 			_mapper = mapper;
-			_dateTime = dateTime;
+			_timeProvider = timeProvider;
 			_ticketPrintingService = ticketPrintingService;
 		}
 
@@ -96,7 +95,7 @@ public static class CreateOrder
 			_logger.LogDebug("Adding a new order");
 
 			var order = _mapper.Map<Order>(request);
-			order.Timestamp = _dateTime.Now;
+			order.Timestamp = _timeProvider.GetLocalNow().DateTime;
 			_logger.LogDebug("Mapped request to entity type");
 
 			_dbContext.Orders.Add(order);
