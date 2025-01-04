@@ -3,6 +3,7 @@ WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY *.sln ./
+COPY Directory.Packages.props ./
 COPY **/*.csproj ./
 COPY **/**/**/*.csproj ./
 COPY **/**/**/**/*.csproj ./
