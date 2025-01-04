@@ -11,8 +11,8 @@ public static class DependencyInjectionExtensions
 	{
 		services
 			.AddTicketPrinting();
-		
-		services.AddTransient<IDateTime, DateTimeService>();
+
+		services.AddSingleton(TimeProvider.System);
 		services.AddTransient<IGuid, GuidService>();
 
 		return services;

@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Constants;
-using Resto.Common.Services;
 using Resto.Domain.Common;
 using Resto.Domain.Entities.Orders;
 using Resto.Domain.Entities.Products;
@@ -15,12 +14,12 @@ public class AppDbContext : DbContext, IAppDbContext
 {
 	#region construction
 
-	private readonly IDateTime _dateTime;
+	private readonly TimeProvider _timeProvider;
 	private readonly IMediator _mediator;
 
-	public AppDbContext(DbContextOptions options, IDateTime dateTime, IMediator mediator) : base(options)
+	public AppDbContext(DbContextOptions options, TimeProvider timeProvider, IMediator mediator) : base(options)
 	{
-		_dateTime = dateTime;
+		_timeProvider = timeProvider;
 		_mediator = mediator;
 	}
 
@@ -40,7 +39,7 @@ public class AppDbContext : DbContext, IAppDbContext
 		// change tracker
 		foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
 		{
-			var timestamp = _dateTime.Now;
+			var timestamp = _timeProvider.GetLocalNow().DateTime;
 			switch (entry.State)
 			{
 				case EntityState.Added:
