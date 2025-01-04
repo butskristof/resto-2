@@ -8,14 +8,14 @@ on:
 jobs:
   api:
     name: Build API image
-    uses: ./.github/workflows/jobs/ci-docker.yml
+    uses: ./.github/workflows/step-ci-docker-build-push.yml
     with:
       CONTEXT: api
     secrets: inherit
   
   client:
     name: Build client image
-    uses: ./.github/workflows/jobs/ci-docker.yml
+    uses: ./.github/workflows/step-ci-docker-build-push.yml
     with:
       CONTEXT: client
     secrets: inherit
