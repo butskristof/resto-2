@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -11,73 +10,83 @@ namespace Resto.Application.Modules.Products;
 
 public static class CreateProduct
 {
-	public class Request : IRequest<Response>
-	{
-		public string Name { get; set; }
-		public decimal Price { get; set; }
-		public bool MultipleToppingsAllowed { get; set; }
+    public class Request : IRequest<Response>
+    {
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public bool MultipleToppingsAllowed { get; set; }
 
-		public Guid CategoryId { get; set; }
-		public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
-	}
+        public Guid CategoryId { get; set; }
+        public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
 
-	public record Response(Guid id);
+        internal Product MapToProduct()
+            => new()
+            {
+                Name = Name,
+                Price = Price,
+                MultipleToppingsAllowed = MultipleToppingsAllowed,
+                CategoryId = CategoryId,
+                Toppings = ToppingIds
+                    .Select(toppingId => new ProductTopping { ToppingId = toppingId })
+                    .ToList(),
+            };
+    }
 
-	internal class Validator : AbstractValidator<Request>
-	{
-		public Validator(IAppDbContext dbContext)
-		{
-			RuleFor(r => r.Name)
-				.Cascade(CascadeMode.Stop)
-				.NotEmpty()
-				.WithErrorCode(ErrorCode.Required)
-				.MustAsync((name, ct) => dbContext.ProductNameIsUniqueAsync(name, null, ct))
-				.WithErrorCode(ErrorCode.NotUnique);
+    public record Response(Guid id);
 
-			RuleFor(r => r.Price)
-				.Cascade(CascadeMode.Stop)
-				.GreaterThanOrEqualTo(0)
-				.WithErrorCode(ErrorCode.Invalid);
+    internal class Validator : AbstractValidator<Request>
+    {
+        public Validator(IAppDbContext dbContext)
+        {
+            RuleFor(r => r.Name)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithErrorCode(ErrorCode.Required)
+                .MustAsync((name, ct) => dbContext.ProductNameIsUniqueAsync(name, null, ct))
+                .WithErrorCode(ErrorCode.NotUnique);
 
-			RuleFor(r => r.CategoryId)
-				.NotEmpty()
-				.WithErrorCode(ErrorCode.Required)
-				.MustAsync(dbContext.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
-			RuleForEach(r => r.ToppingIds)
-				.NotEmpty().WithErrorCode(ErrorCode.Invalid)
-				.MustAsync(dbContext.ToppingExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
-		}
-	}
+            RuleFor(r => r.Price)
+                .Cascade(CascadeMode.Stop)
+                .GreaterThanOrEqualTo(0)
+                .WithErrorCode(ErrorCode.Invalid);
 
-	internal class Handler : IRequestHandler<Request, Response>
-	{
-		#region construction
+            RuleFor(r => r.CategoryId)
+                .NotEmpty()
+                .WithErrorCode(ErrorCode.Required)
+                .MustAsync(dbContext.CategoryExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
+            RuleForEach(r => r.ToppingIds)
+                .NotEmpty().WithErrorCode(ErrorCode.Invalid)
+                .MustAsync(dbContext.ToppingExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
+        }
+    }
 
-		private readonly ILogger<Handler> _logger;
-		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
+    internal class Handler : IRequestHandler<Request, Response>
+    {
+        #region construction
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
-		{
-			_logger = logger;
-			_dbContext = dbContext;
-			_mapper = mapper;
-		}
+        private readonly ILogger<Handler> _logger;
+        private readonly IAppDbContext _dbContext;
 
-		#endregion
+        public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
+        {
+            _logger = logger;
+            _dbContext = dbContext;
+        }
 
-		public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-		{
-			_logger.LogDebug("Adding new product");
+        #endregion
 
-			var product = _mapper.Map<Product>(request);
-			_logger.LogDebug("Mapped request to entity type");
+        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+        {
+            _logger.LogDebug("Adding new product");
 
-			_dbContext.Products.Add(product);
-			await _dbContext.SaveChangesAsync();
-			_logger.LogDebug("Persisted new category to database");
+            var product = request.MapToProduct();
+            _logger.LogDebug("Mapped request to entity type");
 
-			return new Response(product.Id);
-		}
-	}
+            _dbContext.Products.Add(product);
+            await _dbContext.SaveChangesAsync();
+            _logger.LogDebug("Persisted new category to database");
+
+            return new Response(product.Id);
+        }
+    }
 }

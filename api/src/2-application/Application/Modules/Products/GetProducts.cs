@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Requests.Common;
@@ -7,7 +6,6 @@ using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Products;
 
@@ -32,13 +30,11 @@ public static class GetProducts
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -49,16 +45,14 @@ public static class GetProducts
 				request.Page, request.PageSize);
 
 			var productsQuery = _dbContext
-				.ProductsBaseQuery(false);
+				.ProductsBaseQuery(false, true, true);
 
-#pragma warning disable CS0618 // Type or member is obsolete
 			var result = await productsQuery
-				.GetPagedAsync<Product, ProductDto>(_mapper, request.Page, request.PageSize,
+				.GetPagedAsync(p => p.MapToProductDto(), request.Page, request.PageSize,
 					cancellationToken: cancellationToken);
-#pragma warning restore CS0618 // Type or member is obsolete
 			_logger.LogDebug("Fetched mapped products from database");
 
-			return _mapper.Map<Response>(result);
+			return result.MapToTypedResponse<ProductDto, Response>();
 		}
 	}
 }

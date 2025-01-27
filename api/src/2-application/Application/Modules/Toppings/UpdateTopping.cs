@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -47,13 +46,11 @@ public static class UpdateTopping
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -67,7 +64,8 @@ public static class UpdateTopping
 				.SingleAsync(t => t.Id == request.Id, cancellationToken);
 			_logger.LogDebug("Fetched topping to update from database");
 
-			_mapper.Map(request, topping);
+			topping.Name = request.Name;
+			topping.Price = request.Price;
 			_logger.LogDebug("Mapped update request to entity");
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted changes to database");

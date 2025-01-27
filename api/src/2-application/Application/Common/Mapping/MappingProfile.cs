@@ -16,7 +16,6 @@ internal class MappingProfile : Profile
 	{
 		ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
 		CreateRequestMaps();
-		CreateEnumMaps();
 		CreateAdditionalMaps();
 	}
 
@@ -40,20 +39,6 @@ internal class MappingProfile : Profile
 
 	private void CreateRequestMaps()
 	{
-		CreateMap<CreateCategory.Request, Category>()
-			.IgnoreBaseEntityProperties<CreateCategory.Request, Category, Guid>()
-			.IgnoreAuditableEntityProperties();
-		CreateMap<UpdateCategory.Request, Category>()
-			.IgnoreBaseEntityProperties<UpdateCategory.Request, Category, Guid>()
-			.IgnoreAuditableEntityProperties(false);
-		
-		CreateMap<CreateTopping.Request, Topping>()
-			.IgnoreBaseEntityProperties<CreateTopping.Request, Topping, Guid>()
-			.IgnoreAuditableEntityProperties();
-		CreateMap<UpdateTopping.Request, Topping>()
-			.IgnoreBaseEntityProperties<UpdateTopping.Request, Topping, Guid>()
-			.IgnoreAuditableEntityProperties(false);
-		
 		CreateMap<CreateProduct.Request, Product>()
 			.IgnoreBaseEntityProperties<CreateProduct.Request, Product, Guid>()
 			.IgnoreAuditableEntityProperties()
@@ -72,10 +57,6 @@ internal class MappingProfile : Profile
 			.IgnoreAuditableEntityProperties()
 			.ForMember(ol => ol.Toppings, opt => opt
 				.MapFrom(olr => olr.ToppingIds.Select(tid => new OrderLineTopping { ToppingId = tid})));
-	}
-
-	private void CreateEnumMaps()
-	{
 	}
 
 	private void CreateAdditionalMaps()

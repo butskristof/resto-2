@@ -14,46 +14,51 @@ namespace Resto.Application.Modules.Toppings;
 
 public static class GetToppings
 {
-	public class Request : PagedRequest, IRequest<Response> {}
-	public class Response : PagedResponse<ToppingDto>, IMapFrom<PagedResponse<ToppingDto>> {}
-	
-	internal class Validator : PagedRequestValidator<Request> {}
+    public class Request : PagedRequest, IRequest<Response>
+    {
+    }
 
-	internal class Handler : IRequestHandler<Request, Response>
-	{
-		#region construction
+    public class Response : PagedResponse<ToppingDto>, IMapFrom<PagedResponse<ToppingDto>>
+    {
+    }
 
-		private readonly ILogger<Handler> _logger;
-		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
+    internal class Validator : PagedRequestValidator<Request>
+    {
+    }
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
-		{
-			_logger = logger;
-			_dbContext = dbContext;
-			_mapper = mapper;
-		}
+    internal class Handler : IRequestHandler<Request, Response>
+    {
+        #region construction
 
-		#endregion
+        private readonly ILogger<Handler> _logger;
+        private readonly IAppDbContext _dbContext;
 
-		public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-		{
-			_logger.LogDebug("Get toppings: page {Page} w/ page size {PageSize}",
-				request.Page, request.PageSize);
+        public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
+        {
+            _logger = logger;
+            _dbContext = dbContext;
+        }
 
-			var toppingsQuery = _dbContext
-				.Toppings
-				.AsNoTracking()
-				.OrderBy(e => e.Name)
-				.AsQueryable();
+        #endregion
+
+        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+        {
+            _logger.LogDebug("Get toppings: page {Page} w/ page size {PageSize}",
+                request.Page, request.PageSize);
+
+            var toppingsQuery = _dbContext
+                .Toppings
+                .AsNoTracking()
+                .OrderBy(e => e.Name)
+                .AsQueryable();
 #pragma warning disable CS0618 // Type or member is obsolete
-			var result = await toppingsQuery
-				.GetPagedAsync<Topping, ToppingDto>(_mapper, request.Page, request.PageSize, 
-					cancellationToken: cancellationToken);
+            var result = await toppingsQuery
+                .GetPagedAsync(t => t.MapToToppingDto(), request.Page, request.PageSize,
+                    cancellationToken: cancellationToken);
 #pragma warning restore CS0618 // Type or member is obsolete
-			_logger.LogDebug("Fetched mapped toppings from database");
+            _logger.LogDebug("Fetched mapped toppings from database");
 
-			return _mapper.Map<Response>(result);
-		}
-	}
+            return result.MapToTypedResponse<ToppingDto, Response>();
+        }
+    }
 }

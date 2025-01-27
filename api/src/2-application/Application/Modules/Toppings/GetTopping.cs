@@ -1,5 +1,3 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -34,13 +32,11 @@ public static class GetTopping
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -52,7 +48,7 @@ public static class GetTopping
 			var topping = await _dbContext
 				.Toppings
 				.AsNoTracking()
-				.ProjectTo<ToppingDto>(_mapper.ConfigurationProvider)
+				.Select(t => t.MapToToppingDto())
 				.SingleOrDefaultAsync(t => t.Id == request.ToppingId, cancellationToken)
 				?? throw new NotFoundException($"Could not find topping with id {request.ToppingId}");
 			_logger.LogDebug("Fetched mapped topping from database");

@@ -16,8 +16,16 @@ public class CategoryDto : CategoryDtoBase
     public DateTime? LastModifiedOn { get; set; }
 }
 
-internal static class MappingExtensions
+internal static partial class MappingExtensions
 {
+    internal static MinimalCategoryDto MapToMinimalCategoryDto(this Category category)
+        => new()
+        {
+            Id = category.Id,
+            Name = category.Name,
+            Color = category.Color,
+        };
+
     internal static CategoryDto MapToCategoryDto(this Category category)
         => new()
         {

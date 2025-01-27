@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -15,6 +14,13 @@ public static class CreateTopping
 	{
 		public string Name { get; set; }
 		public decimal Price { get; set; }
+
+		internal Topping MapToTopping()
+			=> new()
+			{
+				Name = Name,
+				Price = Price,
+			};
 	}
 
 	public record Response(Guid Id);
@@ -43,13 +49,11 @@ public static class CreateTopping
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -58,7 +62,7 @@ public static class CreateTopping
 		{
 			_logger.LogDebug("Adding new topping");
 
-			var topping = _mapper.Map<Topping>(request);
+			var topping = request.MapToTopping();
 			_logger.LogDebug("Mapped request to entity type");
 
 			_dbContext.Toppings.Add(topping);
