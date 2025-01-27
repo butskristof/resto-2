@@ -1,5 +1,3 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -34,13 +32,11 @@ public static class GetCategory
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -52,7 +48,7 @@ public static class GetCategory
 			var category = await _dbContext
 				.Categories
 				.AsNoTracking()
-				.ProjectTo<CategoryDto>(_mapper.ConfigurationProvider)
+				.Select(c => c.MapToCategoryDto())
 				.SingleOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken)
 				?? throw new NotFoundException($"Could not find category with id {request.CategoryId}");
 			_logger.LogDebug("Fetched mapped category from database");

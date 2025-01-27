@@ -3,19 +3,34 @@ namespace Resto.Application.Common.Contracts.Responses.Common;
 // https://gunnarpeipman.com/ef-core-paging/
 public abstract class PagedResponse
 {
-		public int CurrentPage { get; set; }
-		public int PageCount { get; set; }
-		public int PageSize { get; set; }
-		public int RowCount { get; set; }
+    public int CurrentPage { get; set; }
+    public int PageCount { get; set; }
+    public int PageSize { get; set; }
+    public int RowCount { get; set; }
 
-		public int FirstRowOnPage => (CurrentPage - 1) * PageSize + 1;
-		public int LastRowOnPage => Math.Min(CurrentPage * PageSize, RowCount);
+    public int FirstRowOnPage => (CurrentPage - 1) * PageSize + 1;
+    public int LastRowOnPage => Math.Min(CurrentPage * PageSize, RowCount);
 
-		public bool HasPreviousPage => CurrentPage > 1;
-		public bool HasNextPage => CurrentPage < PageCount;
+    public bool HasPreviousPage => CurrentPage > 1;
+    public bool HasNextPage => CurrentPage < PageCount;
 }
 
 public class PagedResponse<T> : PagedResponse where T : class
 {
-	public IList<T> Results { get; set; } = new List<T>();
+    public IList<T> Results { get; set; } = new List<T>();
+}
+
+internal static class MappingExtensions
+{
+    internal static TResponse MapToTypedResponse<TDto, TResponse>(this PagedResponse<TDto> source)
+        where TDto : class
+        where TResponse : PagedResponse<TDto>, new()
+        => new()
+        {
+            CurrentPage = source.CurrentPage,
+            PageCount = source.PageCount,
+            PageSize = source.PageSize,
+            RowCount = source.RowCount,
+            Results = source.Results,
+        };
 }

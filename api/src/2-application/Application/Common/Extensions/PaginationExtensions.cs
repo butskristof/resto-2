@@ -19,19 +19,36 @@ internal static class PaginationExtensions
 		return result;
 	}
 
+	[Obsolete("Use the methods where a mapper function can be passed in instead")]
 	public static async Task<PagedResponse<TDestination>> GetPagedAsync<TSource, TDestination>(
 		this IQueryable<TSource> query,
 		IMapper mapper,
 		int page,
 		int pageSize,
-		object parameters = null, // for parameterization in projections (https://docs.automapper.org/en/latest/Queryable-Extensions.html#parameterization)
 		CancellationToken cancellationToken = default)
 		where TDestination : class
 	{
 		PagedResponse<TDestination> result;
 		(result, query) = await GetPagedBaseAsync<TSource, TDestination>(query, page, pageSize, cancellationToken);
 		result.Results = await query
-			.ProjectTo<TDestination>(mapper.ConfigurationProvider, parameters)
+			.ProjectTo<TDestination>(mapper.ConfigurationProvider)
+			.ToListAsync(cancellationToken);
+
+		return result;
+	}
+
+	public static async Task<PagedResponse<TDestination>> GetPagedAsync<TSource, TDestination>(
+		this IQueryable<TSource> query,
+		Func<TSource, TDestination> mapper,
+		int page,
+		int pageSize,
+		CancellationToken cancellationToken = default)
+		where TDestination : class
+	{
+		PagedResponse<TDestination> result;
+		(result, query) = await GetPagedBaseAsync<TSource, TDestination>(query, page, pageSize, cancellationToken);
+		result.Results = await query
+			.Select(e => mapper(e))
 			.ToListAsync(cancellationToken);
 
 		return result;
@@ -76,18 +93,34 @@ internal static class PaginationExtensions
 		return result;
 	}
 
+	[Obsolete("Use the methods where a mapper function can be passed in instead")]
 	public static PagedResponse<TDestination> GetPaged<TSource, TDestination>(
 		this IQueryable<TSource> query,
 		IMapper mapper,
 		int page,
-		int pageSize,
-		object parameters = null) // for parameterization in projections (https://docs.automapper.org/en/latest/Queryable-Extensions.html#parameterization)
+		int pageSize)
 		where TDestination : class
 	{
 		PagedResponse<TDestination> result;
 		(result, query) = GetPagedBase<TSource, TDestination>(query, page, pageSize);
 		result.Results = query
-			.ProjectTo<TDestination>(mapper.ConfigurationProvider, parameters)
+			.ProjectTo<TDestination>(mapper.ConfigurationProvider)
+			.ToList();
+
+		return result;
+	}
+	
+	public static PagedResponse<TDestination> GetPaged<TSource, TDestination>(
+		this IQueryable<TSource> query,
+		Func<TSource, TDestination> mapper,
+		int page,
+		int pageSize)
+		where TDestination : class
+	{
+		PagedResponse<TDestination> result;
+		(result, query) = GetPagedBase<TSource, TDestination>(query, page, pageSize);
+		result.Results = query
+			.Select(e => mapper(e))
 			.ToList();
 
 		return result;

@@ -46,9 +46,11 @@ public static class GetToppings
 				.AsNoTracking()
 				.OrderBy(e => e.Name)
 				.AsQueryable();
+#pragma warning disable CS0618 // Type or member is obsolete
 			var result = await toppingsQuery
 				.GetPagedAsync<Topping, ToppingDto>(_mapper, request.Page, request.PageSize, 
 					cancellationToken: cancellationToken);
+#pragma warning restore CS0618 // Type or member is obsolete
 			_logger.LogDebug("Fetched mapped toppings from database");
 
 			return _mapper.Map<Response>(result);

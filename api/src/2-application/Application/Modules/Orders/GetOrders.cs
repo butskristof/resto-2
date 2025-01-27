@@ -53,9 +53,11 @@ public static class GetOrders
 			var ordersQuery = _dbContext
 				.OrdersBaseQuery(false);
 
+#pragma warning disable CS0618 // Type or member is obsolete
 			var result = await ordersQuery
 				.GetPagedAsync<Order, OrderDto>(_mapper, request.Page, request.PageSize,
 					cancellationToken: cancellationToken);
+#pragma warning restore CS0618 // Type or member is obsolete
 			_logger.LogDebug("Fetched mapped orders from database");
 			
 			return _mapper.Map<Response>(result);

@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -52,13 +51,11 @@ public static class UpdateCategory
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -72,8 +69,10 @@ public static class UpdateCategory
 				.SingleAsync(c => c.Id == request.Id, cancellationToken);
 			_logger.LogDebug("Fetched category to update from database");
 
-			_mapper.Map(request, category);
+			category.Name = request.Name;
+			category.Color = request.Color;
 			_logger.LogDebug("Mapped update request to entity");
+			
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted changes to database");
 		}
