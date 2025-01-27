@@ -16,7 +16,6 @@ internal class MappingProfile : Profile
 	{
 		ApplyMappingsFromAssembly(Assembly.GetExecutingAssembly());
 		CreateRequestMaps();
-		CreateAdditionalMaps();
 	}
 
 	private void ApplyMappingsFromAssembly(Assembly assembly)
@@ -39,15 +38,6 @@ internal class MappingProfile : Profile
 
 	private void CreateRequestMaps()
 	{
-		CreateMap<CreateProduct.Request, Product>()
-			.IgnoreBaseEntityProperties<CreateProduct.Request, Product, Guid>()
-			.IgnoreAuditableEntityProperties()
-			.ForMember(p => p.Toppings, opt => opt
-				.MapFrom(r => r.ToppingIds.Select(tid => new ProductTopping { ToppingId = tid })));
-		CreateMap<UpdateProduct.Request, Product>()
-			.IgnoreBaseEntityProperties<UpdateProduct.Request, Product, Guid>()
-			.IgnoreAuditableEntityProperties(false);
-
 		CreateMap<CreateOrder.Request, Order>()
 			.IgnoreBaseEntityProperties<CreateOrder.Request, Order, Guid>()
 			.IgnoreAuditableEntityProperties()
@@ -57,15 +47,5 @@ internal class MappingProfile : Profile
 			.IgnoreAuditableEntityProperties()
 			.ForMember(ol => ol.Toppings, opt => opt
 				.MapFrom(olr => olr.ToppingIds.Select(tid => new OrderLineTopping { ToppingId = tid})));
-	}
-
-	private void CreateAdditionalMaps()
-	{
-		CreateMap<Order, OrderTicketData>();
-		CreateMap<OrderLine, OrderTicketData.OrderTicketOrderLine>()
-			.ForMember(dest => dest.Toppings, opt => opt
-				.MapFrom(src => src.Toppings.Select(olt => olt.Topping)));
-		CreateMap<Product, OrderTicketData.OrderTicketProduct>();
-		CreateMap<Topping, OrderTicketData.OrderTicketTopping>();
 	}
 }

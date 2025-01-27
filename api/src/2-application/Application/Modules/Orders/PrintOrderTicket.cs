@@ -1,15 +1,13 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Exceptions;
 using Resto.Common.Integrations.TicketPrinting;
-using Resto.Common.Integrations.TicketPrinting.Models;
 
 namespace Resto.Application.Modules.Orders;
 
@@ -36,14 +34,12 @@ public static class PrintOrderTicket
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
 		private readonly ITicketPrintingService _ticketPrintingService;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, ITicketPrintingService ticketPrintingService, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, ITicketPrintingService ticketPrintingService)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
 			_ticketPrintingService = ticketPrintingService;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -54,7 +50,7 @@ public static class PrintOrderTicket
 
 			var order = await _dbContext
 				.OrdersBaseQuery(false)
-				.ProjectTo<OrderTicketData>(_mapper.ConfigurationProvider)
+				.Select(o => o.MapToOrderTicketData())
 				.SingleOrDefaultAsync(o => o.Id == request.OrderId,
 					cancellationToken: cancellationToken)
 				?? throw new NotFoundException($"Could not find product with id {request.OrderId}");
