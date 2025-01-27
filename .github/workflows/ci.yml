@@ -1,16 +1,18 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
   api:
-    name: Build API image
+    name: Build and push API image
     uses: ./.github/workflows/step-ci-docker-build-push.yml
     with:
       CONTEXT: api
+      DOCKERHUB_USERNAME: butskristof
+      DOCKERHUB_REPOSITORY_NAME: resto-2-api
     secrets: inherit
   
   client:
@@ -18,4 +20,6 @@ jobs:
     uses: ./.github/workflows/step-ci-docker-build-push.yml
     with:
       CONTEXT: client
+      DOCKERHUB_USERNAME: butskristof
+      DOCKERHUB_REPOSITORY_NAME: resto-2-client
     secrets: inherit
