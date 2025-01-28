@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Exceptions;
@@ -48,7 +49,7 @@ public static class GetCategory
 			var category = await _dbContext
 				.Categories
 				.AsNoTracking()
-				.Select(c => c.MapToCategoryDto())
+				.MapToCategoryDto()
 				.SingleOrDefaultAsync(c => c.Id == request.CategoryId, cancellationToken)
 				?? throw new NotFoundException($"Could not find category with id {request.CategoryId}");
 			_logger.LogDebug("Fetched mapped category from database");

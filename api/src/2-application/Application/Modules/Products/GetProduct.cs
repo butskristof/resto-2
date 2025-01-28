@@ -1,11 +1,10 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Exceptions;
@@ -50,7 +49,7 @@ public static class GetProduct
 			var product = await _dbContext
 				.Products
 				.AsNoTracking()
-				.Select(p => p.MapToProductDto())
+				.MapToProductDto()
 				.SingleOrDefaultAsync(p => p.Id == request.ProductId, cancellationToken)
 				?? throw new NotFoundException($"Could not find product with id {request.ProductId}");
 			_logger.LogDebug("Fetched mapped product from database");

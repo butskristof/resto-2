@@ -15,9 +15,7 @@ public static class GetOrders
 	{
 	}
 
-	public class Response : PagedResponse<OrderDto>, IMapFrom<PagedResponse<OrderDto>>
-	{
-	}
+	public class Response : PagedResponse<OrderDto>;
 
 	internal class Validator : PagedRequestValidator<Request>
 	{
@@ -50,8 +48,8 @@ public static class GetOrders
 				.OrdersBaseQuery(false);
 
 			var result = await ordersQuery
-				.GetPagedAsync(o => o.MapToOrderDto(), request.Page, request.PageSize,
-					cancellationToken: cancellationToken);
+				.MapToOrderDto()
+				.GetPagedAsync(request.Page, request.PageSize, cancellationToken: cancellationToken);
 			_logger.LogDebug("Fetched mapped orders from database");
 
 			return result.MapToTypedResponse<OrderDto, Response>();

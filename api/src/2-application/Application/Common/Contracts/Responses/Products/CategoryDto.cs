@@ -1,37 +1,13 @@
-using Resto.Domain.Entities.Products;
-
 namespace Resto.Application.Common.Contracts.Responses.Products;
 
-public abstract class CategoryDtoBase
+public class MinimalCategoryDto
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
     public string Color { get; set; }
 }
 
-public class MinimalCategoryDto : CategoryDtoBase;
-
-public class CategoryDto : CategoryDtoBase
+public class CategoryDto : MinimalCategoryDto
 {
     public DateTime? LastModifiedOn { get; set; }
-}
-
-internal static partial class MappingExtensions
-{
-    internal static MinimalCategoryDto MapToMinimalCategoryDto(this Category category)
-        => new()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Color = category.Color,
-        };
-
-    internal static CategoryDto MapToCategoryDto(this Category category)
-        => new()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Color = category.Color,
-            LastModifiedOn = category.LastModifiedOn,
-        };
 }

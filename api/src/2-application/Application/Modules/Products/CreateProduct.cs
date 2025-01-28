@@ -2,9 +2,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Products;
 
@@ -18,21 +18,9 @@ public static class CreateProduct
 
         public Guid CategoryId { get; set; }
         public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
-
-        internal Product MapToProduct()
-            => new()
-            {
-                Name = Name,
-                Price = Price,
-                MultipleToppingsAllowed = MultipleToppingsAllowed,
-                CategoryId = CategoryId,
-                Toppings = ToppingIds
-                    .Select(toppingId => new ProductTopping { ToppingId = toppingId })
-                    .ToList(),
-            };
     }
 
-    public record Response(Guid id);
+    public record Response(Guid Id);
 
     internal class Validator : AbstractValidator<Request>
     {

@@ -19,18 +19,3 @@ public class PagedResponse<T> : PagedResponse where T : class
 {
     public IList<T> Results { get; set; } = new List<T>();
 }
-
-internal static class MappingExtensions
-{
-    internal static TResponse MapToTypedResponse<TDto, TResponse>(this PagedResponse<TDto> source)
-        where TDto : class
-        where TResponse : PagedResponse<TDto>, new()
-        => new()
-        {
-            CurrentPage = source.CurrentPage,
-            PageCount = source.PageCount,
-            PageSize = source.PageSize,
-            RowCount = source.RowCount,
-            Results = source.Results,
-        };
-}

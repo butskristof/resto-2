@@ -27,7 +27,7 @@ public static class GetOrderStatistics
             public int Count { get; set; }
         }
 
-        public class ProductDto : IMapFrom<Product>
+        public class ProductDto
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
@@ -37,14 +37,14 @@ public static class GetOrderStatistics
             public int Quantity { get; set; }
         }
 
-        public class CategoryDto : IMapFrom<Category>
+        public class CategoryDto
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
             public string Color { get; set; }
         }
 
-        public class ToppingDto : IMapFrom<Topping>
+        public class ToppingDto
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
@@ -116,13 +116,13 @@ public static class GetOrderStatistics
             var stats = new List<Response.ProductDto>();
             foreach (var p in products)
             {
-                var mapped = p.MapToProductDto();
+                var mapped = p.MapToOrderStatisticsProductDto();
                 var orderLines = await GetOrderLinesForProductAsync(p, cancellationToken);
                 mapped.Quantity = orderLines.Sum(ol => ol.Quantity);
                 mapped.Toppings = p.Toppings
                     .Select(t =>
                     {
-                        var mappedTopping = t.Topping.MapToToppingDto();
+                        var mappedTopping = t.Topping.MapToOrderStatisticsToppingDto();
                         mappedTopping.Quantity = orderLines
                             .Sum(ol => ol.Toppings.Count(olt => olt.ToppingId == t.ToppingId) * ol.Quantity);
                         return mappedTopping;
@@ -146,30 +146,4 @@ public static class GetOrderStatistics
                 .ToListAsync(cancellationToken);
         }
     }
-}
-
-internal static class MappingExtensions
-{
-    internal static GetOrderStatistics.Response.CategoryDto MapToCategoryDto(this Category category)
-        => new()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Color = category.Color,
-        };
-
-    internal static GetOrderStatistics.Response.ToppingDto MapToToppingDto(this Topping topping)
-        => new()
-        {
-            Id = topping.Id,
-            Name = topping.Name,
-        };
-
-    internal static GetOrderStatistics.Response.ProductDto MapToProductDto(this Product product)
-        => new()
-        {
-            Id = product.Id,
-            Name = product.Name,
-            Category = product.Category.MapToCategoryDto(),
-        };
 }

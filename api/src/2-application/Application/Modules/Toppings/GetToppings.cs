@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -8,23 +7,16 @@ using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Toppings;
 
 public static class GetToppings
 {
-    public class Request : PagedRequest, IRequest<Response>
-    {
-    }
+    public class Request : PagedRequest, IRequest<Response>;
 
-    public class Response : PagedResponse<ToppingDto>, IMapFrom<PagedResponse<ToppingDto>>
-    {
-    }
+    public class Response : PagedResponse<ToppingDto>;
 
-    internal class Validator : PagedRequestValidator<Request>
-    {
-    }
+    internal class Validator : PagedRequestValidator<Request>;
 
     internal class Handler : IRequestHandler<Request, Response>
     {
@@ -51,11 +43,10 @@ public static class GetToppings
                 .AsNoTracking()
                 .OrderBy(e => e.Name)
                 .AsQueryable();
-#pragma warning disable CS0618 // Type or member is obsolete
+
             var result = await toppingsQuery
-                .GetPagedAsync(t => t.MapToToppingDto(), request.Page, request.PageSize,
-                    cancellationToken: cancellationToken);
-#pragma warning restore CS0618 // Type or member is obsolete
+                .MapToToppingDto()
+                .GetPagedAsync(request.Page, request.PageSize, cancellationToken: cancellationToken);
             _logger.LogDebug("Fetched mapped toppings from database");
 
             return result.MapToTypedResponse<ToppingDto, Response>();

@@ -2,10 +2,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Extensions;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Categories;
 
@@ -15,13 +15,6 @@ public static class CreateCategory
     {
         public string Name { get; set; }
         public string Color { get; set; }
-
-        internal Category MapToCategory()
-            => new()
-            {
-                Name = Name,
-                Color = Color,
-            };
     }
 
     public record Response(Guid Id);

@@ -6,7 +6,6 @@ using Resto.Common.Constants;
 using Resto.Domain.Common;
 using Resto.Domain.Entities.Orders;
 using Resto.Domain.Entities.Products;
-using Resto.Persistence.Common;
 
 namespace Resto.Persistence;
 
@@ -57,7 +56,6 @@ public class AppDbContext : DbContext, IAppDbContext
 			}
 		}
 
-		await _mediator.DispatchDomainEvents(this);
 		return await base.SaveChangesAsync();
 	}
 

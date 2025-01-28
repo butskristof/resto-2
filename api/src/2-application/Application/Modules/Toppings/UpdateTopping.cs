@@ -67,6 +67,7 @@ public static class UpdateTopping
 			topping.Name = request.Name;
 			topping.Price = request.Price;
 			_logger.LogDebug("Mapped update request to entity");
+			
 			await _dbContext.SaveChangesAsync();
 			_logger.LogDebug("Persisted changes to database");
 		}

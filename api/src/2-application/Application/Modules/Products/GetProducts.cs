@@ -11,11 +11,9 @@ namespace Resto.Application.Modules.Products;
 
 public static class GetProducts
 {
-	public class Request : PagedRequest, IRequest<Response> {}
+	public class Request : PagedRequest, IRequest<Response>;
 
-	public class Response : PagedResponse<ProductDto>, IMapFrom<PagedResponse<ProductDto>>
-	{
-	}
+	public class Response : PagedResponse<ProductDto>;
 
 	internal class Validator : PagedRequestValidator<Request>
 	{
@@ -45,11 +43,11 @@ public static class GetProducts
 				request.Page, request.PageSize);
 
 			var productsQuery = _dbContext
-				.ProductsBaseQuery(false, true, true);
+				.ProductsBaseQuery(false);
 
 			var result = await productsQuery
-				.GetPagedAsync(p => p.MapToProductDto(), request.Page, request.PageSize,
-					cancellationToken: cancellationToken);
+				.MapToProductDto()
+				.GetPagedAsync(request.Page, request.PageSize, cancellationToken: cancellationToken);
 			_logger.LogDebug("Fetched mapped products from database");
 
 			return result.MapToTypedResponse<ProductDto, Response>();

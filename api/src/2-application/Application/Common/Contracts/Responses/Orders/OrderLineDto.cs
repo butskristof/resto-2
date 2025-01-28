@@ -1,11 +1,9 @@
 using AutoMapper;
-using Resto.Application.Common.Mapping;
 using Resto.Domain.Entities.Orders;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Common.Contracts.Responses.Orders;
 
-public class OrderLineDto : IMapFrom<OrderLine>
+public class OrderLineDto
 {
     public Guid Id { get; set; }
 
@@ -24,7 +22,7 @@ public class OrderLineDto : IMapFrom<OrderLine>
                 .MapFrom(ol => ol.Toppings.Select(olt => olt.Topping)));
     }
 
-    public class OrderLineProductDto : IMapFrom<Product>
+    public class OrderLineProductDto
     {
         public Guid Id { get; set; }
 
@@ -32,41 +30,11 @@ public class OrderLineDto : IMapFrom<OrderLine>
         public decimal Price { get; set; }
     }
 
-    public class OrderLineToppingDto : IMapFrom<Topping>
+    public class OrderLineToppingDto
     {
         public Guid Id { get; set; }
 
         public string Name { get; set; }
         public decimal Price { get; set; }
     }
-}
-
-internal static partial class MappingExtensions
-{
-    internal static OrderLineDto.OrderLineProductDto MapToOrderLineProductDto(this Product product)
-        => new()
-        {
-            Id = product.Id,
-            Name = product.Name,
-            Price = product.Price,
-        };
-
-    internal static OrderLineDto.OrderLineToppingDto MapToOrderLineToppingDto(this Topping topping)
-        => new()
-        {
-            Id = topping.Id,
-            Name = topping.Name,
-            Price = topping.Price,
-        };
-
-    internal static OrderLineDto MapToOrderLineDto(this OrderLine orderLine)
-        => new()
-        {
-            Id = orderLine.Id,
-            Product = orderLine.Product.MapToOrderLineProductDto(),
-            Toppings = orderLine.Toppings.Select(t => t.Topping.MapToOrderLineToppingDto()),
-            Quantity = orderLine.Quantity,
-            Price = orderLine.Price,
-            OrderLineTotal = orderLine.OrderLineTotal,
-        };
 }

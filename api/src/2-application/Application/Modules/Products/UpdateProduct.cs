@@ -83,9 +83,6 @@ public static class UpdateProduct
             product.Price = request.Price;
             product.MultipleToppingsAllowed = request.MultipleToppingsAllowed;
             product.CategoryId = request.CategoryId;
-            product.Toppings = request.ToppingIds
-                .Select(id => new ProductTopping { ToppingId = id })
-                .ToList();
             _logger.LogDebug("Mapped update request to entity");
 
             // filter ProductTopping objects that are not present in the request

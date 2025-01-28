@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +7,6 @@ using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Integrations.TicketPrinting;
-using Resto.Common.Integrations.TicketPrinting.Models;
-using Resto.Domain.Entities.Orders;
 using Resto.Domain.Enumerations;
 
 namespace Resto.Application.Modules.Orders;
@@ -26,30 +23,11 @@ public static class CreateOrder
             public Guid ProductId { get; set; }
             public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
             public int Quantity { get; set; }
-
-            internal OrderLine MapToOrderLine()
-                => new()
-                {
-                    ProductId = ProductId,
-                    Toppings = ToppingIds
-                        .Select(id => new OrderLineTopping { ToppingId = id })
-                        .ToList(),
-                    Quantity = Quantity,
-                };
         }
-
-        internal Order MapToOrder()
-            => new()
-            {
-                OrderLines = OrderLines
-                    .Select(ol => ol.MapToOrderLine())
-                    .ToList(),
-                Discount = Discount,
-            };
     }
 
     public record Response(Guid Id);
-
+    
     internal class Validator : AbstractValidator<Request>
     {
         public Validator(IAppDbContext dbContext)

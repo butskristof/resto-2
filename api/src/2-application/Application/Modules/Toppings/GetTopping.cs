@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Exceptions;
@@ -48,7 +49,7 @@ public static class GetTopping
 			var topping = await _dbContext
 				.Toppings
 				.AsNoTracking()
-				.Select(t => t.MapToToppingDto())
+				.MapToToppingDto()
 				.SingleOrDefaultAsync(t => t.Id == request.ToppingId, cancellationToken)
 				?? throw new NotFoundException($"Could not find topping with id {request.ToppingId}");
 			_logger.LogDebug("Fetched mapped topping from database");

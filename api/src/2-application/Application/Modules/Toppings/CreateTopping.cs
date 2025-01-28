@@ -2,9 +2,9 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Toppings;
 
@@ -14,13 +14,6 @@ public static class CreateTopping
 	{
 		public string Name { get; set; }
 		public decimal Price { get; set; }
-
-		internal Topping MapToTopping()
-			=> new()
-			{
-				Name = Name,
-				Price = Price,
-			};
 	}
 
 	public record Response(Guid Id);

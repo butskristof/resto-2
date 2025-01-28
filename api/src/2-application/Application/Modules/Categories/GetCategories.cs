@@ -5,6 +5,7 @@ using Resto.Application.Common.Contracts.Requests.Common;
 using Resto.Application.Common.Contracts.Responses.Common;
 using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 
 namespace Resto.Application.Modules.Categories;
@@ -44,8 +45,8 @@ public static class GetCategories
                 .AsQueryable();
 
             var result = await categoriesQuery
-                .GetPagedAsync(c => c.MapToCategoryDto(), request.Page, request.PageSize,
-                    cancellationToken: cancellationToken);
+                .MapToCategoryDto()
+                .GetPagedAsync(request.Page, request.PageSize, cancellationToken: cancellationToken);
             _logger.LogDebug("Fetched mapped categories from database");
 
             return result.MapToTypedResponse<CategoryDto, Response>();
