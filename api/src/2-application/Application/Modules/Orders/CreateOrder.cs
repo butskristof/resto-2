@@ -1,133 +1,131 @@
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Integrations.TicketPrinting;
-using Resto.Common.Integrations.TicketPrinting.Models;
-using Resto.Domain.Entities.Orders;
 using Resto.Domain.Enumerations;
 
 namespace Resto.Application.Modules.Orders;
 
 public static class CreateOrder
 {
-	public class Request : IRequest<Response>
-	{
-		public IEnumerable<OrderLineRequest> OrderLines { get; set; }
-		public OrderDiscount Discount { get; set; }
+    public class Request : IRequest<Response>
+    {
+        public IEnumerable<OrderLineRequest> OrderLines { get; set; }
+        public OrderDiscount Discount { get; set; }
 
-		public class OrderLineRequest
-		{
-			public Guid ProductId { get; set; }
-			public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
-			public int Quantity { get; set; }
-		}
-	}
+        public class OrderLineRequest
+        {
+            public Guid ProductId { get; set; }
+            public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
+            public int Quantity { get; set; }
+        }
+    }
 
-	public record Response(Guid Id);
+    public record Response(Guid Id);
+    
+    internal class Validator : AbstractValidator<Request>
+    {
+        public Validator(IAppDbContext dbContext)
+        {
+            RuleFor(r => r.Discount)
+                .IsInEnum()
+                .WithErrorCode(ErrorCode.Invalid);
 
-	internal class Validator : AbstractValidator<Request>
-	{
-		public Validator(IAppDbContext dbContext)
-		{
-			RuleFor(r => r.Discount)
-				.IsInEnum()
-				.WithErrorCode(ErrorCode.Invalid);
+            RuleFor(r => r.OrderLines)
+                .NotEmpty()
+                .WithErrorCode(ErrorCode.Required);
 
-			RuleFor(r => r.OrderLines)
-				.NotEmpty()
-				.WithErrorCode(ErrorCode.Required);
-			
-			RuleForEach(r => r.OrderLines)
-				.SetValidator(new OrderLineValidator(dbContext));
-		}
-		
-		internal class OrderLineValidator : AbstractValidator<Request.OrderLineRequest>
-		{
-			public OrderLineValidator(IAppDbContext dbContext)
-			{
-				RuleFor(ol => ol.ProductId)
-					.NotEmpty().WithErrorCode(ErrorCode.Invalid)
-					.MustAsync(dbContext.ProductExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
+            RuleForEach(r => r.OrderLines)
+                .SetValidator(new OrderLineValidator(dbContext));
+        }
 
-				RuleFor(ol => ol.ToppingIds)
-					.Must(c => c.Count() <= 1)
-					.WhenAsync((ol, ct) => dbContext.ProductDoesNotAllowMultipleToppingsAsync(ol.ProductId, ct));
+        internal class OrderLineValidator : AbstractValidator<Request.OrderLineRequest>
+        {
+            public OrderLineValidator(IAppDbContext dbContext)
+            {
+                RuleFor(ol => ol.ProductId)
+                    .NotEmpty().WithErrorCode(ErrorCode.Invalid)
+                    .MustAsync(dbContext.ProductExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 
-				RuleForEach(ol => ol.ToppingIds)
-					.NotEmpty().WithErrorCode(ErrorCode.Invalid) // guid itself, e.g. 0000-00-00-0000
-					.MustAsync(dbContext.ToppingExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
-					
-				RuleFor(ol => ol.Quantity)
-					.GreaterThan(0)
-					.WithErrorCode(ErrorCode.Invalid);
-			}
-		}
-	}
+                RuleFor(ol => ol.ToppingIds)
+                    .Must(c => c.Count() <= 1)
+                    .WhenAsync((ol, ct) => dbContext.ProductDoesNotAllowMultipleToppingsAsync(ol.ProductId, ct));
 
-	internal class Handler : IRequestHandler<Request, Response>
-	{
-		#region construction
+                RuleForEach(ol => ol.ToppingIds)
+                    .NotEmpty().WithErrorCode(ErrorCode.Invalid) // guid itself, e.g. 0000-00-00-0000
+                    .MustAsync(dbContext.ToppingExistsByIdAsync).WithErrorCode(ErrorCode.NotFound);
 
-		private readonly ILogger<Handler> _logger;
-		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
-		private readonly TimeProvider _timeProvider;
-		private readonly ITicketPrintingService _ticketPrintingService;
+                RuleFor(ol => ol.Quantity)
+                    .GreaterThan(0)
+                    .WithErrorCode(ErrorCode.Invalid);
+            }
+        }
+    }
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper, TimeProvider timeProvider, ITicketPrintingService ticketPrintingService)
-		{
-			_logger = logger;
-			_dbContext = dbContext;
-			_mapper = mapper;
-			_timeProvider = timeProvider;
-			_ticketPrintingService = ticketPrintingService;
-		}
+    internal class Handler : IRequestHandler<Request, Response>
+    {
+        #region construction
 
-		#endregion
+        private readonly ILogger<Handler> _logger;
+        private readonly IAppDbContext _dbContext;
+        private readonly TimeProvider _timeProvider;
+        private readonly ITicketPrintingService _ticketPrintingService;
 
-		public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
-		{
-			_logger.LogDebug("Adding a new order");
+        public Handler(ILogger<Handler> logger, IAppDbContext dbContext, TimeProvider timeProvider,
+            ITicketPrintingService ticketPrintingService)
+        {
+            _logger = logger;
+            _dbContext = dbContext;
+            _timeProvider = timeProvider;
+            _ticketPrintingService = ticketPrintingService;
+        }
 
-			var order = _mapper.Map<Order>(request);
-			order.Timestamp = _timeProvider.GetLocalNow().DateTime;
-			_logger.LogDebug("Mapped request to entity type");
+        #endregion
 
-			_dbContext.Orders.Add(order);
-			await _dbContext.SaveChangesAsync();
-			_logger.LogDebug("Persisted new order to database");
+        public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+        {
+            _logger.LogDebug("Adding a new order");
 
-			try
-			{
-				_logger.LogDebug("Trying to print ticket for newly created order");
-				
-				await _dbContext
-					.Entry(order)
-					.Collection(o => o.OrderLines)
-					.Query()
-					.Include(ol => ol.Product)
-					.Include(ol => ol.Toppings)
-					.ThenInclude(olt => olt.Topping)
-					.LoadAsync(cancellationToken);
-				_logger.LogDebug("Fetched related information for new order from database");
-				
-				var ticketData = _mapper.Map<OrderTicketData>(order);
-				_logger.LogDebug("Mapped order to ticket data"); 
-				
-				await _ticketPrintingService.PrintOrderTicketAsync(ticketData, cancellationToken);
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "Failed to print ticket for Order with ID {OrderId} after creation",
-					order.Id);
-			}
+            var order = request.MapToOrder();
+            order.Timestamp = _timeProvider.GetLocalNow().DateTime;
+            _logger.LogDebug("Mapped request to entity type");
 
-			return new Response(order.Id);
-		}
-	}
+            _dbContext.Orders.Add(order);
+            await _dbContext.SaveChangesAsync();
+            _logger.LogDebug("Persisted new order to database");
+
+            try
+            {
+                _logger.LogDebug("Trying to print ticket for newly created order");
+
+                // TODO refactor as projection?
+                await _dbContext
+                    .Entry(order)
+                    .Collection(o => o.OrderLines)
+                    .Query()
+                    .Include(ol => ol.Product)
+                    .Include(ol => ol.Toppings)
+                    .ThenInclude(olt => olt.Topping)
+                    .LoadAsync(cancellationToken);
+                _logger.LogDebug("Fetched related information for new order from database");
+
+                var ticketData = order.MapToOrderTicketData();
+                _logger.LogDebug("Mapped order to ticket data");
+
+                await _ticketPrintingService.PrintOrderTicketAsync(ticketData, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to print ticket for Order with ID {OrderId} after creation",
+                    order.Id);
+            }
+
+            return new Response(order.Id);
+        }
+    }
 }

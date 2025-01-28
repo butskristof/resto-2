@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Requests.Common;
@@ -7,7 +6,6 @@ using Resto.Application.Common.Contracts.Responses.Orders;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
-using Resto.Domain.Entities.Orders;
 
 namespace Resto.Application.Modules.Orders;
 
@@ -17,9 +15,7 @@ public static class GetOrders
 	{
 	}
 
-	public class Response : PagedResponse<OrderDto>, IMapFrom<PagedResponse<OrderDto>>
-	{
-	}
+	public class Response : PagedResponse<OrderDto>;
 
 	internal class Validator : PagedRequestValidator<Request>
 	{
@@ -34,13 +30,11 @@ public static class GetOrders
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -54,11 +48,11 @@ public static class GetOrders
 				.OrdersBaseQuery(false);
 
 			var result = await ordersQuery
-				.GetPagedAsync<Order, OrderDto>(_mapper, request.Page, request.PageSize,
-					cancellationToken: cancellationToken);
+				.MapToOrderDto()
+				.GetPagedAsync(request.Page, request.PageSize, cancellationToken: cancellationToken);
 			_logger.LogDebug("Fetched mapped orders from database");
-			
-			return _mapper.Map<Response>(result);
+
+			return result.MapToTypedResponse<OrderDto, Response>();
 		}
 	}
 }	

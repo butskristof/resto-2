@@ -1,6 +1,6 @@
 namespace Resto.Domain.Enumerations;
 
-public enum OrderDiscount
+public enum OrderDiscount : short
 {
 	None = 0,
 	Member = 1,

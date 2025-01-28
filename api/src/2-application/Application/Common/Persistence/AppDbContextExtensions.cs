@@ -6,37 +6,44 @@ namespace Resto.Application.Common.Persistence;
 
 internal static class AppDbContextExtensions
 {
-	internal static IQueryable<Order> OrdersBaseQuery(this IAppDbContext context, bool tracking = true)
-	{
-		var query = context
-			.Orders
-			.OrderByDescending(o => o.Timestamp)
-			.AsQueryable();
+    internal static IQueryable<Order> OrdersBaseQuery(this IAppDbContext context, bool tracking = true)
+    {
+        var query = context
+            .Orders
+            .OrderByDescending(o => o.Timestamp)
+            .AsQueryable();
 
-		if (!tracking) 
-			query = query.AsNoTracking();
+        if (!tracking)
+            query = query.AsNoTracking();
 
-		query = query
-			.Include(o => o.OrderLines)
-			.ThenInclude(ol => ol.Product)
-			.Include(o => o.OrderLines)
-			.ThenInclude(ol => ol.Toppings)
-			.ThenInclude(olt => olt.Topping);
-		
-		return query;
-	}
+        query = query
+            .Include(o => o.OrderLines)
+            .ThenInclude(ol => ol.Product)
+            .Include(o => o.OrderLines)
+            .ThenInclude(ol => ol.Toppings)
+            .ThenInclude(olt => olt.Topping);
 
-	internal static IQueryable<Product> ProductsBaseQuery(this IAppDbContext context, bool tracking = true)
-	{
-		var query = context
-			.Products
-			.OrderBy(p => p.Category.Name)
-			.ThenBy(p => p.LastModifiedOn)
-			.AsQueryable();
+        return query;
+    }
 
-		if (!tracking)
-			query = query.AsNoTracking();
+    internal static IQueryable<Product> ProductsBaseQuery(this IAppDbContext context, bool tracking = true,
+        bool includeCategory = false, bool includeToppings = false)
+    {
+        var query = context
+            .Products
+            .OrderBy(p => p.Category.Name)
+            .ThenBy(p => p.LastModifiedOn)
+            .AsQueryable();
 
-		return query;
-	}
+        if (!tracking)
+            query = query.AsNoTracking();
+        if (includeCategory)
+            query = query.Include(p => p.Category);
+        if (includeToppings)
+            query = query
+                .Include(p => p.Toppings)
+                .ThenInclude(pt => pt.Topping);
+
+        return query;
+    }
 }

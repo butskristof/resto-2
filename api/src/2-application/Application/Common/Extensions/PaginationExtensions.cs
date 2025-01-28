@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Resto.Application.Common.Contracts.Responses.Common;
 
 namespace Resto.Application.Common.Extensions;
@@ -14,24 +12,6 @@ internal static class PaginationExtensions
 		PagedResponse<T> result;
 		(result, query) = await GetPagedBaseAsync<T, T>(query, page, pageSize, cancellationToken);
 		result.Results = await query
-			.ToListAsync(cancellationToken);
-
-		return result;
-	}
-
-	public static async Task<PagedResponse<TDestination>> GetPagedAsync<TSource, TDestination>(
-		this IQueryable<TSource> query,
-		IMapper mapper,
-		int page,
-		int pageSize,
-		object parameters = null, // for parameterization in projections (https://docs.automapper.org/en/latest/Queryable-Extensions.html#parameterization)
-		CancellationToken cancellationToken = default)
-		where TDestination : class
-	{
-		PagedResponse<TDestination> result;
-		(result, query) = await GetPagedBaseAsync<TSource, TDestination>(query, page, pageSize, cancellationToken);
-		result.Results = await query
-			.ProjectTo<TDestination>(mapper.ConfigurationProvider, parameters)
 			.ToListAsync(cancellationToken);
 
 		return result;
@@ -72,23 +52,6 @@ internal static class PaginationExtensions
 		PagedResponse<T> result;
 		(result, query) = GetPagedBase<T, T>(query, page, pageSize);
 		result.Results = query.ToList();
-
-		return result;
-	}
-
-	public static PagedResponse<TDestination> GetPaged<TSource, TDestination>(
-		this IQueryable<TSource> query,
-		IMapper mapper,
-		int page,
-		int pageSize,
-		object parameters = null) // for parameterization in projections (https://docs.automapper.org/en/latest/Queryable-Extensions.html#parameterization)
-		where TDestination : class
-	{
-		PagedResponse<TDestination> result;
-		(result, query) = GetPagedBase<TSource, TDestination>(query, page, pageSize);
-		result.Results = query
-			.ProjectTo<TDestination>(mapper.ConfigurationProvider, parameters)
-			.ToList();
 
 		return result;
 	}

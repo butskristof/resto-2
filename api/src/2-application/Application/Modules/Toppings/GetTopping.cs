@@ -1,11 +1,10 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Exceptions;
@@ -34,13 +33,11 @@ public static class GetTopping
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -52,7 +49,7 @@ public static class GetTopping
 			var topping = await _dbContext
 				.Toppings
 				.AsNoTracking()
-				.ProjectTo<ToppingDto>(_mapper.ConfigurationProvider)
+				.MapToToppingDto()
 				.SingleOrDefaultAsync(t => t.Id == request.ToppingId, cancellationToken)
 				?? throw new NotFoundException($"Could not find topping with id {request.ToppingId}");
 			_logger.LogDebug("Fetched mapped topping from database");

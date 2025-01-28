@@ -1,11 +1,10 @@
-using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Toppings;
 
@@ -43,13 +42,11 @@ public static class CreateTopping
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -58,7 +55,7 @@ public static class CreateTopping
 		{
 			_logger.LogDebug("Adding new topping");
 
-			var topping = _mapper.Map<Topping>(request);
+			var topping = request.MapToTopping();
 			_logger.LogDebug("Mapped request to entity type");
 
 			_dbContext.Toppings.Add(topping);

@@ -1,11 +1,10 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
+using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Enumerations;
 using Resto.Common.Exceptions;
@@ -34,13 +33,11 @@ public static class GetProduct
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -52,7 +49,7 @@ public static class GetProduct
 			var product = await _dbContext
 				.Products
 				.AsNoTracking()
-				.ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+				.MapToProductDto()
 				.SingleOrDefaultAsync(p => p.Id == request.ProductId, cancellationToken)
 				?? throw new NotFoundException($"Could not find product with id {request.ProductId}");
 			_logger.LogDebug("Fetched mapped product from database");

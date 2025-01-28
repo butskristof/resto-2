@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Resto.Application.Common.Contracts.Requests.Common;
@@ -7,17 +6,14 @@ using Resto.Application.Common.Contracts.Responses.Products;
 using Resto.Application.Common.Extensions;
 using Resto.Application.Common.Mapping;
 using Resto.Application.Common.Persistence;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Modules.Products;
 
 public static class GetProducts
 {
-	public class Request : PagedRequest, IRequest<Response> {}
+	public class Request : PagedRequest, IRequest<Response>;
 
-	public class Response : PagedResponse<ProductDto>, IMapFrom<PagedResponse<ProductDto>>
-	{
-	}
+	public class Response : PagedResponse<ProductDto>;
 
 	internal class Validator : PagedRequestValidator<Request>
 	{
@@ -32,13 +28,11 @@ public static class GetProducts
 
 		private readonly ILogger<Handler> _logger;
 		private readonly IAppDbContext _dbContext;
-		private readonly IMapper _mapper;
 
-		public Handler(ILogger<Handler> logger, IAppDbContext dbContext, IMapper mapper)
+		public Handler(ILogger<Handler> logger, IAppDbContext dbContext)
 		{
 			_logger = logger;
 			_dbContext = dbContext;
-			_mapper = mapper;
 		}
 
 		#endregion
@@ -52,11 +46,11 @@ public static class GetProducts
 				.ProductsBaseQuery(false);
 
 			var result = await productsQuery
-				.GetPagedAsync<Product, ProductDto>(_mapper, request.Page, request.PageSize,
-					cancellationToken: cancellationToken);
+				.MapToProductDto()
+				.GetPagedAsync(request.Page, request.PageSize, cancellationToken: cancellationToken);
 			_logger.LogDebug("Fetched mapped products from database");
 
-			return _mapper.Map<Response>(result);
+			return result.MapToTypedResponse<ProductDto, Response>();
 		}
 	}
 }

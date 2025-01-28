@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using AutoMapper;
 using Resto.Application.Common.Exceptions;
 using Resto.Common.Exceptions;
 
@@ -38,8 +37,6 @@ internal class ExceptionHandlingMiddleware
 			context.Request.Method,
 			context.Request.Path,
 			ex.Message);
-		if (ex is AutoMapperMappingException mappingException && mappingException.InnerException != null)
-			ex = mappingException.InnerException;
 		var code = ex switch
 		{
 			// generic exceptions
