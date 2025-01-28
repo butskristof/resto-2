@@ -1,5 +1,4 @@
 using System.Reflection;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Constants;
@@ -14,12 +13,10 @@ public class AppDbContext : DbContext, IAppDbContext
 	#region construction
 
 	private readonly TimeProvider _timeProvider;
-	private readonly IMediator _mediator;
 
-	public AppDbContext(DbContextOptions options, TimeProvider timeProvider, IMediator mediator) : base(options)
+	public AppDbContext(DbContextOptions options, TimeProvider timeProvider) : base(options)
 	{
 		_timeProvider = timeProvider;
-		_mediator = mediator;
 	}
 
 	#endregion

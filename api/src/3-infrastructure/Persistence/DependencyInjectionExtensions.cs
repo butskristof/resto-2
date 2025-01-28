@@ -14,7 +14,7 @@ public static class DependencyInjectionExtensions
 
 		services
 			.AddDbContext<AppDbContext>(builder => builder
-				.UseSqlServer(connectionString,
+				.UseNpgsql(connectionString,
 					b =>
 					{
 						b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
