@@ -15,21 +15,21 @@ public abstract class AuditableBaseEntity<TId> : BaseEntity<TId>, IAuditableEnti
 
 	#region private members
 
-	private DateTime? _modifiedOn;
+	private DateTimeOffset? _modifiedOn;
 
 	#endregion
 
 	#region created
 
 	// public string CreatedBy { get; set; }
-	public DateTime CreatedOn { get; set; }
+	public DateTimeOffset CreatedOn { get; set; }
 
 	#endregion
 
 	#region modified
 
 	// public string LastModifiedBy { get; set; }
-	public DateTime? LastModifiedOn
+	public DateTimeOffset? LastModifiedOn
 	{
 		get => _modifiedOn;
 		set
@@ -41,7 +41,7 @@ public abstract class AuditableBaseEntity<TId> : BaseEntity<TId>, IAuditableEnti
 		}
 	}
 
-	public void SetModifiedOnForContext(DateTime value)
+	public void SetModifiedOnForContext(DateTimeOffset value)
 	{
 		_modifiedOn = value;
 	}

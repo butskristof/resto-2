@@ -38,7 +38,7 @@ public class AppDbContext : DbContext, IAppDbContext
 		// change tracker
 		foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
 		{
-			var timestamp = _timeProvider.GetLocalNow().DateTime;
+			var timestamp = _timeProvider.GetLocalNow();
 			switch (entry.State)
 			{
 				case EntityState.Added:
