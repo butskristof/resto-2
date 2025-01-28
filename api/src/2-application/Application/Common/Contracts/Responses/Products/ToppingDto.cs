@@ -9,5 +9,5 @@ public class MinimalToppingDto
 
 public class ToppingDto : MinimalToppingDto
 {
-    public DateTime? LastModifiedOn { get; set; }
+    public DateTimeOffset? LastModifiedOn { get; set; }
 }

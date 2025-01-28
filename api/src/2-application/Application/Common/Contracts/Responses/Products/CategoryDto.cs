@@ -9,5 +9,5 @@ public class MinimalCategoryDto
 
 public class CategoryDto : MinimalCategoryDto
 {
-    public DateTime? LastModifiedOn { get; set; }
+    public DateTimeOffset? LastModifiedOn { get; set; }
 }

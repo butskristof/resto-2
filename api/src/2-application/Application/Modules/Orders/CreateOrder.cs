@@ -92,7 +92,7 @@ public static class CreateOrder
             _logger.LogDebug("Adding a new order");
 
             var order = request.MapToOrder();
-            order.Timestamp = _timeProvider.GetLocalNow().DateTime;
+            order.Timestamp = _timeProvider.GetLocalNow();
             _logger.LogDebug("Mapped request to entity type");
 
             _dbContext.Orders.Add(order);

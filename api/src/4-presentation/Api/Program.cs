@@ -66,7 +66,7 @@ try
 
 	app.Run();
 }
-catch (Exception ex)
+catch (Exception ex) when (ex is not HostAbortedException)
 {
 	Log.Logger.Fatal(ex, "Host terminated unexpectedly");
 	throw;
