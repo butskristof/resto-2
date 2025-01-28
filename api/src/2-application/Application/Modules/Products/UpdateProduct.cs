@@ -85,6 +85,7 @@ public static class UpdateProduct
             product.CategoryId = request.CategoryId;
             _logger.LogDebug("Mapped update request to entity");
 
+            // TODO refactor
             // filter ProductTopping objects that are not present in the request
             var toppingsToDelete = product.Toppings
                 .Where(pt => request.ToppingIds.All(tid => pt.ToppingId != tid))

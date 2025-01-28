@@ -18,18 +18,6 @@ internal static class CategoryMappings
 
     #endregion
     
-    #region MinimalCategoryDto
-
-    internal static MinimalCategoryDto MapToMinimalCategoryDto(this Category category)
-        => new()
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Color = category.Color,
-        };
-
-    #endregion
-
     #region CategoryDto
 
     private static Expression<Func<Category, CategoryDto>> CreateMappingExpression()
@@ -41,7 +29,8 @@ internal static class CategoryMappings
             LastModifiedOn = category.LastModifiedOn,
         };
 
-    private static readonly Func<Category, CategoryDto> CompiledMapping = CreateMappingExpression().Compile();
+    private static readonly Func<Category, CategoryDto> CompiledMapping
+        = CreateMappingExpression().Compile();
 
     internal static CategoryDto MapToCategoryDto(this Category category)
         => CompiledMapping(category);

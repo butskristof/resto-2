@@ -33,8 +33,18 @@ internal static class ProductMappings
             Name = product.Name,
             Price = product.Price,
             MultipleToppingsAllowed = product.MultipleToppingsAllowed,
-            Category = product.Category.MapToMinimalCategoryDto(),
-            Toppings = product.Toppings.Select(t => t.Topping.MapToMinimalToppingDto())
+            Category = new MinimalCategoryDto
+            {
+                Id = product.Category.Id,
+                Name = product.Category.Name,
+                Color = product.Category.Color,
+            },
+            Toppings = product.Toppings.Select(t => new MinimalToppingDto
+            {
+                Id = t.Topping.Id,
+                Name = t.Topping.Name,
+                Price = t.Topping.Price,
+            })
         };
 
     private static readonly Func<Product, ProductDto> CompiledMapping = CreateMappingExpression().Compile();

@@ -1,48 +1,45 @@
+using System.Linq.Expressions;
 using Resto.Common.Integrations.TicketPrinting.Models;
 using Resto.Domain.Entities.Orders;
-using Resto.Domain.Entities.Products;
-using Resto.Domain.Enumerations;
 
 namespace Resto.Application.Common.Mapping;
 
 internal static class OrderTicketDataMappings
 {
-    internal static OrderTicketData.OrderTicketTopping MapToOrderTicketTopping(this Topping topping)
-        => new()
-        {
-            Name = topping.Name,
-            Price = topping.Price,
-        };
-
-    internal static OrderTicketData.OrderTicketProduct MapToOrderTicketProduct(this Product product)
-        => new()
-        {
-            Name = product.Name,
-            Price = product.Price,
-        };
-
-    internal static OrderTicketData.OrderTicketOrderLine MapToOrderTicketOrderLine(this OrderLine orderLine)
-        => new()
-        {
-            Product = orderLine.Product.MapToOrderTicketProduct(),
-            Toppings = orderLine.Toppings
-                .Select(t => t.Topping.MapToOrderTicketTopping()),
-            Quantity = orderLine.Quantity,
-            Price = orderLine.Price,
-            OrderLineTotal = orderLine.OrderLineTotal,
-        };
-
-    internal static OrderTicketData.OrderTicketDiscount MapToOrderTicketDiscount(this OrderDiscount orderDiscount)
-        => (OrderTicketData.OrderTicketDiscount)orderDiscount;
-
-    internal static OrderTicketData MapToOrderTicketData(this Order order)
-        => new()
+    private static Expression<Func<Order, OrderTicketData>> CreateMappingExpression()
+        => order => new OrderTicketData
         {
             Id = order.Id,
             Timestamp = order.Timestamp,
-            Discount = order.Discount.MapToOrderTicketDiscount(),
+            Discount = (OrderTicketData.OrderTicketDiscount)order.Discount,
             OrderLines = order.OrderLines
-                .Select(ol => ol.MapToOrderTicketOrderLine()),
+                .Select(ol => new OrderTicketData.OrderTicketOrderLine
+                {
+                    Product = new OrderTicketData.OrderTicketProduct
+                    {
+                        Name = ol.Product.Name,
+                        Price = ol.Product.Price,
+                    },
+                    Toppings = ol.Toppings
+                        .Select(olt => new OrderTicketData.OrderTicketTopping
+                        {
+                            Name = olt.Topping.Name,
+                            Price = olt.Topping.Price,
+                        }),
+                    Quantity = ol.Quantity,
+                    Price = ol.Price,
+                    OrderLineTotal = ol.OrderLineTotal,
+                }),
             OrderTotal = order.OrderTotal,
         };
+
+    private static readonly Func<Order, OrderTicketData> CompiledMapping = CreateMappingExpression().Compile();
+
+    internal static OrderTicketData MapToOrderTicketData(this Order order) => CompiledMapping(order);
+
+    internal static IEnumerable<OrderTicketData> MapToOrderTicketData(this IEnumerable<Order> orders)
+        => orders.Select(CompiledMapping);
+
+    internal static IQueryable<OrderTicketData> MapToOrderTicketData(this IQueryable<Order> query)
+        => query.Select(CreateMappingExpression());
 }

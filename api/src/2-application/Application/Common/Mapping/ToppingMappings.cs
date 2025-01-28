@@ -18,18 +18,6 @@ internal static class ToppingMappings
 
     #endregion
 
-    #region MinimalToppingDto
-
-    internal static MinimalToppingDto MapToMinimalToppingDto(this Topping topping)
-        => new()
-        {
-            Id = topping.Id,
-            Name = topping.Name,
-            Price = topping.Price,
-        };
-
-    #endregion
-
     #region ToppingDto
 
     private static Expression<Func<Topping, ToppingDto>> CreateMappingExpression()

@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using Resto.Application.Common.Contracts.Responses.Orders;
 using Resto.Application.Modules.Orders;
 using Resto.Domain.Entities.Orders;
-using Resto.Domain.Entities.Products;
 
 namespace Resto.Application.Common.Mapping;
 
@@ -32,34 +31,6 @@ internal static class OrderMappings
     #endregion
 
     #region OrderDto
-
-    internal static OrderLineDto.OrderLineProductDto MapToOrderLineProductDto(this Product product)
-        => new()
-        {
-            Id = product.Id,
-            Name = product.Name,
-            Price = product.Price,
-        };
-
-    internal static OrderLineDto.OrderLineToppingDto MapToOrderLineToppingDto(this Topping topping)
-        => new()
-        {
-            Id = topping.Id,
-            Name = topping.Name,
-            Price = topping.Price,
-        };
-
-    internal static OrderLineDto MapToOrderLineDto(this OrderLine orderLine)
-        => new()
-        {
-            Id = orderLine.Id,
-            Product = orderLine.Product.MapToOrderLineProductDto(),
-            Toppings = orderLine.Toppings.Select(t => t.Topping.MapToOrderLineToppingDto()),
-            Quantity = orderLine.Quantity,
-            Price = orderLine.Price,
-            OrderLineTotal = orderLine.OrderLineTotal,
-        };
-
     private static Expression<Func<Order, OrderDto>> CreateMappingExpression()
         => order => new OrderDto
         {
@@ -67,7 +38,25 @@ internal static class OrderMappings
             Discount = order.Discount,
             Timestamp = order.Timestamp,
             OrderTotal = order.OrderTotal,
-            OrderLines = order.OrderLines.Select(ol => ol.MapToOrderLineDto()),
+            OrderLines = order.OrderLines.Select(ol => new OrderLineDto
+            {
+                Id = ol.Id,
+                Product = new OrderLineDto.OrderLineProductDto
+                {
+                    Id = ol.Product.Id,
+                    Name = ol.Product.Name,
+                    Price = ol.Product.Price,
+                },
+                Toppings = ol.Toppings.Select(olt => new OrderLineDto.OrderLineToppingDto
+                {
+                    Id = olt.Topping.Id,
+                    Name = olt.Topping.Name,
+                    Price = olt.Topping.Price,
+                }),
+                Quantity = ol.Quantity,
+                Price = ol.Price,
+                OrderLineTotal = ol.OrderLineTotal,
+            }),
         };
 
     private static readonly Func<Order, OrderDto> CompiledMapping = CreateMappingExpression().Compile();

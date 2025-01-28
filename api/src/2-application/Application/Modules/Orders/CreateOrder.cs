@@ -103,6 +103,7 @@ public static class CreateOrder
             {
                 _logger.LogDebug("Trying to print ticket for newly created order");
 
+                // TODO refactor as projection?
                 await _dbContext
                     .Entry(order)
                     .Collection(o => o.OrderLines)

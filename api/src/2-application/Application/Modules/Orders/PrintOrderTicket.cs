@@ -48,14 +48,14 @@ public static class PrintOrderTicket
 		{
 			_logger.LogDebug("Printing ticket for Order with ID {OrderId}", request.OrderId);
 
-			var order = await _dbContext
+			var orderTicketData = await _dbContext
 				.OrdersBaseQuery(false)
-				.Select(o => o.MapToOrderTicketData())
+				.MapToOrderTicketData()
 				.SingleOrDefaultAsync(o => o.Id == request.OrderId,
 					cancellationToken: cancellationToken)
-				?? throw new NotFoundException($"Could not find product with id {request.OrderId}");
+				?? throw new NotFoundException($"Could not find order with id {request.OrderId}");
 			
-			await _ticketPrintingService.PrintOrderTicketAsync(order, cancellationToken);
+			await _ticketPrintingService.PrintOrderTicketAsync(orderTicketData, cancellationToken);
 		}
 	}
 }
