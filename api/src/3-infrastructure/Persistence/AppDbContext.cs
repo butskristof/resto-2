@@ -5,6 +5,7 @@ using Resto.Common.Constants;
 using Resto.Domain.Common;
 using Resto.Domain.Entities.Orders;
 using Resto.Domain.Entities.Products;
+using Resto.Persistence.ValueConverters;
 
 namespace Resto.Persistence;
 
@@ -67,6 +68,10 @@ public class AppDbContext : DbContext, IAppDbContext
 		configurationBuilder
 			.Properties<decimal>()
 			.HavePrecision(18, 6);
+
+		configurationBuilder
+			.Properties<DateTimeOffset>()
+			.HaveConversion<DateTimeOffsetValueConverter>();
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
