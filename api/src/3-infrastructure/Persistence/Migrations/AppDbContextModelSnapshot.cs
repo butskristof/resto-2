@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Resto.Persistence;
 
 #nullable disable
@@ -18,27 +18,27 @@ namespace Resto.Persistence.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.1")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Resto.Domain.Entities.Orders.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<short>("Discount")
                         .HasColumnType("smallint");
 
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset>("Timestamp")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -49,22 +49,22 @@ namespace Resto.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("OrderId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -79,19 +79,19 @@ namespace Resto.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("OrderLineId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("ToppingId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -106,23 +106,23 @@ namespace Resto.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasMaxLength(7)
-                        .HasColumnType("nvarchar(7)");
+                        .HasColumnType("character varying(7)");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasColumnType("character varying(512)");
 
                     b.HasKey("Id");
 
@@ -139,28 +139,28 @@ namespace Resto.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("MultipleToppingsAllowed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasColumnType("character varying(512)");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
+                        .HasColumnType("numeric(18,6)");
 
                     b.HasKey("Id");
 
@@ -176,19 +176,19 @@ namespace Resto.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("ToppingId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -203,22 +203,22 @@ namespace Resto.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasColumnType("character varying(512)");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 6)
-                        .HasColumnType("decimal(18,6)");
+                        .HasColumnType("numeric(18,6)");
 
                     b.HasKey("Id");
 

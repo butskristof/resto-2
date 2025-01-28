@@ -1,11 +1,11 @@
 using System.Reflection;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Resto.Application.Common.Persistence;
 using Resto.Common.Constants;
 using Resto.Domain.Common;
 using Resto.Domain.Entities.Orders;
 using Resto.Domain.Entities.Products;
+using Resto.Persistence.ValueConverters;
 
 namespace Resto.Persistence;
 
@@ -14,12 +14,10 @@ public class AppDbContext : DbContext, IAppDbContext
 	#region construction
 
 	private readonly TimeProvider _timeProvider;
-	private readonly IMediator _mediator;
 
-	public AppDbContext(DbContextOptions options, TimeProvider timeProvider, IMediator mediator) : base(options)
+	public AppDbContext(DbContextOptions options, TimeProvider timeProvider) : base(options)
 	{
 		_timeProvider = timeProvider;
-		_mediator = mediator;
 	}
 
 	#endregion
@@ -70,6 +68,10 @@ public class AppDbContext : DbContext, IAppDbContext
 		configurationBuilder
 			.Properties<decimal>()
 			.HavePrecision(18, 6);
+
+		configurationBuilder
+			.Properties<DateTimeOffset>()
+			.HaveConversion<DateTimeOffsetValueConverter>();
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
