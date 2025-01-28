@@ -1,6 +1,3 @@
-using AutoMapper;
-using Resto.Domain.Entities.Orders;
-
 namespace Resto.Application.Common.Contracts.Responses.Orders;
 
 public class OrderLineDto
@@ -14,13 +11,6 @@ public class OrderLineDto
 
     public decimal Price { get; set; }
     public decimal OrderLineTotal { get; set; }
-
-    public void Mapping(Profile profile)
-    {
-        profile.CreateMap<OrderLine, OrderLineDto>()
-            .ForMember(dto => dto.Toppings, opt => opt
-                .MapFrom(ol => ol.Toppings.Select(olt => olt.Topping)));
-    }
 
     public class OrderLineProductDto
     {

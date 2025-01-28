@@ -7,7 +7,6 @@
     <RootNamespace>Resto.Application</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AutoMapper" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="MediatR" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
