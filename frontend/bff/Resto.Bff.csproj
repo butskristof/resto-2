@@ -4,6 +4,12 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>b1e108ff-178a-4342-89ee-1ab2e8ab8c94</UserSecretsId>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Duende.BFF" Version="2.3.0" />
+      <PackageReference Include="Duende.BFF.Yarp" Version="2.3.0" />
+    </ItemGroup>
 
 </Project>
