@@ -34,10 +34,10 @@
       <div class="actions">
         <button
           type="button"
-          class="btn-add"
+          class="btn-add btn-icon"
           @click="add"
         >
-          <i class="icon-plus"></i>
+          <i class="icon-plus" />
           Toevoegen
         </button>
       </div>

@@ -34,14 +34,14 @@
         class="btn-blue btn-icon"
         @click="emit('edit', product)"
       >
-        <i class="icon-edit"></i> Bewerken
+        <i class="icon-square-pen" /> Bewerken
       </button>
       <button
         type="button"
         class="btn-danger btn-icon"
         @click="emit('delete', product)"
       >
-        <i class="icon-trash"></i> Verwijderen
+        <i class="icon-trash" /> Verwijderen
       </button>
     </div>
   </div>

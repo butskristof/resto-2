@@ -9,9 +9,10 @@
         <div class="right">
           <button
             type="button"
+            class="btn-icon"
             @click="emit('close')"
           >
-            <i class="icon-x"></i>
+            <i class="icon-x" />
           </button>
         </div>
       </div>
@@ -60,5 +61,9 @@ const headerText = computed(() => {
   h3 {
     margin: auto;
   }
+}
+
+.btn-icon i {
+  margin-right: 0;
 }
 </style>

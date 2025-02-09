@@ -35,7 +35,7 @@
               type="submit"
               class="btn-blue btn-icon"
             >
-              <i :class="actionIcon"></i>
+              <i :class="actionIcon" />
               {{ capitalize(actionLabel) }}
             </button>
           </div>

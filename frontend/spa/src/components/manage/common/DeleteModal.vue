@@ -24,7 +24,7 @@
             class="btn-icon"
             @click="emit('close')"
           >
-            <i class="icon-x"></i> Annuleren
+            <i class="icon-x" /> Annuleren
           </button>
 
           <button
@@ -32,7 +32,7 @@
             class="btn-danger btn-icon"
             @click="emit('delete')"
           >
-            <i class="icon-trash"></i> Verwijderen
+            <i class="icon-trash" /> Verwijderen
           </button>
         </div>
       </div>

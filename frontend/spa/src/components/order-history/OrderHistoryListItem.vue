@@ -19,9 +19,10 @@
         </div>
         <button
           type="button"
+          class="btn-icon"
           @click="print"
         >
-          <i class="icon-printer"></i>
+          <i class="icon-printer" />
           Print
         </button>
       </div>
