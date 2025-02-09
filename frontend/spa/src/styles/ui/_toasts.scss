@@ -1,0 +1,22 @@
+@use '@/styles/_colors.scss';
+
+.Vue-Toastification__toast--default {
+  background-color: colors.$klj-blue;
+  color: #fff;
+}
+.Vue-Toastification__toast--info {
+  background-color: colors.$klj-blue;
+  color: #fff;
+}
+.Vue-Toastification__toast--success {
+  background-color: colors.$klj-green;
+  color: #fff;
+}
+.Vue-Toastification__toast--error {
+  background-color: colors.$klj-red;
+  color: #fff;
+}
+.Vue-Toastification__toast--warning {
+  background-color: colors.$yellow;
+  color: #fff;
+}

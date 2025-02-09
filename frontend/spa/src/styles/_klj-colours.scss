@@ -1,0 +1,22 @@
+@use 'sass:color';
+
+$klj-blue: #00adee;
+$klj-green: #8bc53f;
+$klj-red: #ed2920;
+
+$yellow: #f9c80e;
+//$yellow: #FFE066;
+$orange: #f86624;
+$red: #ea3546;
+$dark-red: color.adjust($red, $lightness: -10%);
+//$red: #F25F5C;
+$purple: #662e9b;
+
+$gray-lighter: #eee;
+$gray-light: color.adjust($gray-lighter, $lightness: -10%);
+$gray: #816f68;
+//$gray: #494949;
+$gray-dark: #50514f;
+//$gray-dark: #36393B;
+$white: #fff;
+$black: #222222;

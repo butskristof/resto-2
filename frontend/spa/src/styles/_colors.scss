@@ -1,0 +1,18 @@
+@use 'sass:color';
+
+$klj-blue: #00adee;
+$klj-green: #8bc53f;
+$klj-red: #ed2920;
+
+$yellow: #f9c80e;
+$orange: #f86624;
+$red: #ea3546;
+$dark-red: color.adjust($red, $lightness: -10%);
+$purple: #662e9b;
+
+$background-color: $klj-blue;
+$background-contrast-color: #fff;
+$background-contrast-color-darker: color.adjust($background-contrast-color, $lightness: -10%);
+
+$body-text-color: #222222;
+$body-text-color-lighter: color.adjust($body-text-color, $lightness: 60%);

@@ -1,0 +1,7 @@
+@use '@/styles/_colors.scss';
+
+body {
+  background-color: colors.$klj-blue;
+  color: colors.$body-text-color;
+  font-family: 'Inter', sans-serif;
+}

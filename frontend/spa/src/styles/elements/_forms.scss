@@ -1,0 +1,53 @@
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/_colors.scss';
+@use '@/styles/utilities/_general.scss';
+@use '@/styles/utilities/_typography.scss';
+@use '@/styles/ui/_layout.scss';
+
+pre {
+  display: block;
+  overflow-x: auto;
+}
+
+@mixin input {
+  @include general.transition;
+  display: block;
+  width: 100%;
+  padding: padding-margin.$button-padding;
+  border-radius: padding-margin.$button-border-radius;
+  border: padding-margin.$button-border-width solid colors.$body-text-color-lighter;
+
+  &.invalid {
+    border: 2px solid colors.$red;
+  }
+}
+
+@mixin form-row {
+  @include general.transition;
+  @include general.striped-rows;
+  width: 100%;
+  padding: 0.5rem 1rem;
+
+  .input-errors {
+    flex-basis: 60%;
+    align-self: flex-start;
+
+    input {
+      @include input;
+    }
+
+    .errors {
+      @include typography.error-text;
+      margin-top: 0.5rem;
+    }
+  }
+
+  label {
+    @include layout.flex-row-space-between;
+    gap: padding-margin.$box-padding;
+
+    .label {
+      margin-top: 0.25rem;
+    }
+  }
+}

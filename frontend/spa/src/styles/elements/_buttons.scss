@@ -1,0 +1,67 @@
+@use 'sass:color';
+@use '@/styles/utilities/_general.scss';
+@use '@/styles/_colors.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+
+button {
+  @include general.transition;
+  cursor: pointer;
+
+  list-style: none;
+  display: inline-block;
+  outline: none;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: baseline;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+
+  padding: padding-margin.$button-padding;
+  border-radius: padding-margin.$button-border-radius;
+  border: padding-margin.$button-border-width solid colors.$body-text-color-lighter;
+
+  color: colors.$body-text-color;
+  background-color: colors.$background-contrast-color;
+
+  &:hover {
+    background-color: colors.$background-contrast-color-darker;
+    border: padding-margin.$button-border-width solid colors.$body-text-color;
+  }
+
+  &:focus {
+    background-color: colors.$background-contrast-color-darker;
+    border: padding-margin.$button-border-width solid colors.$body-text-color;
+  }
+
+  &:disabled {
+    background-color: color.adjust(colors.$background-contrast-color, $lightness: -20%);
+    border-color: color.adjust(colors.$background-contrast-color, $lightness: -20%);
+    color: rgba(colors.$body-text-color, 0.6);
+    pointer-events: none;
+  }
+}
+
+.btn-icon {
+  i {
+    margin-right: 0.25rem;
+  }
+}
+
+.btn-danger {
+  background-color: colors.$dark-red;
+  border-color: colors.$dark-red;
+  color: white;
+
+  &:hover,
+  &:focus {
+    background-color: color.adjust(colors.$dark-red, $lightness: -10%);
+    border-color: color.adjust(colors.$dark-red, $lightness: -10%);
+  }
+
+  &:disabled {
+    background-color: color.adjust(colors.$dark-red, $lightness: 30%);
+    border-color: color.adjust(colors.$dark-red, $lightness: 30%);
+  }
+}
