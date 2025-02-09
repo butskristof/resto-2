@@ -1,14 +1,8 @@
 <template>
   <nav>
-    <router-link :to="{ name: routeInfo.manage.products.name }">
-      Gerechten
-    </router-link>
-    <router-link :to="{ name: routeInfo.manage.toppings.name }">
-      Toppings
-    </router-link>
-    <router-link :to="{ name: routeInfo.manage.categories.name }">
-      Categorieën
-    </router-link>
+    <router-link :to="{ name: routeInfo.manage.products.name }"> Gerechten </router-link>
+    <router-link :to="{ name: routeInfo.manage.toppings.name }"> Toppings </router-link>
+    <router-link :to="{ name: routeInfo.manage.categories.name }"> Categorieën </router-link>
   </nav>
 
   <RouterView />

@@ -7,7 +7,10 @@
         </div>
 
         <div class="right">
-          <button type="button" @click="emit('close')">
+          <button
+            type="button"
+            @click="emit('close')"
+          >
             <i class="icon-x"></i>
           </button>
         </div>
@@ -39,9 +42,7 @@ const props = defineProps({
 
 //#region UI
 const headerText = computed(() => {
-  return `${capitalize(props.entity)} ${
-    props.isEdit ? 'bewerken' : 'aanmaken'
-  }`;
+  return `${capitalize(props.entity)} ${props.isEdit ? 'bewerken' : 'aanmaken'}`;
 });
 //#endregion
 </script>

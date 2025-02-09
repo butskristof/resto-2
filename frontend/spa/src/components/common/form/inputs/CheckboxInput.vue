@@ -1,6 +1,9 @@
 <template>
   <label class="switch">
-    <input v-model="model" type="checkbox" />
+    <input
+      v-model="model"
+      type="checkbox"
+    />
     <span class="slider round"></span>
   </label>
 </template>

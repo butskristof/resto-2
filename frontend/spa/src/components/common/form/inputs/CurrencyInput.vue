@@ -1,5 +1,9 @@
 <template>
-  <input ref="inputRef" :class="{ invalid: invalid }" type="text" />
+  <input
+    ref="inputRef"
+    :class="{ invalid: invalid }"
+    type="text"
+  />
 </template>
 
 <script setup>

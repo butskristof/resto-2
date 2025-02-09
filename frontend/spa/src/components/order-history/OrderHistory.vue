@@ -9,10 +9,7 @@
   </div>
 
   <div v-if="isError">
-    <div>
-      Er liep iets mis bij het ophalen van de bestellingen, probeer het later
-      opnieuw.
-    </div>
+    <div>Er liep iets mis bij het ophalen van de bestellingen, probeer het later opnieuw.</div>
     <div>
       <pre>{{ error }}</pre>
     </div>
@@ -53,9 +50,7 @@ const {
   isError,
   error,
 } = useOrdersQuery();
-const loading = computed(
-  () => isLoading.value || isFetching.value || isFetchingNextPage.value,
-);
+const loading = computed(() => isLoading.value || isFetching.value || isFetchingNextPage.value);
 const loadingLabel = computed(() => {
   if (isLoading.value || isFetchingNextPage.value) return 'Bestellingen laden';
   else if (isFetching.value) return 'Bestellingen bijwerken';

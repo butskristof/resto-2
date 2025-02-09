@@ -5,18 +5,40 @@
         <slot name="label"></slot>
       </span>
 
-      <div v-if="nestedInput" class="input-errors">
+      <div
+        v-if="nestedInput"
+        class="input-errors"
+      >
         <slot name="input"></slot>
-        <div v-if="hasErrors" class="errors">
-          <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
+        <div
+          v-if="hasErrors"
+          class="errors"
+        >
+          <div
+            v-for="(error, i) in errors"
+            :key="i"
+          >
+            {{ error }}
+          </div>
         </div>
       </div>
     </label>
 
-    <div v-if="!nestedInput" class="input-errors">
+    <div
+      v-if="!nestedInput"
+      class="input-errors"
+    >
       <slot name="input"></slot>
-      <div v-if="hasErrors" class="errors">
-        <div v-for="(error, i) in errors" :key="i">{{ error }}</div>
+      <div
+        v-if="hasErrors"
+        class="errors"
+      >
+        <div
+          v-for="(error, i) in errors"
+          :key="i"
+        >
+          {{ error }}
+        </div>
       </div>
     </div>
   </div>

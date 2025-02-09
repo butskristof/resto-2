@@ -1,6 +1,9 @@
 <template>
   <div class="category">
-    <div class="color" :style="colorBlockStyle"></div>
+    <div
+      class="color"
+      :style="colorBlockStyle"
+    ></div>
     <div class="name">{{ category.name }}</div>
 
     <div class="actions">

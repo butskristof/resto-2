@@ -1,6 +1,10 @@
 <template>
   <div class="api-validation-errors">
-    <div v-for="(errorCodes, property) in errors" :key="property" class="error">
+    <div
+      v-for="(errorCodes, property) in errors"
+      :key="property"
+      class="error"
+    >
       <pre>{{ property }}: {{ errorCodes.join(',') }}</pre>
     </div>
   </div>

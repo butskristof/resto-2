@@ -1,11 +1,17 @@
 <template>
-  <GenericFormInput :errors="errors" :nested-input="true">
+  <GenericFormInput
+    :errors="errors"
+    :nested-input="true"
+  >
     <template #label>
       <slot name="label"></slot>
     </template>
 
     <template #input>
-      <TextInput v-model="model" :invalid="hasErrors" />
+      <TextInput
+        v-model="model"
+        :invalid="hasErrors"
+      />
     </template>
   </GenericFormInput>
 </template>

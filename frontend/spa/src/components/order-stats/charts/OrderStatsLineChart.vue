@@ -1,7 +1,10 @@
 <template>
   <div class="order-stats">
     <h3>Verloop bestellingen over tijd</h3>
-    <Line :data="chartData" :options="chartOptions" />
+    <Line
+      :data="chartData"
+      :options="chartOptions"
+    />
   </div>
 </template>
 
@@ -21,15 +24,7 @@ import {
 import { Line } from 'vue-chartjs';
 import 'chartjs-adapter-moment';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  TimeScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-);
+ChartJS.register(CategoryScale, LinearScale, TimeScale, PointElement, LineElement, Title, Tooltip);
 
 const { data } = useOrderStatisticsQuery();
 const stats = computed(() => data.value?.orderStatistics);

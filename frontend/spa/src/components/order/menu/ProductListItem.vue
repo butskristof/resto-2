@@ -1,11 +1,17 @@
 <template>
   <div class="product">
-    <div class="name-price" :style="categoryColorStyle">
+    <div
+      class="name-price"
+      :style="categoryColorStyle"
+    >
       <div class="name">{{ product.name }}</div>
       <div class="price">{{ formatCurrency(product.price) }}</div>
     </div>
     <div class="toppings-actions">
-      <div v-if="product.toppings.length > 0" class="toppings">
+      <div
+        v-if="product.toppings.length > 0"
+        class="toppings"
+      >
         <div
           v-for="topping in product.toppings"
           :key="topping.id"
@@ -26,7 +32,11 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="btn-add" @click="add">
+        <button
+          type="button"
+          class="btn-add"
+          @click="add"
+        >
           <i class="icon-plus"></i>
           Toevoegen
         </button>
@@ -75,9 +85,7 @@ function add() {
 
 const selectedToppingIds = ref([]);
 
-const inputType = computed(() =>
-  props.product.multipleToppingsAllowed ? 'checkbox' : 'radio',
-);
+const inputType = computed(() => (props.product.multipleToppingsAllowed ? 'checkbox' : 'radio'));
 
 function setDefaultToppingSelection() {
   // if there are toppings available, and the list is rendered as a radio,
@@ -119,8 +127,7 @@ watch(
   padding: padding-margin.$box-padding calc(2 * #{padding-margin.$box-padding})
     padding-margin.$box-padding padding-margin.$box-padding;
   border-radius: padding-margin.$button-border-radius;
-  border: padding-margin.$button-border-width solid
-    colors.$background-contrast-color-darker;
+  border: padding-margin.$button-border-width solid colors.$background-contrast-color-darker;
 
   font-weight: 500;
 }

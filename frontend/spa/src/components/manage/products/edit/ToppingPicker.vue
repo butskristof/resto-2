@@ -13,7 +13,10 @@
       :show-labels="false"
       :placeholder="placeholder"
     />
-    <div v-if="toppingQueryError" class="error">
+    <div
+      v-if="toppingQueryError"
+      class="error"
+    >
       Toppings konden niet worden ingeladen, probeer het later opnieuw.
     </div>
   </div>
@@ -44,14 +47,8 @@ const placeholder = computed(() => {
   return placeholder;
 });
 
-const {
-  toppings,
-  isLoading: toppingsLoading,
-  isError: toppingQueryError,
-} = useToppingsQuery(true);
-const disabled = computed(
-  () => toppingsLoading.value || toppingQueryError.value,
-);
+const { toppings, isLoading: toppingsLoading, isError: toppingQueryError } = useToppingsQuery(true);
+const disabled = computed(() => toppingsLoading.value || toppingQueryError.value);
 </script>
 
 <style scoped lang="scss">

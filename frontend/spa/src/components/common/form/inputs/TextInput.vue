@@ -1,5 +1,9 @@
 <template>
-  <input v-model.trim="model" type="text" :class="{ invalid: invalid }" />
+  <input
+    v-model.trim="model"
+    type="text"
+    :class="{ invalid: invalid }"
+  />
 </template>
 
 <script setup>

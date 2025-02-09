@@ -7,30 +7,30 @@ $breakpoint-xxl: 1400px;
 
 @mixin breakpoint-sm-up {
   @media (min-width: $breakpoint-sm) {
-    @content
+    @content;
   }
 }
 
 @mixin breakpoint-md-up {
   @media (min-width: $breakpoint-md) {
-    @content
+    @content;
   }
 }
 
 @mixin breakpoint-lg-up {
   @media (min-width: $breakpoint-lg) {
-    @content
+    @content;
   }
 }
 
 @mixin breakpoint-xl-up {
   @media (min-width: $breakpoint-xl) {
-    @content
+    @content;
   }
 }
 
 @mixin breakpoint-xxl-up {
   @media (min-width: $breakpoint-xxl) {
-    @content
+    @content;
   }
 }

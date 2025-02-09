@@ -58,9 +58,7 @@ function getTippyConfiguration(content) {
   return { content, placement: 'top-end' };
 }
 const currentRoute = useRoute();
-const showOrderLink = computed(
-  () => currentRoute.name !== routeInfo.order.name,
-);
+const showOrderLink = computed(() => currentRoute.name !== routeInfo.order.name);
 </script>
 
 <style scoped lang="scss">

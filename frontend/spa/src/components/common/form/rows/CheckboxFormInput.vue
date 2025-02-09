@@ -1,5 +1,8 @@
 <template>
-  <GenericFormInput :errors="errors" :nested-input="false">
+  <GenericFormInput
+    :errors="errors"
+    :nested-input="false"
+  >
     <template #label>
       <slot name="label"></slot>
     </template>

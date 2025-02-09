@@ -17,7 +17,10 @@
             (korting: {{ ORDER_DISCOUNT[order.discount].displayValue }})
           </div>
         </div>
-        <button type="button" @click="print">
+        <button
+          type="button"
+          @click="print"
+        >
           <i class="icon-printer"></i>
           Print
         </button>

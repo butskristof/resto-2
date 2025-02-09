@@ -1,11 +1,17 @@
 <template>
   <div class="product">
-    <div class="color" :style="colorBlockStyle"></div>
+    <div
+      class="color"
+      :style="colorBlockStyle"
+    ></div>
     <div class="row-1"></div>
     <div class="row-2"></div>
     <div class="name-toppings">
       <div class="name">{{ product.name }}</div>
-      <div v-if="product.toppings.length > 0" class="toppings">
+      <div
+        v-if="product.toppings.length > 0"
+        class="toppings"
+      >
         <div>
           Toppings
           <span v-if="product.multipleToppingsAllowed">

@@ -15,15 +15,15 @@
     <template #footer>
       <div class="footer">
         <div class="left">
-          <LoadingIndicator v-if="isLoading"
-            >{{ capitalize(entity) }} verwijderen</LoadingIndicator
-          >
-          <div v-if="isError">
-            Er ging iets mis tijdens het verwijderen, probeer later opnieuw.
-          </div>
+          <LoadingIndicator v-if="isLoading">{{ capitalize(entity) }} verwijderen</LoadingIndicator>
+          <div v-if="isError">Er ging iets mis tijdens het verwijderen, probeer later opnieuw.</div>
         </div>
         <div class="right">
-          <button type="button" class="btn-icon" @click="emit('close')">
+          <button
+            type="button"
+            class="btn-icon"
+            @click="emit('close')"
+          >
             <i class="icon-x"></i> Annuleren
           </button>
 

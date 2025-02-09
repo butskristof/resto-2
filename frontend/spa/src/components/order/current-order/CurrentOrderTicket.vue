@@ -10,7 +10,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(orderLine, index) in orderLines" :key="index">
+        <tr
+          v-for="(orderLine, index) in orderLines"
+          :key="index"
+        >
           <td class="description">
             <div class="wrapper">
               {{ orderLine.product.name }}

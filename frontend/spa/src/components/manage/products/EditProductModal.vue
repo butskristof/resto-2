@@ -1,12 +1,22 @@
 <template>
-  <EditModal entity="gerecht" :is-edit="isEdit" @close="tryClose">
+  <EditModal
+    entity="gerecht"
+    :is-edit="isEdit"
+    @close="tryClose"
+  >
     <template #body>
       <form @submit="onSubmit">
-        <TextFormInput v-model="name" :errors="nameErrors">
+        <TextFormInput
+          v-model="name"
+          :errors="nameErrors"
+        >
           <template #label>Naam</template>
         </TextFormInput>
 
-        <CurrencyFormInput v-model="price" :errors="priceErrors">
+        <CurrencyFormInput
+          v-model="price"
+          :errors="priceErrors"
+        >
           <template #label>Prijs</template>
         </CurrencyFormInput>
 
@@ -33,18 +43,17 @@
 
         <div class="form-actions">
           <div class="left">
-            <LoadingIndicator v-if="mutationLoading">
-              Product {{ actionLabel }}
-            </LoadingIndicator>
+            <LoadingIndicator v-if="mutationLoading"> Product {{ actionLabel }} </LoadingIndicator>
             <div v-if="mutationHasError">
-              <ApiValidationErrors
-                :api-response="mutationError.response.data"
-              />
+              <ApiValidationErrors :api-response="mutationError.response.data" />
             </div>
           </div>
 
           <div class="right">
-            <button type="submit" class="btn-blue btn-icon">
+            <button
+              type="submit"
+              class="btn-blue btn-icon"
+            >
               <i :class="actionIcon"></i>
               {{ capitalize(actionLabel) }}
             </button>
@@ -109,33 +118,26 @@ const { value: name, errors: nameErrors } = useField('name', undefined, {
 const { value: price, errors: priceErrors } = useField('price', undefined, {
   initialValue: props.product?.price,
 });
-const {
-  value: multipleToppingsAllowed,
-  errors: multipleToppingsAllowedErrors,
-} = useField('multipleToppingsAllowed', undefined, {
-  initialValue: props.product?.multipleToppingsAllowed ?? false,
-});
-
-const category = ref(props.product?.category ?? null);
-const { value: categoryId, errors: categoryErrors } = useField(
-  'categoryId',
+const { value: multipleToppingsAllowed, errors: multipleToppingsAllowedErrors } = useField(
+  'multipleToppingsAllowed',
   undefined,
   {
-    initialValue: props.product?.category.id ?? null,
+    initialValue: props.product?.multipleToppingsAllowed ?? false,
   },
 );
+
+const category = ref(props.product?.category ?? null);
+const { value: categoryId, errors: categoryErrors } = useField('categoryId', undefined, {
+  initialValue: props.product?.category.id ?? null,
+});
 watch(category, () => (categoryId.value = category.value?.id), {
   immediate: props.product != null,
 });
 
 const toppings = ref(props.product?.toppings ?? []);
-const { value: toppingIds, errors: toppingErrors } = useField(
-  'toppingIds',
-  undefined,
-  {
-    initialValue: props.product?.toppings.map((t) => t.id) ?? [],
-  },
-);
+const { value: toppingIds, errors: toppingErrors } = useField('toppingIds', undefined, {
+  initialValue: props.product?.toppings.map((t) => t.id) ?? [],
+});
 watch(toppings, () => (toppingIds.value = toppings.value.map((t) => t.id)), {
   immediate: props.product != null,
 });
@@ -179,9 +181,7 @@ const {
 const tryClose = (force = false) => {
   let close = true;
   if (!force && formMeta.value.dirty)
-    close = confirm(
-      'There may be unsaved changes, are you sure you want to stop editing?',
-    );
+    close = confirm('There may be unsaved changes, are you sure you want to stop editing?');
   if (close) emit('close');
 };
 </script>

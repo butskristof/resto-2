@@ -13,7 +13,10 @@
       :show-labels="false"
       :placeholder="placeholder"
     />
-    <div v-if="categoriesError" class="error">
+    <div
+      v-if="categoriesError"
+      class="error"
+    >
       Categorieën konden niet worden ingeladen, probeer het later opnieuw.
     </div>
   </div>
@@ -49,9 +52,7 @@ const {
   isLoading: categoriesLoading,
   isError: categoriesError,
 } = useCategoriesQuery(true);
-const disabled = computed(
-  () => categoriesLoading.value || categoriesError.value,
-);
+const disabled = computed(() => categoriesLoading.value || categoriesError.value);
 </script>
 
 <style scoped lang="scss">

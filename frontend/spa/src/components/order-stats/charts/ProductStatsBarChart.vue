@@ -1,20 +1,16 @@
 <template>
   <div class="product-stats">
     <h3>Bestellingen per product</h3>
-    <Bar :data="chartData" :options="chartOptions" />
+    <Bar
+      :data="chartData"
+      :options="chartOptions"
+    />
   </div>
 </template>
 
 <script setup>
 import { Bar } from 'vue-chartjs';
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  BarElement,
-  CategoryScale,
-  LinearScale,
-} from 'chart.js';
+import { Chart as ChartJS, Title, Tooltip, BarElement, CategoryScale, LinearScale } from 'chart.js';
 
 import { useOrderStatisticsQuery } from '@/composables/queries';
 import { computed } from 'vue';
@@ -37,12 +33,8 @@ const chartData = computed(() => {
   };
   if (products.value != null) {
     data.labels = products.value.map((p) => p.name);
-    data.datasets[0].backgroundColor = products.value.map(
-      (p) => p.category.color,
-    );
-    data.datasets[0].borderColor = new Array(products.value.length).fill(
-      '#ccc',
-    );
+    data.datasets[0].backgroundColor = products.value.map((p) => p.category.color);
+    data.datasets[0].borderColor = new Array(products.value.length).fill('#ccc');
 
     let i = 0;
     for (let product of products.value) {

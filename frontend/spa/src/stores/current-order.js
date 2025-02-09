@@ -16,25 +16,17 @@ export const useCurrentOrderStore = defineStore('current-order', () => {
   const canCreate = computed(() => currentOrder.value.length > 0);
   const discount = ref(ORDER_DISCOUNT.None);
   const cashReceived = ref(0);
-  const cashToReturn = computed(() =>
-    Math.max(0, -1 * (total.value - cashReceived.value)),
-  );
+  const cashToReturn = computed(() => Math.max(0, -1 * (total.value - cashReceived.value)));
 
   const { products } = useProductsQuery(true);
 
   const extendedCurrentOrder = computed(() => {
     return currentOrder.value.map((orderLine) => {
       const product = products.value.find((p) => p.id === orderLine.productId);
-      const toppings = product.toppings.filter((t) =>
-        orderLine.toppingIds.includes(t.id),
-      );
+      const toppings = product.toppings.filter((t) => orderLine.toppingIds.includes(t.id));
 
       const unitPrice =
-        product.price +
-        toppings.reduce(
-          (runningTotal, topping) => runningTotal + topping.price,
-          0,
-        );
+        product.price + toppings.reduce((runningTotal, topping) => runningTotal + topping.price, 0);
 
       const totalPrice = orderLine.count * unitPrice;
       return {

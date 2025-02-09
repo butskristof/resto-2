@@ -1,12 +1,22 @@
 <template>
-  <EditModal entity="categorie" :is-edit="isEdit" @close="tryClose">
+  <EditModal
+    entity="categorie"
+    :is-edit="isEdit"
+    @close="tryClose"
+  >
     <template #body>
       <form @submit="onSubmit">
-        <TextFormInput v-model="name" :errors="nameErrors">
+        <TextFormInput
+          v-model="name"
+          :errors="nameErrors"
+        >
           <template #label>Naam</template>
         </TextFormInput>
 
-        <ColorFormInput v-model="color" :errors="colorErrors">
+        <ColorFormInput
+          v-model="color"
+          :errors="colorErrors"
+        >
           <template #label>Kleur</template>
         </ColorFormInput>
 
@@ -16,14 +26,15 @@
               Categorie {{ actionLabel }}
             </LoadingIndicator>
             <div v-if="mutationHasError">
-              <ApiValidationErrors
-                :api-response="mutationError.response.data"
-              />
+              <ApiValidationErrors :api-response="mutationError.response.data" />
             </div>
           </div>
 
           <div class="right">
-            <button type="submit" class="btn-blue btn-icon">
+            <button
+              type="submit"
+              class="btn-blue btn-icon"
+            >
               <i :class="actionIcon"></i>
               {{ capitalize(actionLabel) }}
             </button>
@@ -123,9 +134,7 @@ const {
 const tryClose = (force = false) => {
   let close = true;
   if (!force && formMeta.value.dirty)
-    close = confirm(
-      'There may be unsaved changes, are you sure you want to stop editing?',
-    );
+    close = confirm('There may be unsaved changes, are you sure you want to stop editing?');
   if (close) emit('close');
 };
 </script>

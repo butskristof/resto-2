@@ -4,10 +4,7 @@
       <div class="left">
         <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
         <div v-if="listFailed">
-          <div>
-            Er liep iets mis bij het ophalen van de toppings, probeer het later
-            opnieuw.
-          </div>
+          <div>Er liep iets mis bij het ophalen van de toppings, probeer het later opnieuw.</div>
           <div>
             <pre>{{ listError }}</pre>
           </div>

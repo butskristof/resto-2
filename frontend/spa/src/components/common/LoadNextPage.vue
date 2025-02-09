@@ -1,6 +1,9 @@
 <template>
   <div class="load-next-page">
-    <button type="button" @click="emit('load-next-page')">
+    <button
+      type="button"
+      @click="emit('load-next-page')"
+    >
       Laad meer {{ entity }}
     </button>
   </div>

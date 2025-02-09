@@ -1,5 +1,9 @@
 <template>
-  <input v-model="model" type="color" :class="{ invalid: invalid }" />
+  <input
+    v-model="model"
+    type="color"
+    :class="{ invalid: invalid }"
+  />
 </template>
 
 <script setup>

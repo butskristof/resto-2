@@ -4,10 +4,7 @@
       <div class="left">
         <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
         <div v-if="listFailed">
-          <div>
-            Er liep iets mis bij het ophalen van de categorieën, probeer het
-            later opnieuw.
-          </div>
+          <div>Er liep iets mis bij het ophalen van de categorieën, probeer het later opnieuw.</div>
           <div>
             <pre>{{ listError }}</pre>
           </div>
@@ -15,7 +12,11 @@
       </div>
 
       <div class="right">
-        <button type="button" class="btn-icon" @click="openEditModal(null)">
+        <button
+          type="button"
+          class="btn-icon"
+          @click="openEditModal(null)"
+        >
           <i class="icon-plus"></i> Categorie toevoegen
         </button>
       </div>
@@ -82,8 +83,7 @@ const loading = computed(
   () => listLoading.value || listFetching.value || listFetchingNextPage.value,
 );
 const loadingLabel = computed(() => {
-  if (listLoading.value || listFetchingNextPage.value)
-    return 'Categorieën laden';
+  if (listLoading.value || listFetchingNextPage.value) return 'Categorieën laden';
   else if (listFetching.value) return 'Categorieën bijwerken';
   return '';
 });

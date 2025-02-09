@@ -10,7 +10,11 @@
             v-for="discount in Object.values(ORDER_DISCOUNT)"
             :key="discount.value"
           >
-            <input v-model="selectedDiscount" type="radio" :value="discount" />
+            <input
+              v-model="selectedDiscount"
+              type="radio"
+              :value="discount"
+            />
             {{ discount.displayValue }}
           </label>
         </div>
@@ -27,7 +31,10 @@
         <div class="cash-received">
           <div class="left">Cash ontvangen</div>
           <div class="right">
-            <CurrencyInput v-model="cashReceived" class="cash-received-input" />
+            <CurrencyInput
+              v-model="cashReceived"
+              class="cash-received-input"
+            />
           </div>
         </div>
 
@@ -40,7 +47,11 @@
       </div>
 
       <div class="actions">
-        <button type="button" class="btn-danger btn-icon" @click="reset">
+        <button
+          type="button"
+          class="btn-danger btn-icon"
+          @click="reset"
+        >
           <i class="icon-trash"></i>
           Wissen
         </button>

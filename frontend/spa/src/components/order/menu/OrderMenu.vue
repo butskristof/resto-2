@@ -1,20 +1,23 @@
 <template>
   <div class="menu">
-    <LoadingIndicator v-if="productsLoading" class="loading-indicator">
+    <LoadingIndicator
+      v-if="productsLoading"
+      class="loading-indicator"
+    >
       Gerechten laden
     </LoadingIndicator>
 
     <template v-else>
       <div class="search">
-        <TextInput v-model.trim="search" placeholder="Zoek gerecht" />
+        <TextInput
+          v-model.trim="search"
+          placeholder="Zoek gerecht"
+        />
       </div>
 
       <div class="products">
         <div v-if="productsQueryFailed">
-          <div>
-            Er liep iets mis bij het ophalen van de gerechten, probeer het later
-            opnieuw.
-          </div>
+          <div>Er liep iets mis bij het ophalen van de gerechten, probeer het later opnieuw.</div>
           <div>
             <pre>{{ productsQueryError }}</pre>
           </div>

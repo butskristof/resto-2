@@ -8,8 +8,7 @@
     @delete="triggerMutation"
   >
     <template #extra-info>
-      De categorie zal enkel verwijderd kunnen worden als er geen producten meer
-      aan gekoppeld zijn.
+      De categorie zal enkel verwijderd kunnen worden als er geen producten meer aan gekoppeld zijn.
     </template>
   </DeleteModal>
 </template>
