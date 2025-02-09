@@ -37,7 +37,7 @@ jobs:
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
           context=${{ inputs.CONTEXT }}
-          echo "CONTEXT_FLAT=${}" >> $GITHUB_ENV
+          echo "CONTEXT_FLAT=${context//\//-}" >> $GITHUB_ENV
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
