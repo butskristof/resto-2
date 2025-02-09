@@ -17,7 +17,7 @@
           class="btn-blue btn-icon"
           @click="openEditModal(null)"
         >
-          <i class="icon-plus"></i> Topping toevoegen
+          <i class="icon-plus" /> Topping toevoegen
         </button>
       </div>
     </template>

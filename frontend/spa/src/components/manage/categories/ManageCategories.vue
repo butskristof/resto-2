@@ -17,7 +17,7 @@
           class="btn-icon"
           @click="openEditModal(null)"
         >
-          <i class="icon-plus"></i> Categorie toevoegen
+          <i class="icon-plus" /> Categorie toevoegen
         </button>
       </div>
     </template>

@@ -52,7 +52,7 @@
           class="btn-danger btn-icon"
           @click="reset"
         >
-          <i class="icon-trash"></i>
+          <i class="icon-trash" />
           Wissen
         </button>
         <button
@@ -61,7 +61,7 @@
           :disabled="!canCreate"
           @click="create"
         >
-          <i class="icon-soup"></i>
+          <i class="icon-soup" />
           Bestellen
         </button>
       </div>

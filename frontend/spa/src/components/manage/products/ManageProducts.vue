@@ -17,7 +17,7 @@
           class="btn-blue btn-icon"
           @click="openEditModal(null)"
         >
-          <i class="icon-plus"></i> Gerecht toevoegen
+          <i class="icon-plus" /> Gerecht toevoegen
         </button>
       </div>
     </template>

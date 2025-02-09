@@ -6,7 +6,7 @@
         v-tippy="getTippyConfiguration('Bestellen')"
         :to="{ name: routeInfo.order.name }"
       >
-        <i class="icon-soup"></i>
+        <i class="icon-soup" />
       </router-link>
     </div>
     <div class="right">
@@ -16,7 +16,7 @@
           href="https://github.com/butskristof/resto-2"
           target="_blank"
         >
-          <i class="icon-github"></i>
+          <i class="icon-github" />
         </a>
       </div>
 
@@ -25,7 +25,7 @@
           v-tippy="getTippyConfiguration('Bestelhistoriek')"
           :to="{ name: routeInfo.orderHistory.name }"
         >
-          <i class="icon-history"></i>
+          <i class="icon-history" />
         </router-link>
       </div>
 
@@ -34,7 +34,7 @@
           v-tippy="getTippyConfiguration('Statistieken')"
           :to="{ name: routeInfo.stats.name }"
         >
-          <i class="icon-line-chart"></i>
+          <i class="icon-chart-line" />
         </router-link>
       </div>
 
@@ -43,7 +43,7 @@
           v-tippy="getTippyConfiguration('Instellingen')"
           :to="{ name: routeInfo.manage.name }"
         >
-          <i class="icon-settings"></i>
+          <i class="icon-settings" />
         </router-link>
       </div>
     </div>
