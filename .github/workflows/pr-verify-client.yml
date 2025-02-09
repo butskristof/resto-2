@@ -1,4 +1,4 @@
-name: 'Build client'
+name: 'Build frontend'
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     defaults:
       run:
-        working-directory: './client'
+        working-directory: './frontend/spa'
     
     steps:
       - uses: actions/checkout@v4
@@ -25,8 +25,11 @@ jobs:
       - name: Install
         run: npm ci
       
-      - name: Lint
-        run: npm run lint
+      - name: Check formatting
+        run: npm run format:check
+        
+      - name: Check linting
+        run: npm run lint:check
       
       - name: Build
         run: npm run build
