@@ -1,0 +1,35 @@
+name: 'Build BFF'
+
+on:
+  pull_request: 
+    branches: [main]
+    # paths:
+    #   - 'api/**'
+
+env:
+  DOTNET_VERSION: '9.X'
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: './frontend/bff'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      # - name: Test
+      #   run: dotnet test --no-restore --verbosity normal
