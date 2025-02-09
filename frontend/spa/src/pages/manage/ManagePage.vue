@@ -20,6 +20,7 @@ import routeInfo from '@/router/route-info';
 </script>
 
 <style scoped lang="scss">
+@use 'sass:color';
 @import '@/styles/utilities/_padding-margin.scss';
 @import '@/styles/utilities/_typography.scss';
 @import '@/styles/utilities/_general.scss';
@@ -39,8 +40,8 @@ nav {
   // disable eslint rule since a tags & .router-link-active won't appear explicitly in the template
   a {
     $base: white;
-    $active: darken($base, 5%);
-    $hover: darken($base, 10%);
+    $active: color.adjust($base, $lightness: -5%);
+    $hover: color.adjust($base, $lightness: -10%);
 
     @include reset-link;
     @include transition;

@@ -20,9 +20,10 @@ const model = useVModel(props, 'modelValue', emit);
 </script>
 
 <style scoped lang="scss">
+@use 'sass:color';
 @import '@/styles/_colors.scss';
 
-$background: darken(white, 20%);
+$background: color.adjust(white, $lightness: -20%);
 $foreground: $klj-blue;
 
 $width: 40px;

@@ -77,6 +77,7 @@ const { reset, create } = useCurrentOrderStore();
 </script>
 
 <style scoped lang="scss">
+@use 'sass:color';
 @import '@/styles/ui/_layout.scss';
 @import '@/styles/utilities/_padding-margin.scss';
 @import '@/styles/_colors.scss';
@@ -147,18 +148,18 @@ const { reset, create } = useCurrentOrderStore();
         font-weight: 500;
 
         &:hover {
-          background-color: darken($klj-green, 10%);
+          background-color: color.adjust($klj-green, $lightness: -10%);
           border-color: transparent;
           color: white;
         }
 
         &:focus {
-          background-color: darken($klj-green, 10%);
+          background-color: color.adjust($klj-green, $lightness: -10%);
           border-color: transparent;
         }
 
         &:disabled {
-          background-color: lighten($klj-green, 20%);
+          background-color: color.adjust($klj-green, $lightness: 20%);
           border-color: transparent;
           color: $body-text-color-lighter;
         }

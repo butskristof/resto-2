@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '@/styles/utilities/_general.scss';
 @import '@/styles/_colors.scss';
 @import '@/styles/utilities/_padding-margin.scss';
@@ -35,8 +36,8 @@ button {
   }
 
   &:disabled {
-    background-color: darken($background-contrast-color, 20%);
-    border-color:  darken($background-contrast-color, 20%);
+    background-color: color.adjust($background-contrast-color, $lightness: -20%);
+    border-color: color.adjust($background-contrast-color, $lightness: -20%);
     color: rgba($body-text-color, 0.6);
     pointer-events: none;
   }
@@ -55,12 +56,12 @@ button {
 
   &:hover,
   &:focus {
-    background-color: darken($dark-red, 10%);
-    border-color: darken($dark-red, 10%);
+    background-color: color.adjust($dark-red, $lightness: -10%);
+    border-color: color.adjust($dark-red, $lightness: -10%);
   }
 
   &:disabled {
-    background-color: lighten($dark-red, 30%);
-    border-color: lighten($dark-red, 30%);
+    background-color: color.adjust($dark-red, $lightness: 30%);
+    border-color: color.adjust($dark-red, $lightness: 30%);
   }
 }
