@@ -1,4 +1,6 @@
-import restoApi from '@/services/resto-api/resto-api';
+import { createAxiosInstance } from '@/services/resto-api/base-api.js';
+
+const restoApi = createAxiosInstance('/api');
 
 class OrdersService {
   async get(page = 1, pageSize = 10) {

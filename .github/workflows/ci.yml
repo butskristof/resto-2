@@ -19,7 +19,7 @@ jobs:
     name: Build and push client image
     uses: ./.github/workflows/step-ci-docker-build-push.yml
     with:
-      CONTEXT: frontend/spa
+      CONTEXT: frontend
       DOCKERHUB_USERNAME: butskristof
-      DOCKERHUB_REPOSITORY_NAME: resto-2-client
+      DOCKERHUB_REPOSITORY_NAME: resto-2-frontend
     secrets: inherit
