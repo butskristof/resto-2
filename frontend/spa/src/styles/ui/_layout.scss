@@ -1,5 +1,5 @@
-@import '@/styles/utilities/_responsiveness.scss';
-$app-width: $breakpoint-xl;
+@use '@/styles/utilities/_responsiveness.scss';
+$app-width: responsiveness.$breakpoint-xl;
 
 html {
   -webkit-box-sizing: border-box;

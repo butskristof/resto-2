@@ -15,14 +15,14 @@ import AppFooter from '@/components/ui/AppFooter.vue';
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/_colors.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/_colors.scss';
 
 main {
-  background-color: $background-contrast-color;
-  border-radius: $box-border-radius;
-  padding: $box-padding;
-  margin: auto $box-padding;
+  background-color: colors.$background-contrast-color;
+  border-radius: padding-margin.$box-border-radius;
+  padding: padding-margin.$box-padding;
+  margin: auto padding-margin.$box-padding;
   //height: 100%;
   flex-grow: 1;
 

@@ -78,14 +78,14 @@ const { reset, create } = useCurrentOrderStore();
 
 <style scoped lang="scss">
 @use 'sass:color';
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/_colors.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/_colors.scss';
 
 .current-order {
-  @include flex-column;
-  padding-left: $box-padding;
-  padding-right: $box-padding;
+  @include layout.flex-column;
+  padding-left: padding-margin.$box-padding;
+  padding-right: padding-margin.$box-padding;
 
   .ticket {
     flex-grow: 1;
@@ -93,19 +93,19 @@ const { reset, create } = useCurrentOrderStore();
 
   .bottom {
     flex-shrink: 0;
-    margin-bottom: $box-padding;
+    margin-bottom: padding-margin.$box-padding;
 
     .discount {
-      @include flex-row-space-between;
+      @include layout.flex-row-space-between;
       flex-wrap: wrap;
 
       .left {
-        margin-right: $box-padding;
+        margin-right: padding-margin.$box-padding;
       }
 
       .right {
-        @include flex-row;
-        gap: $box-padding;
+        @include layout.flex-row;
+        gap: padding-margin.$box-padding;
         margin-left: auto; // push right if wrapped
 
         label {
@@ -113,19 +113,19 @@ const { reset, create } = useCurrentOrderStore();
         }
       }
 
-      margin-bottom: $box-padding;
+      margin-bottom: padding-margin.$box-padding;
     }
 
     .money-helper {
       //@include striped-rows;
-      margin-top: calc(2 * $box-padding);
+      margin-top: calc(2 * #{padding-margin.$box-padding});
 
       .total,
       .cash-received,
       .cash-return {
-        @include flex-row-space-between;
+        @include layout.flex-row-space-between;
         align-items: center;
-        margin-bottom: $box-padding;
+        margin-bottom: padding-margin.$box-padding;
 
         .right {
           font-weight: 500;
@@ -138,30 +138,30 @@ const { reset, create } = useCurrentOrderStore();
     }
 
     .actions {
-      @include flex-row-space-between;
-      margin-top: calc(2 * $box-padding);
+      @include layout.flex-row-space-between;
+      margin-top: calc(2 * #{padding-margin.$box-padding});
 
       .btn-submit {
-        border-color: $klj-green;
-        background-color: $klj-green;
+        border-color: colors.$klj-green;
+        background-color: colors.$klj-green;
         //color: white;
         font-weight: 500;
 
         &:hover {
-          background-color: color.adjust($klj-green, $lightness: -10%);
+          background-color: color.adjust(colors.$klj-green, $lightness: -10%);
           border-color: transparent;
           color: white;
         }
 
         &:focus {
-          background-color: color.adjust($klj-green, $lightness: -10%);
+          background-color: color.adjust(colors.$klj-green, $lightness: -10%);
           border-color: transparent;
         }
 
         &:disabled {
-          background-color: color.adjust($klj-green, $lightness: 20%);
+          background-color: color.adjust(colors.$klj-green, $lightness: 20%);
           border-color: transparent;
-          color: $body-text-color-lighter;
+          color: colors.$body-text-color-lighter;
         }
       }
     }

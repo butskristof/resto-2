@@ -38,20 +38,20 @@ const colorBlockStyle = computed(() => ({
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/utilities/_general.scss';
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/manage/_common.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_general.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/manage/_common.scss';
 
 .category {
-  min-height: $list-row-height;
-  @include flex-row;
+  min-height: common.$list-row-height;
+  @include layout.flex-row;
   align-items: center;
-  gap: $box-padding;
-  @include striped-rows;
+  gap: padding-margin.$box-padding;
+  @include general.striped-rows;
 
   .color {
-    @include category-color-block;
+    @include general.category-color-block;
   }
 
   .name {

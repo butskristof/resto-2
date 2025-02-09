@@ -40,12 +40,12 @@ const hasErrors = computed(() => props.errors && props.errors.length > 0);
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/elements/_forms.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/elements/_forms.scss';
 
 .input {
-  @include form-row;
-  @include flex-row;
+  @include forms.form-row;
+  @include layout.flex-row;
 
   label {
     flex-grow: 1;

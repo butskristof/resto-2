@@ -106,41 +106,43 @@ watch(
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/_colors.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/_colors.scss';
 
 .product {
-  margin-bottom: calc($box-padding * 2);
+  margin-bottom: calc(#{padding-margin.$box-padding} * 2);
 }
 
 .name-price {
-  @include flex-row-space-between;
-  padding: $box-padding calc(2 * $box-padding) $box-padding $box-padding;
-  border-radius: $button-border-radius;
-  border: $button-border-width solid $background-contrast-color-darker;
+  @include layout.flex-row-space-between;
+  padding: padding-margin.$box-padding calc(2 * #{padding-margin.$box-padding})
+    padding-margin.$box-padding padding-margin.$box-padding;
+  border-radius: padding-margin.$button-border-radius;
+  border: padding-margin.$button-border-width solid
+    colors.$background-contrast-color-darker;
 
   font-weight: 500;
 }
 
 .toppings-actions {
-  margin: 0 $box-padding;
-  padding: $box-padding;
-  background-color: $background-contrast-color-darker;
-  border-bottom-left-radius: $button-border-radius;
-  border-bottom-right-radius: $button-border-radius;
+  margin: 0 padding-margin.$box-padding;
+  padding: padding-margin.$box-padding;
+  background-color: colors.$background-contrast-color-darker;
+  border-bottom-left-radius: padding-margin.$button-border-radius;
+  border-bottom-right-radius: padding-margin.$button-border-radius;
 
   .toppings {
     //margin-bottom: $box-padding;
 
     .topping {
-      @include flex-row-space-between;
-      margin-bottom: $box-padding;
+      @include layout.flex-row-space-between;
+      margin-bottom: padding-margin.$box-padding;
     }
   }
 
   .actions {
-    @include flex-row;
+    @include layout.flex-row;
     justify-content: flex-end;
 
     button {
@@ -155,7 +157,7 @@ watch(
 
   &:hover {
     background-color: white;
-    border-color: $body-text-color;
+    border-color: colors.$body-text-color;
   }
 }
 </style>

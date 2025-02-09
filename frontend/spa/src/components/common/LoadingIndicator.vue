@@ -8,14 +8,14 @@
 </template>
 
 <style scoped lang="scss">
-@import '@/styles/_colors.scss';
-@import '@/styles/ui/_layout.scss';
+@use '@/styles/_colors.scss';
+@use '@/styles/ui/_layout.scss';
 
-$foreground: $body-text-color;
+$foreground: colors.$body-text-color;
 $background: white;
 
 .loader-wrapper {
-  @include flex-row;
+  @include layout.flex-row;
   align-items: center;
   gap: 0.5rem;
 }
@@ -23,7 +23,7 @@ $background: white;
 .loader {
   width: 1.25rem; /* the size */
   padding: 2px; /* the border thickness */
-  background: $body-text-color; /* the color */
+  background: colors.$body-text-color; /* the color */
 
   aspect-ratio: 1;
   border-radius: 50%;

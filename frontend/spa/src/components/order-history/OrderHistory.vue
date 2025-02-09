@@ -64,14 +64,14 @@ const loadingLabel = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/ui/_layout.scss';
 
 .header {
-  @include flex-row-space-between;
+  @include layout.flex-row-space-between;
 }
 
 h2 {
-  margin: auto auto $box-padding;
+  margin: auto auto padding-margin.$box-padding;
 }
 </style>

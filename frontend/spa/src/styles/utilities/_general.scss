@@ -1,6 +1,6 @@
 @use 'sass:color';
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/_colors.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/_colors.scss';
 
 @mixin transition {
   transition: all 300ms;
@@ -13,7 +13,7 @@
   $odd: color.adjust($even, $lightness: -5%);
   $hover: color.adjust($even, $lightness: -10%);
 
-  border-bottom: $box-border-width solid $even;
+  border-bottom: padding-margin.$box-border-width solid $even;
 
   &:nth-child(even) {
     background-color: $even;
@@ -32,6 +32,6 @@
   align-self: stretch;
   min-height: 2.5rem;
   width: 100px;
-  border-left: 1px solid $body-text-color-lighter;
-  border-right: 1px solid $body-text-color-lighter;
+  border-left: 1px solid colors.$body-text-color-lighter;
+  border-right: 1px solid colors.$body-text-color-lighter;
 }

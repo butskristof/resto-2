@@ -21,13 +21,14 @@ import routeInfo from '@/router/route-info';
 
 <style scoped lang="scss">
 @use 'sass:color';
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/utilities/_typography.scss';
-@import '@/styles/utilities/_general.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_typography.scss';
+@use '@/styles/utilities/_general.scss';
+@use '@/styles/_colors.scss';
 
 nav {
-  margin: calc(-1 * $box-padding);
-  margin-bottom: $box-padding;
+  margin: calc(-1 * #{padding-margin.$box-padding});
+  margin-bottom: padding-margin.$box-padding;
 
   display: flex;
   flex-direction: row;
@@ -43,11 +44,11 @@ nav {
     $active: color.adjust($base, $lightness: -5%);
     $hover: color.adjust($base, $lightness: -10%);
 
-    @include reset-link;
-    @include transition;
+    @include typography.reset-link;
+    @include general.transition;
     border-bottom: 1px solid $hover;
-    padding: $button-padding;
-    color: $body-text-color;
+    padding: padding-margin.$button-padding;
+    color: colors.$body-text-color;
 
     &.router-link-active {
       background-color: $active;

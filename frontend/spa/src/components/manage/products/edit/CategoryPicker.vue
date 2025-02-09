@@ -55,10 +55,10 @@ const disabled = computed(
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/utilities/_typography.scss';
+@use '@/styles/utilities/_typography.scss';
 
 .error {
-  @include error-text;
+  @include typography.error-text;
   margin-top: 0.5rem;
 }
 </style>

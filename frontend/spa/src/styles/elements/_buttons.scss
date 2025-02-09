@@ -1,10 +1,10 @@
 @use 'sass:color';
-@import '@/styles/utilities/_general.scss';
-@import '@/styles/_colors.scss';
-@import '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_general.scss';
+@use '@/styles/_colors.scss';
+@use '@/styles/utilities/_padding-margin.scss';
 
 button {
-  @include transition;
+  @include general.transition;
   cursor: pointer;
 
   list-style: none;
@@ -18,27 +18,27 @@ button {
   -webkit-user-select: none;
   touch-action: manipulation;
 
-  padding: $button-padding;
-  border-radius: $button-border-radius;
-  border: $button-border-width solid $body-text-color-lighter;
+  padding: padding-margin.$button-padding;
+  border-radius: padding-margin.$button-border-radius;
+  border: padding-margin.$button-border-width solid colors.$body-text-color-lighter;
 
-  color: $body-text-color;
-  background-color: $background-contrast-color;
+  color: colors.$body-text-color;
+  background-color: colors.$background-contrast-color;
 
   &:hover {
-    background-color: $background-contrast-color-darker;
-    border: $button-border-width solid $body-text-color;
+    background-color: colors.$background-contrast-color-darker;
+    border: padding-margin.$button-border-width solid colors.$body-text-color;
   }
 
   &:focus {
-    background-color: $background-contrast-color-darker;
-    border: $button-border-width solid $body-text-color;
+    background-color: colors.$background-contrast-color-darker;
+    border: padding-margin.$button-border-width solid colors.$body-text-color;
   }
 
   &:disabled {
-    background-color: color.adjust($background-contrast-color, $lightness: -20%);
-    border-color: color.adjust($background-contrast-color, $lightness: -20%);
-    color: rgba($body-text-color, 0.6);
+    background-color: color.adjust(colors.$background-contrast-color, $lightness: -20%);
+    border-color: color.adjust(colors.$background-contrast-color, $lightness: -20%);
+    color: rgba(colors.$body-text-color, 0.6);
     pointer-events: none;
   }
 }
@@ -50,18 +50,18 @@ button {
 }
 
 .btn-danger {
-  background-color: $dark-red;
-  border-color: $dark-red;
+  background-color: colors.$dark-red;
+  border-color: colors.$dark-red;
   color: white;
 
   &:hover,
   &:focus {
-    background-color: color.adjust($dark-red, $lightness: -10%);
-    border-color: color.adjust($dark-red, $lightness: -10%);
+    background-color: color.adjust(colors.$dark-red, $lightness: -10%);
+    border-color: color.adjust(colors.$dark-red, $lightness: -10%);
   }
 
   &:disabled {
-    background-color: color.adjust($dark-red, $lightness: 30%);
-    border-color: color.adjust($dark-red, $lightness: 30%);
+    background-color: color.adjust(colors.$dark-red, $lightness: 30%);
+    border-color: color.adjust(colors.$dark-red, $lightness: 30%);
   }
 }

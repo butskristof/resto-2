@@ -1,22 +1,22 @@
-@import '@/styles/_colors.scss';
+@use '@/styles/_colors.scss';
 
 .Vue-Toastification__toast--default {
-  background-color: $klj-blue;
+  background-color: colors.$klj-blue;
   color: #fff;
 }
 .Vue-Toastification__toast--info {
-  background-color: $klj-blue;
+  background-color: colors.$klj-blue;
   color: #fff;
 }
 .Vue-Toastification__toast--success {
-  background-color: $klj-green;
+  background-color: colors.$klj-green;
   color: #fff;
 }
 .Vue-Toastification__toast--error {
-  background-color: $klj-red;
+  background-color: colors.$klj-red;
   color: #fff;
 }
 .Vue-Toastification__toast--warning {
-  background-color: $yellow;
+  background-color: colors.$yellow;
   color: #fff;
 }

@@ -60,28 +60,28 @@ function print() {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/utilities/_general.scss';
-@import '@/styles/utilities/_typography.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_general.scss';
+@use '@/styles/utilities/_typography.scss';
 
 .order {
-  padding: $box-padding;
+  padding: padding-margin.$box-padding;
   //margin-bottom: $box-padding;
-  @include striped-rows;
+  @include general.striped-rows;
 
   .row {
-    @include flex-row-space-between;
+    @include layout.flex-row-space-between;
 
     .right {
-      @include flex-row;
-      gap: $box-padding;
+      @include layout.flex-row;
+      gap: padding-margin.$box-padding;
 
       .order-total {
         text-align: right;
 
         .discount {
-          @include extra-info-text;
+          @include typography.extra-info-text;
         }
       }
     }
@@ -89,12 +89,12 @@ function print() {
 
   .id,
   .toppings {
-    @include extra-info-text;
+    @include typography.extra-info-text;
   }
 
   .order-lines {
-    margin-top: $box-padding;
-    margin-left: $box-padding;
+    margin-top: padding-margin.$box-padding;
+    margin-left: padding-margin.$box-padding;
 
     //.order-line {
     //  @include flex-row;

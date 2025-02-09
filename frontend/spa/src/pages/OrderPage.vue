@@ -11,21 +11,21 @@ import CurrentOrder from '@/components/order/current-order/CurrentOrder.vue';
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/utilities/_responsiveness.scss';
-@import '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_responsiveness.scss';
+@use '@/styles/utilities/_padding-margin.scss';
 
 .order-page {
   height: 100%;
   max-height: 100%;
 
-  @include flex-row;
-  gap: $box-padding;
+  @include layout.flex-row;
+  gap: padding-margin.$box-padding;
 
   // only wrap below lg breakpoint
   // otherwise, distribute evenly w/ flex-basis 50%
   flex-wrap: wrap;
-  @include breakpoint-lg-up {
+  @include responsiveness.breakpoint-lg-up {
     flex-wrap: initial;
   }
 

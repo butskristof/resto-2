@@ -14,9 +14,9 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_colors.scss';
+@use '@/styles/_colors.scss';
 
 .stats-page {
-  //background-color: $klj-red;
+  //background-color: colors.$klj-red;
 }
 </style>

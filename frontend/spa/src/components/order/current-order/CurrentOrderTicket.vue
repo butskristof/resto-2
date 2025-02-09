@@ -62,13 +62,13 @@ const { increment, decrement } = useCurrentOrderStore();
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_colors.scss';
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/utilities/_general.scss';
-@import '@/styles/ui/_layout.scss';
+@use '@/styles/_colors.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_general.scss';
+@use '@/styles/ui/_layout.scss';
 
 .ticket {
-  border: 2px solid $body-text-color;
+  border: 2px solid colors.$body-text-color;
   overflow: auto;
 
   font-family: monospace;
@@ -88,16 +88,16 @@ const { increment, decrement } = useCurrentOrderStore();
   th {
     vertical-align: baseline;
     &:first-child {
-      padding-left: $box-padding;
+      padding-left: padding-margin.$box-padding;
     }
 
     &:last-child {
-      padding-right: $box-padding;
+      padding-right: padding-margin.$box-padding;
     }
   }
 
   tbody tr {
-    @include striped-rows;
+    @include general.striped-rows;
     //line-height: 2rem;
   }
 
@@ -105,10 +105,10 @@ const { increment, decrement } = useCurrentOrderStore();
     text-align: left;
 
     th {
-      padding-top: $button-padding-y;
-      padding-bottom: $button-padding-y;
-      background-color: $background-color;
-      color: $background-contrast-color;
+      padding-top: padding-margin.$button-padding-y;
+      padding-bottom: padding-margin.$button-padding-y;
+      background-color: colors.$background-color;
+      color: colors.$background-contrast-color;
     }
   }
 
@@ -116,11 +116,11 @@ const { increment, decrement } = useCurrentOrderStore();
     .wrapper {
       display: block;
       line-height: initial;
-      padding-top: $box-padding;
-      padding-bottom: $box-padding;
+      padding-top: padding-margin.$box-padding;
+      padding-bottom: padding-margin.$box-padding;
 
       .topping {
-        padding-left: $box-padding;
+        padding-left: padding-margin.$box-padding;
       }
     }
   }
@@ -138,7 +138,7 @@ const { increment, decrement } = useCurrentOrderStore();
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      @include flex-row;
+      @include layout.flex-row;
       gap: 0.25rem;
 
       .amount {
@@ -154,11 +154,11 @@ const { increment, decrement } = useCurrentOrderStore();
       }
 
       .btn-increment {
-        background-color: $klj-green;
+        background-color: colors.$klj-green;
       }
 
       .btn-decrement {
-        background-color: $klj-red;
+        background-color: colors.$klj-red;
       }
     }
   }

@@ -5,15 +5,15 @@
 </template>
 
 <style scoped lang="scss">
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/utilities/_typography.scss';
-@import '@/styles/_colors.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_typography.scss';
+@use '@/styles/_colors.scss';
 
 header {
   // default padding Y / centered X
-  margin: $box-padding auto;
-  @include brand-font;
-  color: $background-contrast-color;
+  margin: padding-margin.$box-padding auto;
+  @include typography.brand-font;
+  color: colors.$background-contrast-color;
 }
 
 h1 {

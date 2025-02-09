@@ -60,24 +60,24 @@ const { key: orderKey } = storeToRefs(useCurrentOrderStore());
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_padding-margin.scss';
 
 .menu {
   max-height: 100%;
 
   display: flex;
   flex-direction: column;
-  gap: $box-padding;
+  gap: padding-margin.$box-padding;
 
   .loading-indicator {
     display: flex;
     justify-content: center;
-    padding: $box-padding;
+    padding: padding-margin.$box-padding;
   }
 
   .search {
     flex-shrink: 0;
-    padding: $box-padding;
+    padding: padding-margin.$box-padding;
   }
 
   .products {

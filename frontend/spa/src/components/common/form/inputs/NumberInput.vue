@@ -40,9 +40,9 @@ watch(
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/elements/_forms.scss';
+@use '@/styles/elements/_forms.scss';
 
 input {
-  @include input;
+  @include forms.input;
 }
 </style>

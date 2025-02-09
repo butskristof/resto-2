@@ -67,24 +67,24 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/utilities/_typography.scss';
-@import '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_typography.scss';
+@use '@/styles/ui/_layout.scss';
 
 .body {
-  margin-top: $box-padding;
+  margin-top: padding-margin.$box-padding;
 
   .extra-info {
-    margin-top: calc($box-padding / 2);
-    @include extra-info-text;
+    margin-top: calc(#{padding-margin.$box-padding} / 2);
+    @include typography.extra-info-text;
   }
 }
 
 .footer {
-  margin-top: calc($box-padding * 2);
+  margin-top: calc(#{padding-margin.$box-padding} * 2);
 
-  @include flex-row-space-between;
-  gap: $box-padding;
+  @include layout.flex-row-space-between;
+  gap: padding-margin.$box-padding;
 
   .right {
     flex-shrink: 0;

@@ -59,23 +59,23 @@ const colorBlockStyle = computed(() => ({
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/utilities/_typography.scss';
-@import '@/styles/manage/_common.scss';
-@import '@/styles/utilities/_general.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_typography.scss';
+@use '@/styles/manage/_common.scss';
+@use '@/styles/utilities/_general.scss';
 
 .product {
   $row-padding: 0.5rem;
 
-  @include flex-row;
+  @include layout.flex-row;
   align-items: center;
-  gap: $box-padding;
-  @include striped-rows;
+  gap: padding-margin.$box-padding;
+  @include general.striped-rows;
   padding: $row-padding 0;
 
   .color {
-    @include category-color-block;
+    @include general.category-color-block;
     width: 2rem;
     align-self: stretch;
     margin-top: calc(-1 * $row-padding);
@@ -86,9 +86,10 @@ const colorBlockStyle = computed(() => ({
     flex-grow: 1;
 
     .toppings {
-      @include extra-info-text;
+      @include typography.extra-info-text;
+
       .topping {
-        margin-left: $box-padding;
+        margin-left: padding-margin.$box-padding;
       }
     }
   }

@@ -28,15 +28,15 @@ const loading = computed(() => isLoading.value || isFetching.value);
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_padding-margin.scss';
 
 .header {
-  @include flex-row-space-between;
+  @include layout.flex-row-space-between;
   align-items: center;
 }
 
 .order-count {
-  margin-bottom: $box-padding;
+  margin-bottom: padding-margin.$box-padding;
 }
 </style>

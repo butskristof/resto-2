@@ -64,23 +64,23 @@ const showOrderLink = computed(
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/ui/_layout.scss';
-@import '@/styles/utilities/_padding-margin.scss';
-@import '@/styles/utilities/_typography.scss';
+@use '@/styles/ui/_layout.scss';
+@use '@/styles/utilities/_padding-margin.scss';
+@use '@/styles/utilities/_typography.scss';
 
 footer {
-  padding: calc($box-padding / 2) $box-padding;
-  @include flex-row-space-between;
+  padding: calc(#{padding-margin.$box-padding} / 2) padding-margin.$box-padding;
+  @include layout.flex-row-space-between;
 
   a {
-    @include reset-link;
+    @include typography.reset-link;
   }
-  @include contrast-text;
-  @include contrast-link;
+  @include typography.contrast-text;
+  @include typography.contrast-link;
 }
 
 .right {
-  @include flex-row;
+  @include layout.flex-row;
   gap: 0.5rem;
 }
 </style>
