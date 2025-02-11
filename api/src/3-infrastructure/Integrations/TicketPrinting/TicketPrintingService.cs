@@ -15,12 +15,15 @@ internal class TicketPrintingService : ITicketPrintingService
 	private readonly ILogger<TicketPrintingService> _logger;
 	private readonly ITicketPrintingConfiguration _configuration;
 	private readonly byte[] _headerImage;
+	private readonly TimeProvider _timeProvider;
 
-	public TicketPrintingService(ILogger<TicketPrintingService> logger, ITicketPrintingConfiguration configuration)
+	public TicketPrintingService(ILogger<TicketPrintingService> logger, ITicketPrintingConfiguration configuration,
+		TimeProvider timeProvider)
 	{
 		_logger = logger;
 		_configuration = configuration;
-		
+		_timeProvider = timeProvider;
+
 		if (configuration.UseHeaderImage)
 		{
 			logger.LogDebug("Header image path is available, trying to read content");
@@ -131,10 +134,9 @@ internal class TicketPrintingService : ITicketPrintingService
 	private const int QuantityWidth = 4;
 	private const int TabWidth = 4;
 
-	private string FormatCurrency(decimal value)
-		=> value.ToString("N2");
+	private static string FormatCurrency(decimal value) => value.ToString("N2");
 
-	private string GetDiscountPrintValue(OrderTicketData.OrderTicketDiscount discount)
+	private static string GetDiscountPrintValue(OrderTicketData.OrderTicketDiscount discount)
 	{
 		return discount switch
 		{
@@ -144,7 +146,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		};
 	}
 	
-	private void SetOrderTicketHeader(ICollection<byte[]> content, ICommandEmitter e, OrderTicketData data)
+	private void SetOrderTicketHeader(List<byte[]> content, EPSON e, OrderTicketData data)
 	{
 		content.Add(e.CenterAlign());
 
@@ -155,7 +157,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		else
 		{
 			content.Add(e.PrintLine("KLJ Wiekevorst"));
-			content.Add(e.PrintLine("Restaurantdag 2023"));
+			content.Add(e.PrintLine($"Restaurantdag {_timeProvider.GetLocalNow().Year}"));
 		}
 		
 		content.Add(e.LeftAlign());
@@ -165,12 +167,12 @@ internal class TicketPrintingService : ITicketPrintingService
 		
 		content.Add(e.PrintLine("================================================"));
 		content.Add(e.PrintLine($"Order ID: {data.Id.ToSafeString()}"));
-		content.Add(e.PrintLine($"Timestamp: {data.Timestamp:u}"));
+		content.Add(e.PrintLine($"Timestamp: {data.Timestamp.LocalDateTime:dd/MM/yyyy HH:mm:ss}"));
 		content.Add(e.PrintLine("================================================"));
 		content.Add(e.FeedLines(1));
 	}
 
-	private void SetOrderTicketOrderLines(ICollection<byte[]> content, ICommandEmitter e,
+	private static void SetOrderTicketOrderLines(List<byte[]> content, EPSON e,
 		IEnumerable<OrderTicketData.OrderTicketOrderLine> orderLines)
 	{
 		foreach (var orderLine in orderLines)
@@ -192,7 +194,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		}
 	}
 
-	private void SetOrderTicketFooter(ICollection<byte[]> content, ICommandEmitter e, OrderTicketData data)
+	private static void SetOrderTicketFooter(List<byte[]> content, EPSON e, OrderTicketData data)
 	{
 		content.Add(e.PrintLine("------------------------------------------------"));
 		
@@ -206,7 +208,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		content.Add(e.LeftAlign());
 	}
 
-	private void SetTicketCut(ICollection<byte[]> content, ICommandEmitter e)
+	private static void SetTicketCut(List<byte[]> content, EPSON e)
 	{
 		content.Add(e.FeedLines(3));
 		content.Add(e.PartialCutAfterFeed(10));
