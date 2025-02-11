@@ -14,7 +14,7 @@ internal class TicketPrintingService : ITicketPrintingService
 
 	private readonly ILogger<TicketPrintingService> _logger;
 	private readonly ITicketPrintingConfiguration _configuration;
-	private readonly FilePrinter _printer;
+	private readonly FileStreamPrinter _printer;
 	private readonly byte[] _headerImage;
 
 	public TicketPrintingService(ILogger<TicketPrintingService> logger, ITicketPrintingConfiguration configuration)
@@ -27,7 +27,7 @@ internal class TicketPrintingService : ITicketPrintingService
 			_logger.LogDebug("Printer path is available, trying to set up connection");
 			if (File.Exists(_configuration.PrinterPath))
 			{
-				_printer = new FilePrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
+				_printer = new FileStreamPrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
 				
 				_logger.LogInformation("Set up printer connection");
 			}

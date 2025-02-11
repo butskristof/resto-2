@@ -23,5 +23,5 @@ RUN dotnet publish -a $TARGETARCH -c Release -o /app --no-restore 4-presentation
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-copy --from=build /app ./
+COPY --from=build /app ./
 ENTRYPOINT ["dotnet", "Resto.Api.dll"]
