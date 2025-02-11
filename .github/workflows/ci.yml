@@ -16,7 +16,7 @@ jobs:
     secrets: inherit
   
   client:
-    name: Build and push client image
+    name: Build and push frontend image
     uses: ./.github/workflows/step-ci-docker-build-push.yml
     with:
       CONTEXT: frontend

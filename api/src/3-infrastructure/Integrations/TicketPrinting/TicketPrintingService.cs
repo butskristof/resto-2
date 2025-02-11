@@ -1,4 +1,3 @@
-using ESCPOS_NET;
 using ESCPOS_NET.Emitters;
 using Microsoft.Extensions.Logging;
 using Resto.Common.Configuration;
@@ -8,7 +7,7 @@ using Resto.Common.Integrations.TicketPrinting.Models;
 
 namespace Resto.Infrastructure.Integrations.TicketPrinting;
 
-internal class TicketPrintingService : ITicketPrintingService
+internal sealed class TicketPrintingService : ITicketPrintingService
 {
 	#region construction
 
@@ -45,7 +44,7 @@ internal class TicketPrintingService : ITicketPrintingService
 	{
 		_logger.LogDebug("Printing order ticket");
 
-		using var printer = await TryGetPrinter();
+		using var printer = await TryGetPrinter(cancellationToken);
 		if (printer is null)
 		{
 			_logger.LogDebug("Printer not available");
@@ -60,7 +59,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		var e = new EPSON();
 		var ticketCommands = new List<byte[]>();
 		
-		if (soupOrderLines.Any())
+		if (soupOrderLines.Count > 0)
 		{
 			orderLines.RemoveAll(ol => soupOrderLines.Contains(ol));
 			
@@ -84,7 +83,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		await Task.Delay(100, CancellationToken.None);
 	}
 
-	private async Task<BasePrinter> TryGetPrinter()
+	private async Task<FileStreamPrinter> TryGetPrinter(CancellationToken cancellationToken = default)
 	{
 		_logger.LogDebug("Trying to get a printer instance");
 		if (!_configuration.UsePrinter)
@@ -100,7 +99,7 @@ internal class TicketPrintingService : ITicketPrintingService
 			return null;
 		}
 
-		BasePrinter printer = null;
+		FileStreamPrinter printer = null;
 		const int maxRetries = 5;
 		const int retryWaitMilliseconds = 200;
 		var retries = 0;
@@ -115,7 +114,7 @@ internal class TicketPrintingService : ITicketPrintingService
 				_logger.LogError(ex, "Could not create printer object with message: {Message}", ex.Message);
 				// not being able to create the object is likely because of a file lock, so let's wait a bit 
 				// before retrying
-				await Task.Delay(retryWaitMilliseconds);
+				await Task.Delay(retryWaitMilliseconds, cancellationToken);
 			}
 		}
 
@@ -137,14 +136,12 @@ internal class TicketPrintingService : ITicketPrintingService
 	private static string FormatCurrency(decimal value) => value.ToString("N2");
 
 	private static string GetDiscountPrintValue(OrderTicketData.OrderTicketDiscount discount)
-	{
-		return discount switch
+        => discount switch
 		{
 			OrderTicketData.OrderTicketDiscount.Member => "Leiding",
 			OrderTicketData.OrderTicketDiscount.Volunteer => "Helper",
 			_ => string.Empty,
 		};
-	}
 	
 	private void SetOrderTicketHeader(List<byte[]> content, EPSON e, OrderTicketData data)
 	{
