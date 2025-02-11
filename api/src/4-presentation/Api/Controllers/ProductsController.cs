@@ -5,7 +5,7 @@ using Resto.Application.Modules.Products;
 
 namespace Resto.Api.Controllers;
 
-public class ProductsController : ApiControllerBase
+public sealed class ProductsController : ApiControllerBase
 {
 	public ProductsController(ISender mediator) : base(mediator) {}
 

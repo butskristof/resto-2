@@ -35,9 +35,4 @@
     <ProjectReference Include="..\..\3-infrastructure\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\..\3-infrastructure\Persistence\Persistence.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="assets\resto23.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>
