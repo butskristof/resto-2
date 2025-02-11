@@ -1,4 +1,3 @@
-using ESCPOS_NET;
 using ESCPOS_NET.Emitters;
 using Microsoft.Extensions.Logging;
 using Resto.Common.Configuration;
@@ -8,34 +7,21 @@ using Resto.Common.Integrations.TicketPrinting.Models;
 
 namespace Resto.Infrastructure.Integrations.TicketPrinting;
 
-internal class TicketPrintingService : ITicketPrintingService
+internal sealed class TicketPrintingService : ITicketPrintingService
 {
 	#region construction
 
 	private readonly ILogger<TicketPrintingService> _logger;
 	private readonly ITicketPrintingConfiguration _configuration;
-	private readonly FilePrinter _printer;
 	private readonly byte[] _headerImage;
+	private readonly TimeProvider _timeProvider;
 
-	public TicketPrintingService(ILogger<TicketPrintingService> logger, ITicketPrintingConfiguration configuration)
+	public TicketPrintingService(ILogger<TicketPrintingService> logger, ITicketPrintingConfiguration configuration,
+		TimeProvider timeProvider)
 	{
 		_logger = logger;
 		_configuration = configuration;
-		
-		if (_configuration.UsePrinter)
-		{
-			_logger.LogDebug("Printer path is available, trying to set up connection");
-			if (File.Exists(_configuration.PrinterPath))
-			{
-				_printer = new FilePrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
-				
-				_logger.LogInformation("Set up printer connection");
-			}
-			else
-			{
-				_logger.LogWarning("Printer path is available, but file does not exist");
-			}
-		}
+		_timeProvider = timeProvider;
 
 		if (configuration.UseHeaderImage)
 		{
@@ -54,14 +40,15 @@ internal class TicketPrintingService : ITicketPrintingService
 
 	#endregion
 	
-	public Task PrintOrderTicketAsync(OrderTicketData data, CancellationToken cancellationToken = default)
+	public async Task PrintOrderTicketAsync(OrderTicketData data, CancellationToken cancellationToken = default)
 	{
 		_logger.LogDebug("Printing order ticket");
 
-		if (_printer == null)
+		using var printer = await TryGetPrinter(cancellationToken);
+		if (printer is null)
 		{
 			_logger.LogDebug("Printer not available");
-			return Task.CompletedTask;
+			return;
 		}
 
 		var orderLines = data.OrderLines.Select(ol => ol).ToList();
@@ -72,7 +59,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		var e = new EPSON();
 		var ticketCommands = new List<byte[]>();
 		
-		if (soupOrderLines.Any())
+		if (soupOrderLines.Count > 0)
 		{
 			orderLines.RemoveAll(ol => soupOrderLines.Contains(ol));
 			
@@ -86,30 +73,77 @@ internal class TicketPrintingService : ITicketPrintingService
 		SetOrderTicketFooter(ticketCommands, e, data);
 		SetTicketCut(ticketCommands, e);
 		
-		_printer.Write(ticketCommands.ToArray());
+		printer.Write(ticketCommands.ToArray());
 		_logger.LogDebug("Sent order ticket to printer");
+
+		// wait a bit before returning which will dispose the printer object
+		// this should give the printer time to clear it's pass its buffer
+		// content to the BinaryWriter
+		// TODO verify what time we can get away with
+		await Task.Delay(100, CancellationToken.None);
+	}
+
+	private async Task<FileStreamPrinter> TryGetPrinter(CancellationToken cancellationToken = default)
+	{
+		_logger.LogDebug("Trying to get a printer instance");
+		if (!_configuration.UsePrinter)
+		{
+			_logger.LogDebug("Printer path is not configured");
+			return null;
+		}
 		
-		return Task.CompletedTask;
+		_logger.LogDebug("Printer path is configured");
+		if (!File.Exists(_configuration.PrinterPath))
+		{
+			_logger.LogWarning("Printer path is configured but file does not exist");
+			return null;
+		}
+
+		FileStreamPrinter printer = null;
+		const int maxRetries = 5;
+		const int retryWaitMilliseconds = 200;
+		var retries = 0;
+		while (printer is null && retries++ < maxRetries)
+		{
+			try
+			{
+				printer = new FileStreamPrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Could not create printer object with message: {Message}", ex.Message);
+				// not being able to create the object is likely because of a file lock, so let's wait a bit 
+				// before retrying
+				await Task.Delay(retryWaitMilliseconds, cancellationToken);
+			}
+		}
+
+		if (printer is null)
+		{
+			_logger.LogWarning("Could not create printer object after {RetryCount} retries", retries);
+		}
+		else
+		{
+			_logger.LogDebug("Created printer object");
+		}
+		return printer;
 	}
 
 	private const int CurrencyWidth = 10;
 	private const int QuantityWidth = 4;
 	private const int TabWidth = 4;
 
-	private string FormatCurrency(decimal value)
-		=> value.ToString("N2");
+	private static string FormatCurrency(decimal value) => value.ToString("N2");
 
-	private string GetDiscountPrintValue(OrderTicketData.OrderTicketDiscount discount)
-	{
-		return discount switch
+	private static string GetDiscountPrintValue(OrderTicketData.OrderTicketDiscount discount)
+        => discount switch
 		{
 			OrderTicketData.OrderTicketDiscount.Member => "Leiding",
 			OrderTicketData.OrderTicketDiscount.Volunteer => "Helper",
 			_ => string.Empty,
 		};
-	}
 	
-	private void SetOrderTicketHeader(ICollection<byte[]> content, ICommandEmitter e, OrderTicketData data)
+	private void SetOrderTicketHeader(List<byte[]> content, EPSON e, OrderTicketData data)
 	{
 		content.Add(e.CenterAlign());
 
@@ -120,7 +154,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		else
 		{
 			content.Add(e.PrintLine("KLJ Wiekevorst"));
-			content.Add(e.PrintLine("Restaurantdag 2023"));
+			content.Add(e.PrintLine($"Restaurantdag {_timeProvider.GetLocalNow().Year}"));
 		}
 		
 		content.Add(e.LeftAlign());
@@ -130,12 +164,12 @@ internal class TicketPrintingService : ITicketPrintingService
 		
 		content.Add(e.PrintLine("================================================"));
 		content.Add(e.PrintLine($"Order ID: {data.Id.ToSafeString()}"));
-		content.Add(e.PrintLine($"Timestamp: {data.Timestamp:u}"));
+		content.Add(e.PrintLine($"Timestamp: {data.Timestamp.LocalDateTime:dd/MM/yyyy HH:mm:ss}"));
 		content.Add(e.PrintLine("================================================"));
 		content.Add(e.FeedLines(1));
 	}
 
-	private void SetOrderTicketOrderLines(ICollection<byte[]> content, ICommandEmitter e,
+	private static void SetOrderTicketOrderLines(List<byte[]> content, EPSON e,
 		IEnumerable<OrderTicketData.OrderTicketOrderLine> orderLines)
 	{
 		foreach (var orderLine in orderLines)
@@ -157,7 +191,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		}
 	}
 
-	private void SetOrderTicketFooter(ICollection<byte[]> content, ICommandEmitter e, OrderTicketData data)
+	private static void SetOrderTicketFooter(List<byte[]> content, EPSON e, OrderTicketData data)
 	{
 		content.Add(e.PrintLine("------------------------------------------------"));
 		
@@ -171,7 +205,7 @@ internal class TicketPrintingService : ITicketPrintingService
 		content.Add(e.LeftAlign());
 	}
 
-	private void SetTicketCut(ICollection<byte[]> content, ICommandEmitter e)
+	private static void SetTicketCut(List<byte[]> content, EPSON e)
 	{
 		content.Add(e.FeedLines(3));
 		content.Add(e.PartialCutAfterFeed(10));
