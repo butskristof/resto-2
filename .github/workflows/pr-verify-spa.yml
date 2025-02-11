@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Format, lint and build SPA
     runs-on: ubuntu-24.04
     defaults:
       run:

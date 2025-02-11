@@ -11,7 +11,7 @@ env:
 
 jobs:
   build-and-test:
-    name: Build and test
+    name: Build and test BFF
     runs-on: ubuntu-24.04
     defaults:
       run:
