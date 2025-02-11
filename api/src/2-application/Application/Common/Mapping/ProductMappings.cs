@@ -17,7 +17,7 @@ internal static class ProductMappings
             MultipleToppingsAllowed = request.MultipleToppingsAllowed,
             CategoryId = request.CategoryId,
             Toppings = request.ToppingIds
-                .Select(toppingId => new ProductTopping { ToppingId = toppingId })
+                           .Select(toppingId => new ProductTopping { ToppingId = toppingId })
                 .ToList(),
         };
 
@@ -27,25 +27,23 @@ internal static class ProductMappings
 
     private static Expression<Func<Product, ProductDto>> CreateMappingExpression()
         => product => new ProductDto
-        {
-            Id = product.Id,
-            LastModifiedOn = product.LastModifiedOn,
-            Name = product.Name,
-            Price = product.Price,
-            MultipleToppingsAllowed = product.MultipleToppingsAllowed,
-            Category = new MinimalCategoryDto
-            {
-                Id = product.Category.Id,
-                Name = product.Category.Name,
-                Color = product.Category.Color,
-            },
-            Toppings = product.Toppings.Select(t => new MinimalToppingDto
-            {
-                Id = t.Topping.Id,
-                Name = t.Topping.Name,
-                Price = t.Topping.Price,
-            })
-        };
+        (
+            product.Id,
+            product.Name,
+            product.Price,
+            product.MultipleToppingsAllowed,
+            new MinimalCategoryDto(
+                product.Category.Id,
+                product.Category.Name,
+                product.Category.Color
+            ),
+            product.Toppings.Select(t => new MinimalToppingDto(
+                t.Topping.Id,
+                t.Topping.Name,
+                t.Topping.Price
+            )),
+            product.LastModifiedOn
+        );
 
     private static readonly Func<Product, ProductDto> CompiledMapping = CreateMappingExpression().Compile();
 

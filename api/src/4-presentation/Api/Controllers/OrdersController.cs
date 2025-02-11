@@ -4,7 +4,7 @@ using Resto.Application.Modules.Orders;
 
 namespace Resto.Api.Controllers;
 
-public class OrdersController : ApiControllerBase
+public sealed class OrdersController : ApiControllerBase
 {
 	public OrdersController(ISender mediator) : base(mediator) {}
 

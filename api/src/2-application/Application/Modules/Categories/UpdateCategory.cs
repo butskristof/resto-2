@@ -12,13 +12,14 @@ namespace Resto.Application.Modules.Categories;
 
 public static class UpdateCategory
 {
-	public class Request : UpdateRequest<Guid>, IRequest
-	{
-		public string Name { get; set; }
-		public string Color { get; set; }
-	}
+	public sealed record Request(
+		Guid Id,
+		string Name,
+		string Color,
+		DateTimeOffset? LastModifiedOn
+	) : IUpdateRequest<Guid>, IRequest;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext context)
 		{
@@ -45,7 +46,7 @@ public static class UpdateCategory
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request>
+	internal sealed class Handler : IRequestHandler<Request>
 	{
 		#region construction
 

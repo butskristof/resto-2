@@ -1,13 +1,14 @@
 namespace Resto.Application.Common.Contracts.Responses.Products;
 
-public class MinimalToppingDto
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public decimal Price { get; set; }
-}
+public record MinimalToppingDto(
+    Guid Id,
+    string Name,
+    decimal Price
+);
 
-public class ToppingDto : MinimalToppingDto
-{
-    public DateTimeOffset? LastModifiedOn { get; set; }
-}
+public sealed record ToppingDto(
+    Guid Id,
+    string Name,
+    decimal Price,
+    DateTimeOffset? LastModifiedOn
+) : MinimalToppingDto(Id, Name, Price);

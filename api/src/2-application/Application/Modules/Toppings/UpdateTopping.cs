@@ -11,13 +11,14 @@ namespace Resto.Application.Modules.Toppings;
 
 public static class UpdateTopping
 {
-	public class Request : UpdateRequest<Guid>, IRequest
-	{
-		public string Name { get; set; }
-		public decimal Price { get; set; }
-	}
+	public sealed record Request(
+		Guid Id,
+		DateTimeOffset? LastModifiedOn,
+		string Name,
+		decimal Price
+	) : IUpdateRequest<Guid>, IRequest;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext dbContext)
 		{
@@ -40,7 +41,7 @@ public static class UpdateTopping
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request>
+	internal sealed class Handler : IRequestHandler<Request>
 	{
 		#region construction
 

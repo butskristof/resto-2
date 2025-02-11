@@ -10,15 +10,14 @@ namespace Resto.Application.Modules.Toppings;
 
 public static class CreateTopping
 {
-	public class Request : IRequest<Response>
-	{
-		public string Name { get; set; }
-		public decimal Price { get; set; }
-	}
+	public sealed record Request(
+		string Name,
+		decimal Price
+	) : IRequest<Response>;
 
-	public record Response(Guid Id);
+	public sealed record Response(Guid Id);
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext dbContext)
 		{
@@ -36,7 +35,7 @@ public static class CreateTopping
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request, Response>
+	internal sealed class Handler : IRequestHandler<Request, Response>
 	{
 		#region construction
 

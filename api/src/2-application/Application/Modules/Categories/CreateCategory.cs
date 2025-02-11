@@ -11,15 +11,14 @@ namespace Resto.Application.Modules.Categories;
 
 public static class CreateCategory
 {
-    public class Request : IRequest<Response>
-    {
-        public string Name { get; set; }
-        public string Color { get; set; }
-    }
+    public sealed record Request(
+        string Name,
+        string Color
+    ) : IRequest<Response>;
 
-    public record Response(Guid Id);
+    public sealed record Response(Guid Id);
 
-    internal class Validator : AbstractValidator<Request>
+    internal sealed class Validator : AbstractValidator<Request>
     {
         public Validator(IAppDbContext dbContext)
         {
@@ -41,7 +40,7 @@ public static class CreateCategory
         }
     }
 
-    internal class Handler : IRequestHandler<Request, Response>
+    internal sealed class Handler : IRequestHandler<Request, Response>
     {
         #region construction
 

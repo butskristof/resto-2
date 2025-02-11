@@ -10,12 +10,9 @@ namespace Resto.Application.Modules.Toppings;
 
 public static class DeleteTopping
 {
-	public class Request : IRequest
-	{
-		public Guid ToppingId { get; set; }
-	}
+	public sealed record Request(Guid ToppingId) : IRequest;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext dbContext)
 		{
@@ -26,7 +23,7 @@ public static class DeleteTopping
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request>
+	internal sealed class Handler : IRequestHandler<Request>
 	{
 		#region construction
 

@@ -13,12 +13,9 @@ namespace Resto.Application.Modules.Products;
 
 public static class GetProduct
 {
-	public class Request : IRequest<ProductDto>
-	{
-		public Guid ProductId { get; set; }
-	}
+	public sealed record Request(Guid ProductId) : IRequest<ProductDto>;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator()
 		{
@@ -27,7 +24,7 @@ public static class GetProduct
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request, ProductDto>
+	internal sealed class Handler : IRequestHandler<Request, ProductDto>
 	{
 		#region construction
 

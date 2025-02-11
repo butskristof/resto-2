@@ -5,7 +5,7 @@ using Resto.Application.Modules.Toppings;
 
 namespace Resto.Api.Controllers;
 
-public class ToppingsController : ApiControllerBase
+public sealed class ToppingsController : ApiControllerBase
 {
 	public ToppingsController(ISender mediator) : base(mediator) {}
 

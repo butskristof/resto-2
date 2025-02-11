@@ -13,12 +13,9 @@ namespace Resto.Application.Modules.Toppings;
 
 public static class GetTopping
 {
-	public class Request : IRequest<ToppingDto>
-	{
-		public Guid ToppingId { get; set; }
-	}
+	public sealed record Request(Guid ToppingId) : IRequest<ToppingDto>;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator()
 		{
@@ -27,7 +24,7 @@ public static class GetTopping
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request, ToppingDto>
+	internal sealed class Handler : IRequestHandler<Request, ToppingDto>
 	{
 		#region construction
 

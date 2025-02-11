@@ -12,13 +12,13 @@ namespace Resto.Application.Modules.Toppings;
 
 public static class GetToppings
 {
-    public class Request : PagedRequest, IRequest<Response>;
+    public sealed record Request : PagedRequest, IRequest<Response>;
 
-    public class Response : PagedResponse<ToppingDto>;
+    public sealed class Response : PagedResponse<ToppingDto>;
 
-    internal class Validator : PagedRequestValidator<Request>;
+    internal sealed class Validator : PagedRequestValidator<Request>;
 
-    internal class Handler : IRequestHandler<Request, Response>
+    internal sealed class Handler : IRequestHandler<Request, Response>
     {
         #region construction
 

@@ -13,22 +13,23 @@ namespace Resto.Application.Modules.Orders;
 
 public static class CreateOrder
 {
-    public class Request : IRequest<Response>
+    public sealed record Request(
+        OrderDiscount Discount
+    ) : IRequest<Response>
     {
-        public IEnumerable<OrderLineRequest> OrderLines { get; set; }
-        public OrderDiscount Discount { get; set; }
+        public IEnumerable<OrderLineRequest> OrderLines { get; init; } = [];
 
-        public class OrderLineRequest
+        public sealed record OrderLineRequest(
+            Guid ProductId,
+            int Quantity)
         {
-            public Guid ProductId { get; set; }
-            public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
-            public int Quantity { get; set; }
+            public IEnumerable<Guid> ToppingIds { get; init; } = [];
         }
     }
 
-    public record Response(Guid Id);
-    
-    internal class Validator : AbstractValidator<Request>
+    public sealed record Response(Guid Id);
+
+    internal sealed class Validator : AbstractValidator<Request>
     {
         public Validator(IAppDbContext dbContext)
         {
@@ -67,7 +68,7 @@ public static class CreateOrder
         }
     }
 
-    internal class Handler : IRequestHandler<Request, Response>
+    internal sealed class Handler : IRequestHandler<Request, Response>
     {
         #region construction
 
