@@ -1,16 +1,9 @@
 namespace Resto.Common.Configuration;
 
-public interface ITicketPrintingConfiguration
+public sealed class TicketPrintingSettings
 {
-	string PrinterPath { get; }
-	bool UsePrinter { get; }
+	public const string SectionName = "TicketPrinting";
 	
-	string HeaderImagePath { get; }
-	bool UseHeaderImage { get; }
-}
-
-public class TicketPrintingConfiguration : ITicketPrintingConfiguration
-{
 	public string PrinterPath { get; set; }
 	public bool UsePrinter => !string.IsNullOrWhiteSpace(PrinterPath);
 
