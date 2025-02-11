@@ -2,7 +2,7 @@ using Resto.Domain.Common;
 
 namespace Resto.Domain.Entities.Products;
 
-public class Product : AuditableBaseEntity<Guid>
+public sealed class Product : AuditableBaseEntity<Guid>
 {
 	public string Name { get; set; }
 	public decimal Price { get; set; }

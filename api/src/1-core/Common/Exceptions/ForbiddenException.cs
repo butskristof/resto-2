@@ -6,7 +6,7 @@ namespace Resto.Common.Exceptions;
 /// This exception should be used when a user requests an action they don't have
 /// the right permission for
 /// </summary>
-public class ForbiddenException : Exception
+public sealed class ForbiddenException : Exception
 {
 	public ForbiddenException() : base() {}
 	

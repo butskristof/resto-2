@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Resto.Application.Common.Behaviors;
 
-internal class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+internal sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 	where TRequest : IBaseRequest
 {
 	#region construction

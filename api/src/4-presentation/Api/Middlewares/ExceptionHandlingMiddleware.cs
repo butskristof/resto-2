@@ -54,7 +54,6 @@ internal sealed class ExceptionHandlingMiddleware
             // ValueObjectException _ => HttpStatusCode.BadRequest,
 
             // from application project
-            MappingException _ => HttpStatusCode.BadRequest,
             // ServiceBusyException _ => HttpStatusCode.ServiceUnavailable, // 503
             ValidationException _ => HttpStatusCode.BadRequest,
 

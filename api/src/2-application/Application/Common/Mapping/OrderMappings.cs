@@ -31,6 +31,7 @@ internal static class OrderMappings
     #endregion
 
     #region OrderDto
+
     private static Expression<Func<Order, OrderDto>> CreateMappingExpression()
         => order => new OrderDto
         {
@@ -38,25 +39,22 @@ internal static class OrderMappings
             Discount = order.Discount,
             Timestamp = order.Timestamp,
             OrderTotal = order.OrderTotal,
-            OrderLines = order.OrderLines.Select(ol => new OrderLineDto
-            {
-                Id = ol.Id,
-                Product = new OrderLineDto.OrderLineProductDto
-                {
-                    Id = ol.Product.Id,
-                    Name = ol.Product.Name,
-                    Price = ol.Product.Price,
-                },
-                Toppings = ol.Toppings.Select(olt => new OrderLineDto.OrderLineToppingDto
-                {
-                    Id = olt.Topping.Id,
-                    Name = olt.Topping.Name,
-                    Price = olt.Topping.Price,
-                }),
-                Quantity = ol.Quantity,
-                Price = ol.Price,
-                OrderLineTotal = ol.OrderLineTotal,
-            }),
+            OrderLines = order.OrderLines.Select(ol => new OrderLineDto(
+                ol.Id,
+                new OrderLineDto.OrderLineProductDto(
+                    ol.Product.Id,
+                    ol.Product.Name,
+                    ol.Product.Price
+                ),
+                ol.Toppings.Select(olt => new OrderLineDto.OrderLineToppingDto(
+                    olt.Topping.Id,
+                    olt.Topping.Name,
+                    olt.Topping.Price
+                )),
+                ol.Quantity,
+                ol.Price,
+                ol.OrderLineTotal
+            )),
         };
 
     private static readonly Func<Order, OrderDto> CompiledMapping = CreateMappingExpression().Compile();

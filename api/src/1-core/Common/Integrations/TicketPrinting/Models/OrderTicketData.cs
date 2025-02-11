@@ -1,6 +1,6 @@
 namespace Resto.Common.Integrations.TicketPrinting.Models;
 
-public class OrderTicketData
+public sealed class OrderTicketData
 {
 	public Guid Id { get; set; }
 	public DateTimeOffset Timestamp { get; set; }
