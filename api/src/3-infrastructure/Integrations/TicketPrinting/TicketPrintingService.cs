@@ -1,5 +1,6 @@
 using ESCPOS_NET.Emitters;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Resto.Common.Configuration;
 using Resto.Common.Extensions;
 using Resto.Common.Integrations.TicketPrinting;
@@ -12,23 +13,23 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 	#region construction
 
 	private readonly ILogger<TicketPrintingService> _logger;
-	private readonly ITicketPrintingConfiguration _configuration;
+	private readonly TicketPrintingSettings _settings;
 	private readonly byte[] _headerImage;
 	private readonly TimeProvider _timeProvider;
 
-	public TicketPrintingService(ILogger<TicketPrintingService> logger, ITicketPrintingConfiguration configuration,
+	public TicketPrintingService(ILogger<TicketPrintingService> logger, IOptions<TicketPrintingSettings> settings,
 		TimeProvider timeProvider)
 	{
 		_logger = logger;
-		_configuration = configuration;
+		_settings = settings.Value;
 		_timeProvider = timeProvider;
 
-		if (configuration.UseHeaderImage)
+		if (_settings.UseHeaderImage)
 		{
 			logger.LogDebug("Header image path is available, trying to read content");
-			if (File.Exists(_configuration.HeaderImagePath))
+			if (File.Exists(_settings.HeaderImagePath))
 			{
-				_headerImage = File.ReadAllBytes(configuration.HeaderImagePath);
+				_headerImage = File.ReadAllBytes(_settings.HeaderImagePath);
 				logger.LogInformation("Set up ticket header image");
 			}
 			else
@@ -86,14 +87,14 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 	private async Task<FileStreamPrinter> TryGetPrinter(CancellationToken cancellationToken = default)
 	{
 		_logger.LogDebug("Trying to get a printer instance");
-		if (!_configuration.UsePrinter)
+		if (!_settings.UsePrinter)
 		{
 			_logger.LogDebug("Printer path is not configured");
 			return null;
 		}
 		
 		_logger.LogDebug("Printer path is configured");
-		if (!File.Exists(_configuration.PrinterPath))
+		if (!File.Exists(_settings.PrinterPath))
 		{
 			_logger.LogWarning("Printer path is configured but file does not exist");
 			return null;
@@ -107,7 +108,7 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 		{
 			try
 			{
-				printer = new FileStreamPrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
+				printer = new FileStreamPrinter(filePath: _settings.PrinterPath, createIfNotExists: false);
 			}
 			catch (Exception ex)
 			{

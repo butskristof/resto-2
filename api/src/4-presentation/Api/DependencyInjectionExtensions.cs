@@ -16,20 +16,19 @@ public static class DependencyInjectionExtensions
 	public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
 	{
 		services
-			.RegisterOptions<IClientConfiguration, ClientConfiguration>
-				(configuration, ConfigurationConstants.Clients)
-			.RegisterOptions<ITicketPrintingConfiguration, TicketPrintingConfiguration>
-				(configuration, ConfigurationConstants.TicketPrinting);
+			.AddValidatedSettings<ClientSettings>(ClientSettings.SectionName)
+			.AddValidatedSettings<TicketPrintingSettings>(TicketPrintingSettings.SectionName);
+			
 		return services;
 	}
 
-	private static IServiceCollection RegisterOptions<TInterface, TImplementation>(this IServiceCollection services,
-		IConfiguration configuration, string key) where TImplementation : class, TInterface
+	private static IServiceCollection AddValidatedSettings<TOptions>(this IServiceCollection services,
+		string sectionName)
+		where TOptions : class
 	{
 		services
-			.Configure<TImplementation>(configuration.GetSection(key))
-			.AddSingleton(typeof(TInterface), sp =>
-				sp.GetRequiredService<IOptions<TImplementation>>().Value);
+			.AddOptions<TOptions>()
+			.BindConfiguration(sectionName);
 
 		return services;
 	}
@@ -76,8 +75,10 @@ public static class DependencyInjectionExtensions
 	private static IServiceCollection AddCorsPolicy(this IServiceCollection services)
 	{
 		using var serviceProvider = services.BuildServiceProvider();
-		var configuration = serviceProvider.GetRequiredService<IClientConfiguration>();
-		
+		var configuration = serviceProvider
+			.GetRequiredService<IOptions<ClientSettings>>()
+			.Value;
+
 		services
 			.AddCors(options =>
 			{
