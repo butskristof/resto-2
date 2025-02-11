@@ -14,7 +14,6 @@ internal class TicketPrintingService : ITicketPrintingService
 
 	private readonly ILogger<TicketPrintingService> _logger;
 	private readonly ITicketPrintingConfiguration _configuration;
-	private readonly FileStreamPrinter _printer;
 	private readonly byte[] _headerImage;
 
 	public TicketPrintingService(ILogger<TicketPrintingService> logger, ITicketPrintingConfiguration configuration)
@@ -22,21 +21,6 @@ internal class TicketPrintingService : ITicketPrintingService
 		_logger = logger;
 		_configuration = configuration;
 		
-		if (_configuration.UsePrinter)
-		{
-			_logger.LogDebug("Printer path is available, trying to set up connection");
-			if (File.Exists(_configuration.PrinterPath))
-			{
-				_printer = new FileStreamPrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
-				
-				_logger.LogInformation("Set up printer connection");
-			}
-			else
-			{
-				_logger.LogWarning("Printer path is available, but file does not exist");
-			}
-		}
-
 		if (configuration.UseHeaderImage)
 		{
 			logger.LogDebug("Header image path is available, trying to read content");
@@ -54,14 +38,15 @@ internal class TicketPrintingService : ITicketPrintingService
 
 	#endregion
 	
-	public Task PrintOrderTicketAsync(OrderTicketData data, CancellationToken cancellationToken = default)
+	public async Task PrintOrderTicketAsync(OrderTicketData data, CancellationToken cancellationToken = default)
 	{
 		_logger.LogDebug("Printing order ticket");
 
-		if (_printer == null)
+		using var printer = await TryGetPrinter();
+		if (printer is null)
 		{
 			_logger.LogDebug("Printer not available");
-			return Task.CompletedTask;
+			return;
 		}
 
 		var orderLines = data.OrderLines.Select(ol => ol).ToList();
@@ -86,10 +71,60 @@ internal class TicketPrintingService : ITicketPrintingService
 		SetOrderTicketFooter(ticketCommands, e, data);
 		SetTicketCut(ticketCommands, e);
 		
-		_printer.Write(ticketCommands.ToArray());
+		printer.Write(ticketCommands.ToArray());
 		_logger.LogDebug("Sent order ticket to printer");
+
+		// wait a bit before returning which will dispose the printer object
+		// this should give the printer time to clear it's pass its buffer
+		// content to the BinaryWriter
+		// TODO verify what time we can get away with
+		await Task.Delay(100, CancellationToken.None);
+	}
+
+	private async Task<BasePrinter> TryGetPrinter()
+	{
+		_logger.LogDebug("Trying to get a printer instance");
+		if (!_configuration.UsePrinter)
+		{
+			_logger.LogDebug("Printer path is not configured");
+			return null;
+		}
 		
-		return Task.CompletedTask;
+		_logger.LogDebug("Printer path is configured");
+		if (!File.Exists(_configuration.PrinterPath))
+		{
+			_logger.LogWarning("Printer path is configured but file does not exist");
+			return null;
+		}
+
+		BasePrinter printer = null;
+		const int maxRetries = 5;
+		const int retryWaitMilliseconds = 200;
+		var retries = 0;
+		while (printer is null && retries++ < maxRetries)
+		{
+			try
+			{
+				printer = new FileStreamPrinter(filePath: _configuration.PrinterPath, createIfNotExists: false);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Could not create printer object with message: {Message}", ex.Message);
+				// not being able to create the object is likely because of a file lock, so let's wait a bit 
+				// before retrying
+				await Task.Delay(retryWaitMilliseconds);
+			}
+		}
+
+		if (printer is null)
+		{
+			_logger.LogWarning("Could not create printer object after {RetryCount} retries", retries);
+		}
+		else
+		{
+			_logger.LogDebug("Created printer object");
+		}
+		return printer;
 	}
 
 	private const int CurrencyWidth = 10;

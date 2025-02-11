@@ -7,7 +7,7 @@ public static class DependencyInjectionExtensions
 {
 	public static IServiceCollection AddTicketPrinting(this IServiceCollection services)
 	{
-		services.AddSingleton<ITicketPrintingService, TicketPrintingService>();
+		services.AddScoped<ITicketPrintingService, TicketPrintingService>();
 		
 		return services;
 	}
