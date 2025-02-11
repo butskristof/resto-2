@@ -4,7 +4,7 @@ using Resto.Domain.Entities.Orders;
 
 namespace Resto.Persistence.Configuration;
 
-internal class OrderConfiguration : IEntityTypeConfiguration<Order>
+internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
 	public void Configure(EntityTypeBuilder<Order> builder)
 	{

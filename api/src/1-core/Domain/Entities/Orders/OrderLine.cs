@@ -3,7 +3,7 @@ using Resto.Domain.Entities.Products;
 
 namespace Resto.Domain.Entities.Orders;
 
-public class OrderLine : AuditableBaseEntity<Guid>
+public sealed class OrderLine : AuditableBaseEntity<Guid>
 {
 	public Guid OrderId { get; set; }
 	

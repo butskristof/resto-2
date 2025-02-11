@@ -2,7 +2,7 @@ using Resto.Domain.Enumerations;
 
 namespace Resto.Application.Common.Contracts.Responses.Orders;
 
-public class OrderDto
+public sealed class OrderDto
 {
     public Guid Id { get; set; }
     public OrderDiscount Discount { get; set; }

@@ -2,7 +2,7 @@
 
 namespace Resto.Common.Exceptions;
 
-public class UnauthorizedException : Exception
+public sealed class UnauthorizedException : Exception
 {
 	public UnauthorizedException(ErrorCode code) : base(code.ToString())
 	{

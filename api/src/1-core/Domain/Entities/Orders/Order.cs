@@ -3,7 +3,7 @@ using Resto.Domain.Enumerations;
 
 namespace Resto.Domain.Entities.Orders;
 
-public class Order : AuditableBaseEntity<Guid>
+public sealed class Order : AuditableBaseEntity<Guid>
 {
 	public ICollection<OrderLine> OrderLines { get; set; }
 	public OrderDiscount Discount { get; set; }

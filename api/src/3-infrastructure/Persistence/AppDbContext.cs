@@ -9,7 +9,7 @@ using Resto.Persistence.ValueConverters;
 
 namespace Resto.Persistence;
 
-public class AppDbContext : DbContext, IAppDbContext
+public sealed class AppDbContext : DbContext, IAppDbContext
 {
 	#region construction
 

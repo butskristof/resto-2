@@ -4,7 +4,7 @@ using Resto.Domain.Entities.Products;
 
 namespace Resto.Persistence.Configuration;
 
-internal class ProductConfiguration : IEntityTypeConfiguration<Product>
+internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
 	public void Configure(EntityTypeBuilder<Product> builder)
 	{
