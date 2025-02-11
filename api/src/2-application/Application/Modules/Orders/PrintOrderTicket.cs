@@ -13,12 +13,9 @@ namespace Resto.Application.Modules.Orders;
 
 public static class PrintOrderTicket
 {
-	public class Request : IRequest
-	{
-		public Guid OrderId { get; set; }
-	}
+	public sealed record Request(Guid OrderId) : IRequest;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator()
 		{
@@ -27,7 +24,7 @@ public static class PrintOrderTicket
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request>
+	internal sealed class Handler : IRequestHandler<Request>
 	{
 		#region construction
 

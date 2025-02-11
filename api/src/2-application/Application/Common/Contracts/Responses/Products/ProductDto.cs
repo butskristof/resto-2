@@ -1,14 +1,11 @@
 namespace Resto.Application.Common.Contracts.Responses.Products;
 
-public class ProductDto
-{
-    public Guid Id { get; set; }
-    public DateTimeOffset? LastModifiedOn { get; set; }
-
-    public string Name { get; set; }
-    public decimal Price { get; set; }
-    public bool MultipleToppingsAllowed { get; set; }
-
-    public MinimalCategoryDto Category { get; set; }
-    public IEnumerable<MinimalToppingDto> Toppings { get; set; }
-}
+public sealed record ProductDto(
+    Guid Id,
+    string Name,
+    decimal Price,
+    bool MultipleToppingsAllowed,
+    MinimalCategoryDto Category,
+    IEnumerable<MinimalToppingDto> Toppings,
+    DateTimeOffset? LastModifiedOn
+);

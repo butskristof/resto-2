@@ -12,13 +12,13 @@ namespace Resto.Application.Modules.Categories;
 
 public static class GetCategories
 {
-    public class Request : PagedRequest, IRequest<Response>;
+    public sealed record Request : PagedRequest, IRequest<Response>;
 
-    public class Response : PagedResponse<CategoryDto>;
+    public sealed class Response : PagedResponse<CategoryDto>;
 
-    internal class Validator : PagedRequestValidator<Request>;
+    internal sealed class Validator : PagedRequestValidator<Request>;
 
-    internal class Handler : IRequestHandler<Request, Response>
+    internal sealed class Handler : IRequestHandler<Request, Response>
     {
         #region construction
 

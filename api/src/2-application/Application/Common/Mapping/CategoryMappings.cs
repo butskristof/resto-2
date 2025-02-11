@@ -21,13 +21,12 @@ internal static class CategoryMappings
     #region CategoryDto
 
     private static Expression<Func<Category, CategoryDto>> CreateMappingExpression()
-        => category => new CategoryDto
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Color = category.Color,
-            LastModifiedOn = category.LastModifiedOn,
-        };
+        => category => new CategoryDto(
+            category.Id,
+            category.Name,
+            category.Color,
+            category.LastModifiedOn
+        );
 
     private static readonly Func<Category, CategoryDto> CompiledMapping
         = CreateMappingExpression().Compile();

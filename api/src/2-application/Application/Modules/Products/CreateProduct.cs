@@ -10,19 +10,19 @@ namespace Resto.Application.Modules.Products;
 
 public static class CreateProduct
 {
-    public class Request : IRequest<Response>
+    public sealed record Request(
+        string Name,
+        decimal Price,
+        bool MultipleToppingsAllowed,
+        Guid CategoryId
+    ) : IRequest<Response>
     {
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public bool MultipleToppingsAllowed { get; set; }
-
-        public Guid CategoryId { get; set; }
-        public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
+        public IEnumerable<Guid> ToppingIds { get; init; } = [];
     }
 
-    public record Response(Guid Id);
+    public sealed record Response(Guid Id);
 
-    internal class Validator : AbstractValidator<Request>
+    internal sealed class Validator : AbstractValidator<Request>
     {
         public Validator(IAppDbContext dbContext)
         {
@@ -48,7 +48,7 @@ public static class CreateProduct
         }
     }
 
-    internal class Handler : IRequestHandler<Request, Response>
+    internal sealed class Handler : IRequestHandler<Request, Response>
     {
         #region construction
 

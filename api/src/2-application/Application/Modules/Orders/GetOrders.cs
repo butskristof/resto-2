@@ -11,20 +11,18 @@ namespace Resto.Application.Modules.Orders;
 
 public static class GetOrders
 {
-	public class Request : PagedRequest, IRequest<Response>
-	{
-	}
+	public sealed record Request : PagedRequest, IRequest<Response>;
 
-	public class Response : PagedResponse<OrderDto>;
+	public sealed class Response : PagedResponse<OrderDto>;
 
-	internal class Validator : PagedRequestValidator<Request>
+	internal sealed class Validator : PagedRequestValidator<Request>
 	{
 		public Validator()
 		{
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request, Response>
+	internal sealed class Handler : IRequestHandler<Request, Response>
 	{
 		#region construction
 

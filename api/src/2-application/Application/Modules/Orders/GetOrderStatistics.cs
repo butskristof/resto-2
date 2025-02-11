@@ -11,9 +11,9 @@ namespace Resto.Application.Modules.Orders;
 
 public static class GetOrderStatistics
 {
-    public class Request : IRequest<Response>;
+    public sealed record Request : IRequest<Response>;
 
-    public class Response
+    public sealed class Response
     {
         public int OrderCount { get; set; }
         public IEnumerable<ProductDto> ProductStatistics { get; set; }
@@ -53,11 +53,11 @@ public static class GetOrderStatistics
         }
     }
 
-    internal class Validator : AbstractValidator<Request>
+    internal sealed class Validator : AbstractValidator<Request>
     {
     }
 
-    internal class Handler : IRequestHandler<Request, Response>
+    internal sealed class Handler : IRequestHandler<Request, Response>
     {
         #region construction
 

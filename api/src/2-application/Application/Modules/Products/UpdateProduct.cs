@@ -12,14 +12,16 @@ namespace Resto.Application.Modules.Products;
 
 public static class UpdateProduct
 {
-    public class Request : UpdateRequest<Guid>, IRequest
+    public sealed record Request(
+        Guid Id,
+        string Name,
+        decimal Price,
+        bool MultipleToppingsAllowed,
+        Guid CategoryId,
+        DateTimeOffset? LastModifiedOn
+    ) : IUpdateRequest<Guid>, IRequest
     {
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public bool MultipleToppingsAllowed { get; set; }
-
-        public Guid CategoryId { get; set; }
-        public IEnumerable<Guid> ToppingIds { get; set; } = new List<Guid>();
+        public IEnumerable<Guid> ToppingIds { get; init; } = [];
     }
 
     internal class Validator : AbstractValidator<Request>

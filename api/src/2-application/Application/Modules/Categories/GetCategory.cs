@@ -13,12 +13,9 @@ namespace Resto.Application.Modules.Categories;
 
 public static class GetCategory
 {
-	public class Request : IRequest<CategoryDto>
-	{
-		public Guid CategoryId { get; set; }
-	}
+	public sealed record Request(Guid CategoryId) : IRequest<CategoryDto>;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator()
 		{
@@ -27,7 +24,7 @@ public static class GetCategory
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request, CategoryDto>
+	internal sealed class Handler : IRequestHandler<Request, CategoryDto>
 	{
 		#region construction
 

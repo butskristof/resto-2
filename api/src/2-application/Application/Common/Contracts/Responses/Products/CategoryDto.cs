@@ -1,13 +1,14 @@
 namespace Resto.Application.Common.Contracts.Responses.Products;
 
-public class MinimalCategoryDto
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string Color { get; set; }
-}
+public record MinimalCategoryDto(
+    Guid Id,
+    string Name,
+    string Color
+);
 
-public class CategoryDto : MinimalCategoryDto
-{
-    public DateTimeOffset? LastModifiedOn { get; set; }
-}
+public sealed record CategoryDto(
+    Guid Id,
+    string Name,
+    string Color,
+    DateTimeOffset? LastModifiedOn
+) : MinimalCategoryDto(Id, Name, Color);

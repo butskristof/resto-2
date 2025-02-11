@@ -10,12 +10,9 @@ namespace Resto.Application.Modules.Categories;
 
 public static class DeleteCategory
 {
-	public class Request : IRequest
-	{
-		public Guid CategoryId { get; set; }
-	}
+	public sealed record Request(Guid CategoryId) : IRequest;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext dbContext)
 		{
@@ -27,7 +24,7 @@ public static class DeleteCategory
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request>
+	internal sealed class Handler : IRequestHandler<Request>
 	{
 		#region construction
 

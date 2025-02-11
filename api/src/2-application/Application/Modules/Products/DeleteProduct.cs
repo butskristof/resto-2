@@ -10,12 +10,9 @@ namespace Resto.Application.Modules.Products;
 
 public static class DeleteProduct
 {
-	public class Request : IRequest
-	{
-		public Guid ProductId { get; set; }
-	}
+	public sealed record Request(Guid ProductId) : IRequest;
 
-	internal class Validator : AbstractValidator<Request>
+	internal sealed class Validator : AbstractValidator<Request>
 	{
 		public Validator(IAppDbContext dbContext)
 		{
@@ -26,7 +23,7 @@ public static class DeleteProduct
 		}
 	}
 
-	internal class Handler : IRequestHandler<Request>
+	internal sealed class Handler : IRequestHandler<Request>
 	{
 		#region construction
 

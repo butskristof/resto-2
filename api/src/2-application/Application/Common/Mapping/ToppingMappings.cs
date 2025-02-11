@@ -21,13 +21,12 @@ internal static class ToppingMappings
     #region ToppingDto
 
     private static Expression<Func<Topping, ToppingDto>> CreateMappingExpression()
-        => topping => new ToppingDto
-        {
-            Id = topping.Id,
-            Name = topping.Name,
-            Price = topping.Price,
-            LastModifiedOn = topping.LastModifiedOn,
-        };
+        => topping => new ToppingDto(
+            topping.Id,
+            topping.Name,
+            topping.Price,
+            topping.LastModifiedOn
+        );
 
     private static readonly Func<Topping, ToppingDto> CompiledMapping = CreateMappingExpression().Compile();
 
