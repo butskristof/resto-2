@@ -1,3 +1,4 @@
+using ESCPOS_NET;
 using ESCPOS_NET.Emitters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -84,7 +85,7 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 		await Task.Delay(100, CancellationToken.None);
 	}
 
-	private async Task<FileStreamPrinter> TryGetPrinter(CancellationToken cancellationToken = default)
+	private async Task<FilePrinter> TryGetPrinter(CancellationToken cancellationToken = default)
 	{
 		_logger.LogDebug("Trying to get a printer instance");
 		if (!_settings.UsePrinter)
@@ -100,7 +101,7 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 			return null;
 		}
 
-		FileStreamPrinter printer = null;
+		FilePrinter printer = null;
 		const int maxRetries = 5;
 		const int retryWaitMilliseconds = 200;
 		var retries = 0;
@@ -108,7 +109,7 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 		{
 			try
 			{
-				printer = new FileStreamPrinter(filePath: _settings.PrinterPath, createIfNotExists: false);
+				printer = new FilePrinter(filePath: _settings.PrinterPath, createIfNotExists: false);
 			}
 			catch (Exception ex)
 			{
