@@ -19,8 +19,9 @@ internal sealed class FileStreamPrinter : BasePrinter
             createIfNotExists ? FileMode.OpenOrCreate : FileMode.Open,
             FileAccess.Write,
             FileShare.None,
-            4096,
-            FileOptions.WriteThrough);
+            256);
+            // 4096,
+            // FileOptions.WriteThrough);
         Writer = new BinaryWriter(_fileStream);
         // Reader = new BinaryReader(_fileStream);
     }
