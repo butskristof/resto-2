@@ -67,9 +67,7 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 	{
 		_logger.LogDebug("Printing order ticket");
 
-		// using var printer = await TryGetPrinter(cancellationToken);
-		var printer = _printer;
-		if (printer is null)
+		if (_printer is null)
 		{
 			_logger.LogDebug("Printer not available");
 			return;
@@ -97,7 +95,7 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 		SetOrderTicketFooter(ticketCommands, e, data);
 		SetTicketCut(ticketCommands, e);
 		
-		printer.Write(ticketCommands.ToArray());
+		_printer.Write(ticketCommands.ToArray());
 		_logger.LogDebug("Sent order ticket to printer");
 
 		// wait a bit before returning which will dispose the printer object
@@ -107,52 +105,6 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 		await Task.Delay(100, CancellationToken.None);
 	}
 
-	// private async Task<FileStreamPrinter> TryGetPrinter(CancellationToken cancellationToken = default)
-	// {
-	// 	_logger.LogDebug("Trying to get a printer instance");
-	// 	if (!_settings.UsePrinter)
-	// 	{
-	// 		_logger.LogDebug("Printer path is not configured");
-	// 		return null;
-	// 	}
-	// 	
-	// 	_logger.LogDebug("Printer path is configured");
-	// 	if (!File.Exists(_settings.PrinterPath))
-	// 	{
-	// 		_logger.LogWarning("Printer path is configured but file does not exist");
-	// 		return null;
-	// 	}
-	//
-	// 	FileStreamPrinter printer = null;
-	// 	const int maxRetries = 5;
-	// 	const int retryWaitMilliseconds = 200;
-	// 	var retries = 0;
-	// 	while (printer is null && retries++ < maxRetries)
-	// 	{
-	// 		try
-	// 		{
-	// 			printer = new FileStreamPrinter(filePath: _settings.PrinterPath, createIfNotExists: false);
-	// 		}
-	// 		catch (Exception ex)
-	// 		{
-	// 			_logger.LogError(ex, "Could not create printer object with message: {Message}", ex.Message);
-	// 			// not being able to create the object is likely because of a file lock, so let's wait a bit 
-	// 			// before retrying
-	// 			await Task.Delay(retryWaitMilliseconds, cancellationToken);
-	// 		}
-	// 	}
-	//
-	// 	if (printer is null)
-	// 	{
-	// 		_logger.LogWarning("Could not create printer object after {RetryCount} retries", retries);
-	// 	}
-	// 	else
-	// 	{
-	// 		_logger.LogDebug("Created printer object");
-	// 	}
-	// 	return printer;
-	// }
-	//
 	private const int CurrencyWidth = 10;
 	private const int QuantityWidth = 4;
 	private const int TabWidth = 4;
