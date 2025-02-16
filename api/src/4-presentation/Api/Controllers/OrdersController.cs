@@ -27,4 +27,11 @@ public sealed class OrdersController : ApiControllerBase
 	public async Task<ActionResult<GetOrderStatistics.Response>> GetOrderStatistics(
 		[FromQuery] GetOrderStatistics.Request request)
 		=> await Mediator.Send(request);
+
+	[HttpDelete]
+	public async Task<IActionResult> DeleteOrders()
+	{
+		await Mediator.Send(new DeleteOrders.Request());
+		return NoContent();
+	}
 }
