@@ -5,8 +5,20 @@
     </div>
     <div class="right">
       <LoadingIndicator v-if="loading">{{ loadingLabel }}</LoadingIndicator>
+
+      <button
+        type="button"
+        class="btn-danger btn-icon"
+        @click="showDeleteModal = true"
+      >
+        <i class="icon-trash" /> Alle bestellingen wissen
+      </button>
     </div>
   </div>
+  <DeleteOrdersModal
+    v-if="showDeleteModal"
+    @close="showDeleteModal = false"
+  />
 
   <div v-if="isError">
     <div>Er liep iets mis bij het ophalen van de bestellingen, probeer het later opnieuw.</div>
@@ -34,10 +46,11 @@
 
 <script setup>
 import { useOrdersQuery } from '@/composables/queries';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import LoadingIndicator from '@/components/common/LoadingIndicator.vue';
 import LoadNextPage from '@/components/common/LoadNextPage.vue';
 import OrderHistoryListItem from '@/components/order-history/OrderHistoryListItem.vue';
+import DeleteOrdersModal from '@/components/order-history/DeleteOrdersModal.vue';
 
 const {
   orders,
@@ -56,6 +69,10 @@ const loadingLabel = computed(() => {
   else if (isFetching.value) return 'Bestellingen bijwerken';
   return '';
 });
+
+//#region delete
+const showDeleteModal = ref(false);
+//#endregion
 </script>
 
 <style scoped lang="scss">
@@ -64,6 +81,12 @@ const loadingLabel = computed(() => {
 
 .header {
   @include layout.flex-row-space-between;
+  margin-bottom: 1rem;
+
+  .right {
+    display: flex;
+    gap: 1rem;
+  }
 }
 
 h2 {

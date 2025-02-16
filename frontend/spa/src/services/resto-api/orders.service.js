@@ -20,5 +20,10 @@ class OrdersService {
     // await new Promise((r) => setTimeout(r, 1000));
     return restoApi.get(`/orders/stats`);
   }
+
+  delete() {
+    return restoApi.delete('/orders');
+  }
 }
+
 export default new OrdersService();
