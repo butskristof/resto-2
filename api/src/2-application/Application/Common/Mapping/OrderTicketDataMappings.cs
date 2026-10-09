@@ -25,11 +25,13 @@ internal static class OrderTicketDataMappings
                         {
                             Name = olt.Topping.Name,
                             Price = olt.Topping.Price,
-                        }),
+                        })
+                        .ToList(),
                     Quantity = ol.Quantity,
                     Price = ol.Price,
                     OrderLineTotal = ol.OrderLineTotal,
-                }),
+                })
+                .ToList(),
             OrderTotal = order.OrderTotal,
         };
 

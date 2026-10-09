@@ -73,25 +73,22 @@ internal sealed class TicketPrintingService : ITicketPrintingService
 			return;
 		}
 
-		var orderLines = data.OrderLines.Select(ol => ol).ToList();
-		var soupOrderLines = data.OrderLines
-			.Where(ol => ol.Product.Name.Contains("soep", StringComparison.InvariantCultureIgnoreCase))
-			.ToList();
+		var allOrderLines = data.OrderLines.ToList();
+		var soupOrderLines = allOrderLines.Where(ol => ol.IsSoup).ToList();
+		var otherOrderLines = allOrderLines.Where(ol => !ol.IsSoup).ToList();
 
 		var e = new EPSON();
 		var ticketCommands = new List<byte[]>();
-		
+
 		if (soupOrderLines.Count > 0)
 		{
-			orderLines.RemoveAll(ol => soupOrderLines.Contains(ol));
-			
 			SetOrderTicketHeader(ticketCommands, e, data);
 			SetOrderTicketOrderLines(ticketCommands, e, soupOrderLines);
 			SetTicketCut(ticketCommands, e);
 		}
-		
+
 		SetOrderTicketHeader(ticketCommands, e, data);
-		SetOrderTicketOrderLines(ticketCommands, e, orderLines);
+		SetOrderTicketOrderLines(ticketCommands, e, otherOrderLines);
 		SetOrderTicketFooter(ticketCommands, e, data);
 		SetTicketCut(ticketCommands, e);
 		

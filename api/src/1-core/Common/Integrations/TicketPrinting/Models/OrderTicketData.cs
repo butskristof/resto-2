@@ -26,6 +26,8 @@ public sealed class OrderTicketData
 		public decimal Price { get; set; }
 
 		public decimal OrderLineTotal { get; set; }
+
+		public bool IsSoup => Product.Name.Contains("soep", StringComparison.InvariantCultureIgnoreCase);
 	}
 
 	public class OrderTicketProduct
